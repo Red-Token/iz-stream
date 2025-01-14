@@ -1,15 +1,26 @@
-class Asset {
+export class Asset {
     magnet: string = '';
+}
+
+export class Episode {
+    data: any = ''
+}
+
+export class Season {
+    episodes: Episode[] = $state([])
+    data: any = ''
 }
 
 class SearchResultItem {
     id: string = '';
     title: string = '';
     description: string = '';
+    imdbResult: any;
+    seasons: Season[] = $state([]);
     assets: Asset[] = [];
 }
 
-class SearchResult {
+export class SearchResult {
     items: SearchResultItem[] = [];
 }
 

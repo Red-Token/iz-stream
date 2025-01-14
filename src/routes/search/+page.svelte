@@ -1,16 +1,20 @@
 <script lang="ts">
     import {searchResult} from "../../stores/searchResult.svelte";
     import {goto} from "$app/navigation";
+    import imdbApi from "$lib/api/ImdbApi";
 
-    let search = ''
+    let search = 'Game of Thrones'
 
     function onSearch(): void {
-        console.log(search)
-        searchResult.items = [
-            {id: '1', title: 'test', description: 'lenni!'},
-            {id: '2', title: 'test2', description: 'lenni!2'},
-        ]
-        goto('/select/');
+
+        imdbApi.searchTitle(search).then((result) => {
+            console.log(result)
+            searchResult.items = [
+                {id: '1', title: result.Title, description: result.Plot, assets: [], seasons: [], imdbResult: result},
+            ]
+            goto('/select/');
+        })
+
     }
 
 </script>
