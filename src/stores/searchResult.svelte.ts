@@ -8,7 +8,7 @@ export class Episode {
 
 export class Season {
     id: number = 0;
-    episodes: Episode[] = []
+    episodes: Episode[] = $state([])
     data: any = ''
 }
 
@@ -17,11 +17,11 @@ class SearchResultItem {
     title: string = '';
     description: string = '';
     imdbResult: any;
-    seasons: Season[] = [];
-    assets: Asset[] = [];
+    seasons: Season[] = $derived([]);
+    assets: Asset[] = $state([]);
 }
 
-export class SearchResult {
+class SearchResult {
     items: SearchResultItem[] = [];
 }
 
