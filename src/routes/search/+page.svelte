@@ -4,12 +4,12 @@
     import imdbApi from "$lib/api/ImdbApi";
 
     let search = 'Game of Thrones'
-
+    let searchFunc = searchResult()
     function onSearch(): void {
 
         imdbApi.searchTitle(search).then((result) => {
             console.log(result)
-            searchResult.items = [
+            searchFunc.items = [
                 {id: '1', title: result.Title, description: result.Plot, assets: [], seasons: [], imdbResult: result},
             ]
             goto('/select/');
