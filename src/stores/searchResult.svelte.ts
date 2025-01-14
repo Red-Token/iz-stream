@@ -24,4 +24,5 @@ export class SearchResult {
     items: SearchResultItem[] = [];
 }
 
-export const searchResult: SearchResult = $derived(new SearchResult());
+export const searchResult = () => new SearchResult();
+
