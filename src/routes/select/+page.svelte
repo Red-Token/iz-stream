@@ -3,8 +3,8 @@
     import {goto} from "$app/navigation";
     import imdbApi from "$lib/api/ImdbApi";
 
-    let searchFunc = searchResult()
-    for (const item of searchFunc.items) {
+   
+    for (const item of searchResult.items) {
         if (item.imdbResult.Type === 'series') {
             for (let i = 0; i < item.imdbResult.totalSeasons; i++) {
                 const season: Season = {
@@ -35,7 +35,7 @@
     }
 </script>
 
-{#each searchFunc.items as item}
+{#each searchResult.items as item}
     {#if item.imdbResult.Type === 'series'}
         {#each item.seasons as season }
             {season.data?.Title}

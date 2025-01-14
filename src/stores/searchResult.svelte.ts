@@ -24,5 +24,5 @@ export class SearchResult {
     items: SearchResultItem[] = [];
 }
 
-export const searchResult = () => new SearchResult()
+export const searchResult = new SearchResult()
 
