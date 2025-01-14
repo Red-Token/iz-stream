@@ -16,7 +16,7 @@ class SearchResultItem {
     title: string = '';
     description: string = '';
     imdbResult: any;
-    seasons: Season[] = $state([]);
+    seasons: Season[] = $derived([]);
     assets: Asset[] = [];
 }
 
@@ -24,4 +24,4 @@ export class SearchResult {
     items: SearchResultItem[] = [];
 }
 
-export const searchResult: SearchResult = $state(new SearchResult());
+export const searchResult: SearchResult = $derived(new SearchResult());
