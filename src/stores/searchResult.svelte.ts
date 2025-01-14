@@ -7,7 +7,8 @@ export class Episode {
 }
 
 export class Season {
-    episodes: Episode[] = $state([])
+    id: number = 0;
+    episodes: Episode[] = []
     data: any = ''
 }
 
@@ -16,7 +17,7 @@ class SearchResultItem {
     title: string = '';
     description: string = '';
     imdbResult: any;
-    seasons: Season[] = $derived([]);
+    seasons: Season[] = [];
     assets: Asset[] = [];
 }
 
@@ -24,5 +25,5 @@ export class SearchResult {
     items: SearchResultItem[] = [];
 }
 
-export const searchResult = new SearchResult()
+export const searchResult: SearchResult = $state(new SearchResult())
 
