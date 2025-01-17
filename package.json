@@ -11,12 +11,34 @@
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
 	},
 	"devDependencies": {
-		"@sveltejs/adapter-auto": "^3.0.0",
+		"@sveltejs/adapter-static": "^3.0.8",
 		"@sveltejs/kit": "^2.0.0",
 		"@sveltejs/vite-plugin-svelte": "^4.0.0",
+		"@types/webtorrent": "^0.110.0",
 		"svelte": "^5.0.0",
 		"svelte-check": "^4.0.0",
 		"typescript": "^5.0.0",
-		"vite": "^5.4.11"
+		"vite": "^5.4.11",
+		"vite-plugin-static-copy": "^2.2.0"
+	},
+	"dependencies": {
+		"@types/simple-peer": "^9.11.8",
+		"parse-torrent": "^11.0.17",
+		"simple-peer": "^9.11.1",
+		"webtorrent": "^2.5.12",
+		"@welshman/app": "0.0.29",
+		"@welshman/content": "0.0.12",
+		"@welshman/dvm": "0.0.10",
+		"@welshman/feeds": "0.0.25",
+		"@welshman/lib": "0.0.26",
+		"@welshman/net": "0.0.38",
+		"@welshman/signer": "0.0.14",
+		"@welshman/store": "0.0.12",
+		"@welshman/util": "0.0.45",
+		"iz-nostrlib": "^0.0.13",
+		"leaflet": "^1.9.4",
+		"ngeohash": "^0.6.3",
+		"qrcode": "^1.5.4",
+		"svelte-routing": "^2.13.0"
 	}
 }

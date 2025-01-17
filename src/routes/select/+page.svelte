@@ -2,6 +2,7 @@
     import {searchResult} from "../../stores/searchResult.svelte";
     import {goto} from "$app/navigation";
     import SeriesComponent from "../../components/SeriesComponent.svelte";
+    import MovieComponent from "../../components/MovieComponent.svelte";
 
 
     // for (const item of searchResult.items) {
@@ -54,6 +55,6 @@
     {:else }
         <h1>{item.title}</h1>
         {item.description}
-        <button onclick={() => view(item.id)}>view</button>
+        <MovieComponent imdbId={item.imdbResult}></MovieComponent>
     {/if}
 {/each}
