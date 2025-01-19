@@ -9,7 +9,8 @@ export default defineConfig({
 		viteStaticCopy({
 			targets: [
 				{
-					src: 'node_modules/webtorrent/dist/sw.min.js', // Path to the service worker in node_modules
+					// src: 'node_modules/webtorrent/dist/sw.min.js', // Path to the service worker in node_modules
+					src: 'static/sw.min.js', // Path to the service worker in node_modules
 					dest: '' // Copies to the root of the `static` directory
 				}
 			]
