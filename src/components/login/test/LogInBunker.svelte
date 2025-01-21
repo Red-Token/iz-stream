@@ -8,7 +8,8 @@
     // import { setChecked } from '@app/notifications';
     // import { pushToast } from '@app/toast';
     // import { PLATFORM_LOGO, PLATFORM_NAME, PLATFORM_URL, SIGNER_RELAYS } from '@app/state';
-    import QRCode from '../QRCode.svelte';
+
+    import {QRCode} from "@red-token/iz-svelte-library";
     import {NostrClient, type SignerData, SignerType} from "iz-nostrlib";
     import {me} from "../../../stores/profile.svelte";
 
