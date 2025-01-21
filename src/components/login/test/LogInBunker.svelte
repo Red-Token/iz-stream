@@ -9,6 +9,8 @@
     // import { pushToast } from '@app/toast';
     // import { PLATFORM_LOGO, PLATFORM_NAME, PLATFORM_URL, SIGNER_RELAYS } from '@app/state';
     import QRCode from '../QRCode.svelte';
+    import {NostrClient, type SignerData, SignerType} from "iz-nostrlib";
+    import {me} from "../../../stores/profile.svelte";
 
     const abortController = new AbortController();
 
@@ -94,12 +96,29 @@
             const broker = Nip46Broker.get(params);
             const userPubkey = await broker.getPublicKey();
 
-            addSession({
+            // const wdata = {
+            //     pubkey: userPubkey,
+            //     method: 'nip46',
+            //     secret: init.clientSecret,
+            //     handler
+            // }
+
+            const sg: SignerData = {
                 pubkey: userPubkey,
-                method: 'nip46',
-                secret: init.clientSecret,
-                handler
-            });
+                type: SignerType.NIP46,
+                rpubkey: handler.pubkey,
+                relays: handler.relays,
+                secret: init.clientSecret
+            }
+
+            const client = NostrClient.getInstance()
+
+            client.logIn(sg).then(() => {
+                    me.pubkey = client.publicKey !== undefined ? client.publicKey : '';
+                }
+            )
+
+            // addSession(wdata);
 
             // await loadUserData(userPubkey);
 

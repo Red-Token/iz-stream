@@ -7,6 +7,9 @@
     import {onMount} from "svelte";
     import {Nip35TorrentEvent, Nip35TorrentEventBuilder} from "$lib/org/nostr/nip35/Nip35TorrentEvent";
     import {wt} from "../../../../stores/wtZool.svelte";
+    import TorrentTalk from "../../../../components/torrenttalk/TorrentTalk.svelte";
+    import TorrentLike from "../../../../components/torrenttalk/TorrentLike.svelte";
+    import {s} from "../../../../stores/assetStore.svelte";
     // import WebTorrent from "webtorrent";
 
     let options = {
@@ -26,7 +29,7 @@
 
             const player = document.querySelector('video')
 
-            if(player === null)
+            if (player === null)
                 throw new Error("ALIENS2")
 
             // player.src = file.streamURL
@@ -59,8 +62,8 @@
     }
 
     let session
-    let assets: Nip35TorrentEvent[] = $state([])
-    let playing: Nip35TorrentEvent | undefined = undefined
+
+    // let playing: Nip35TorrentEvent | undefined = undefined
 
     onMount(async () => {
         const url = 'wss://relay.stream.labs.h3.se'
@@ -70,17 +73,21 @@
 
         session.createSubscription([
             // Here we subscribe to the membership kind
-            { kinds: [Nip35TorrentEvent.KIND], '#i': 'tt1254207' }
+            {kinds: [Nip35TorrentEvent.KIND], '#i': 'tt1254207'}
         ])
 
         console.log("Subsription created")
 
         session.eventStream.emitter.on(EventType.DISCOVERED, (event: TrustedEvent) => {
             const out = new Nip35TorrentEventBuilder(event).build()
-            assets.push(out)
+            out.event = event
+            s.assets.push(out)
 
-            if(playing === undefined) {
-                download(out)
+            console.log(s.assets.length)
+
+            if (s.playing === undefined) {
+                s.playing = out
+                download(s.playing)
             }
         })
     })
@@ -91,6 +98,11 @@
     <video id="video-container" controls>
         <track kind="captions"/>
     </video>
+
+    {#if s.playing !== undefined}
+        <h1>Torrent Like</h1>
+        <TorrentLike></TorrentLike>
+    {/if}
 </div>
 
 VIEW THE WORLD {page.params.id}

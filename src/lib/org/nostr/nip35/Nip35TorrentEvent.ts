@@ -1,7 +1,15 @@
 import type {HashedEvent, TrustedEvent} from "@welshman/util";
 
-export class Nip35TorrentEvent {
+export class AbstractNip35TorrentEvent {
+    constructor(
+        public tags: string[][] = [],
+    ) {
+    }
+}
+
+export class Nip35TorrentEvent extends AbstractNip35TorrentEvent {
     public static KIND: number = 2003;
+    public event?: TrustedEvent
 
     constructor(
         public title: string,
@@ -10,28 +18,39 @@ export class Nip35TorrentEvent {
         public files: string[][],
         public trackers: string[],
         public is: string[],
-        public ts: string[]) {
+        public ts: string[],
+        tags: string[][] = []) {
+        super(tags)
     }
 
     createTemplate() {
         const tags = [
+            ...this.tags,
             ['title', this.title],
             ['x', this.x],
         ];
 
-        this.files.map(file => { return ['file', ...file]}).forEach(tag => {
+        this.files.map(file => {
+            return ['file', ...file]
+        }).forEach(tag => {
             tags.push(tag);
         })
 
-        this.trackers.map(tracker => { return ['tracker', tracker]}).forEach(tag => {
+        this.trackers.map(tracker => {
+            return ['tracker', tracker]
+        }).forEach(tag => {
             tags.push(tag);
         })
 
-        this.is.map(i => { return ['i', i]}).forEach(tag => {
+        this.is.map(i => {
+            return ['i', i]
+        }).forEach(tag => {
             tags.push(tag);
         })
 
-        this.ts.map(t => { return ['t', t]}).forEach(tag => {
+        this.ts.map(t => {
+            return ['t', t]
+        }).forEach(tag => {
             tags.push(tag);
         })
 
@@ -42,26 +61,57 @@ export class Nip35TorrentEvent {
     }
 }
 
-function safeFindOptionalSingleTagValue(event: TrustedEvent, tag: string): string | undefined {
+export function safeFindOptionalSingleTagValue(event: TrustedEvent, tag: string): string | undefined {
     const vals = event.tags.find(t => t[0] === tag)
     return (vals === undefined || vals.length < 2) ? undefined : vals[1];
 }
 
-function safeFindOptionalMultiTagValue(event: TrustedEvent, tag: string): string[] {
+export function safeFindOptionalMultiTagValue(event: TrustedEvent, tag: string): string[] {
     return event.tags.filter(t => t[0] === tag).map(t => t[1])
 }
 
-function safeFindOptionalMultiTagValues(event: TrustedEvent, tag: string): string[][] {
+export function safeFindOptionalMultiTagValues(event: TrustedEvent, tag: string): string[][] {
     const foundTags = event.tags.filter(t => t[0] === tag).map(t => t.splice(1))
     return foundTags.length > 0 ? foundTags : []
 }
 
-function safeFindSingleTagValue(event: TrustedEvent, tag: string): string {
+export function safeFindSingleTagValue(event: TrustedEvent, tag: string): string {
     const optionalVal = safeFindOptionalSingleTagValue(event, tag);
 
     if (optionalVal === undefined) throw new Error(`Unknown tag "${tag}"`);
     return optionalVal;
 }
+
+export enum Nip10EtagMarker {
+    ROOT = 'root',
+    REPLY = 'reply',
+    MENTION = 'mention',
+}
+
+export function createRefETags(event: TrustedEvent, relay: string = ""): string[][] {
+    const eTags = safeFindOptionalMultiTagValues(event, 'e')
+
+    // Is this a root event
+    if (eTags.length > 0) {
+        const rootTag = eTags.find(tag => tag.length > 3 && tag[3] === Nip10EtagMarker.ROOT)
+
+        if (rootTag === undefined)
+            throw new Error('not good, eTags found and no tag marked root')
+
+        return [rootTag, ['e', event.id, relay, Nip10EtagMarker.REPLY, event.pubkey]]//The root tag is the eTag marked as root
+    } else {
+        //The root tag is the incoming event
+        return [['e', event.id, relay, Nip10EtagMarker.ROOT, event.pubkey]]
+    }
+}
+
+export function createRefPTags(event: TrustedEvent, relay: string = ""): string[][] {
+    return [
+        ...safeFindOptionalMultiTagValues(event, 'p'),
+        ['p', event.pubkey],
+    ]
+}
+
 
 export class Nip35TorrentEventBuilder {
     constructor(private event: HashedEvent) {
@@ -80,9 +130,36 @@ export class Nip35TorrentEventBuilder {
     }
 }
 
-export class Nip35TorrentEventComments {
+export class Nip35TorrentEventComments extends AbstractNip35TorrentEvent {
     static KIND: number = 2004;
+
+    constructor(public description: string,tags: string[][] = []) {
+        super(tags)
+    }
+
+    createTemplate() {
+        const tags = [
+            ...this.tags,
+        ];
+
+        return {
+            content: JSON.stringify(this.description),
+            tags
+        }
+    }
 }
+
+export class Nip35TorrentEventCommentsBuilder {
+    constructor(private event: HashedEvent) {
+    }
+
+    build() {
+        return new Nip35TorrentEventComments(
+            JSON.parse(this.event.content)
+        )
+    }
+}
+
 
 // export class Nip52CalendarEvent extends AbstractNip52CalendarEvent {
 //     constructor(public event: HashedEvent) {
