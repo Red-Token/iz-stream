@@ -1,7 +1,6 @@
+import { defineConfig } from 'vitest/config';
 import { sveltekit } from '@sveltejs/kit/vite';
-import { defineConfig } from 'vite';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
-
 
 export default defineConfig({
 	plugins: [
@@ -15,5 +14,9 @@ export default defineConfig({
 				}
 			]
 		})
-	]
+	],
+
+	test: {
+		include: ['src/**/*.{test,spec}.{js,ts}']
+	}
 });
