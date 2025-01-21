@@ -5,18 +5,16 @@
     import {Nip25ReactionsEvent, Nip25ReactionsEventBuilder} from "$lib/org/nostr/nip35/Nip25Reactions";
     import {createRefETags} from "$lib/org/nostr/nip35/Nip35TorrentEvent";
     import {s} from "../../stores/assetStore.svelte";
+    import {SvelteMap} from "svelte/reactivity";
 
     let session: SynchronisedSession
     let sub: Subscription
     let publisher: Publisher
-
-    let reactions: Map<string, Nip25ReactionsEvent> = $state(new Map<string, Nip25ReactionsEvent>())
+    let reactions: SvelteMap<string, Nip25ReactionsEvent> = $state(new SvelteMap<string, Nip25ReactionsEvent>())
 
     let rand = $derived.by(() => {
-        console.log(reactions.size)
         return reactions.values().filter(reaction => reaction.description === '+').toArray().length
     })
-
 
     onMount(async () => {
         const url = 'wss://relay.stream.labs.h3.se'
@@ -35,7 +33,7 @@
                 if (re.event === undefined)
                     throw new Error("How did this happen")
 
-                reactions.set(re.event.pubkey, re)
+                reactions.set(re.event.pubkey,re)
             } else {
                 console.log("Unknown event ", event)
             }
