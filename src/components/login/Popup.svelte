@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { type SignerData, SignerType } from 'iz-nostrlib';
 	import { getNip07 } from '@welshman/signer';
-	import QRCode from './QRCode.svelte';
+	import { QRCode } from '@red-token/iz-svelte-library';
 	import LogInBunker from './test/LogInBunker.svelte';
 
 	export let isOpen = false; // Prop to control visibility
