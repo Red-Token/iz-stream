@@ -19,8 +19,10 @@ export class Nip35TorrentEvent extends AbstractNip35TorrentEvent {
         public trackers: string[],
         public is: string[],
         public ts: string[],
-        tags: string[][] = []) {
+        tags: string[][] = [],
+        event?: TrustedEvent) {
         super(tags)
+        this.event = event
     }
 
     createTemplate() {
@@ -126,6 +128,8 @@ export class Nip35TorrentEventBuilder {
             safeFindOptionalMultiTagValue(this.event, 'tracker'),
             safeFindOptionalMultiTagValue(this.event, 'i'),
             safeFindOptionalMultiTagValue(this.event, 't'),
+            [],
+            this.event
         )
     }
 }
