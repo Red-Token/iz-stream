@@ -51,6 +51,7 @@
     <nav>
         <a href="/search" aria-current={page.url.pathname === '/search'}> Search </a>
         <a href="/create" aria-current={page.url.pathname === '/create'}> Create </a>
+        <a href="/channels" aria-current={page.url.pathname === '/channels'}> Channels </a>
 
         <LogInComponent></LogInComponent>
 
