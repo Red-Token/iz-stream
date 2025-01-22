@@ -15,7 +15,6 @@
             ]
             goto('/select/');
         })
-
     }
 
 </script>

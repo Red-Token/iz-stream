@@ -9,7 +9,7 @@
         Nip35TorrentEventBuilder,
         Nip35TorrentEventComments, Nip35TorrentEventCommentsBuilder
     } from "$lib/org/nostr/nip35/Nip35TorrentEvent";
-    import {Nip25ReactionsEvent} from "$lib/org/nostr/nip35/Nip25Reactions";
+    import {Nip25ReactionsEvent} from "$lib/org/nostr/nip25/Nip25Reactions";
 
     let session
     let comments: Nip35TorrentEventComments[] = $state([])
@@ -42,28 +42,11 @@
         publisher = session.createPublisher()
     })
 
-    function like() {
-        console.log("like")
 
-        rootEvent.forEach((event: Nip35TorrentEvent) => {
-            console.log(event)
-            const z = createRefETags(event.event!)
-            const xxx = new Nip25ReactionsEvent('+', z)
-
-            publisher.publish(Nip25ReactionsEvent.KIND, xxx.createTemplate())
-        })
-    }
-
-    function dislike() {
-        console.log("dislike")
-    }
 
 </script>
 
-HELLO HELLO!
-
 {#if me.pubkey !== ''}
     I can talk back!
-    <button onclick={like}>Like</button>
-    <button onclick={dislike}>Dislike</button>
+    <button onclick={comment}>Like</button>
 {/if}

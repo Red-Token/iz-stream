@@ -2,7 +2,7 @@
     import {onMount} from "svelte";
     import {normalizeRelayUrl, type TrustedEvent} from "@welshman/util";
     import {EventType, NostrClient, type Publisher, Subscription, SynchronisedSession} from "iz-nostrlib";
-    import {Nip25ReactionsEvent, Nip25ReactionsEventBuilder} from "$lib/org/nostr/nip35/Nip25Reactions";
+    import {Nip25ReactionsEvent, Nip25ReactionsEventBuilder} from "$lib/org/nostr/nip25/Nip25Reactions";
     import {createRefETags} from "$lib/org/nostr/nip35/Nip35TorrentEvent";
     import {s} from "../../stores/assetStore.svelte";
     import {SvelteMap} from "svelte/reactivity";

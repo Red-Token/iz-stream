@@ -1,14 +1,6 @@
 import type {HashedEvent, TrustedEvent} from "@welshman/util";
 import {safeFindOptionalMultiTagValues} from "$lib/org/nostr/nip35/Nip35TorrentEvent";
-
-export class AbstractNipEvent {
-    constructor(
-        public description: string,
-        public tags: string[][] = [],
-        public event?: TrustedEvent
-    ) {
-    }
-}
+import {AbstractNipEvent} from "$lib/org/nostr/AbstractNipEvent";
 
 export class Nip25ReactionsEvent extends AbstractNipEvent {
     public static KIND: number = 7;
