@@ -6,10 +6,10 @@
     import {normalizeRelayUrl, type TrustedEvent} from "@welshman/util";
     import {onMount} from "svelte";
     import {Nip35TorrentEvent, Nip35TorrentEventBuilder} from "$lib/org/nostr/nip35/Nip35TorrentEvent";
-    import {wt} from "../../../../stores/wtZool.svelte";
-    import TorrentTalk from "../../../../components/torrenttalk/TorrentTalk.svelte";
-    import TorrentLike from "../../../../components/torrenttalk/TorrentLike.svelte";
-    import {s} from "../../../../stores/assetStore.svelte";
+    import {wt} from "@src/stores/wtZool.svelte";
+    import TorrentTalk from "@src/components/torrenttalk/TorrentTalk.svelte";
+    import TorrentLike from "@src/components/torrenttalk/TorrentLike.svelte";
+    import {s} from "@src/stores/assetStore.svelte";
     // import WebTorrent from "webtorrent";
 
     let options = {
