@@ -52,8 +52,9 @@
 				<a href="/create" aria-current={page.url.pathname === '/create'}>Create</a>
 				<a href="/channels" aria-current={page.url.pathname === '/channels'}>Channels</a>
 			</div>
-			<LogInComponent></LogInComponent>
-			<!-- class="login-btn" -->
+			<div class="login-btn">
+				<LogInComponent></LogInComponent>
+			</div>
 		</div>
 	</nav>
 </main>
@@ -62,6 +63,7 @@
 	main {
 		position: relative;
 		padding: 0 1rem;
+		z-index: 10;
 	}
 
 	nav {
@@ -80,29 +82,33 @@
 
 	.nav-content {
 		display: flex;
-		justify-content: center;
+		justify-content: flex-end;
 		align-items: center;
 		padding: 0 var(--nav-padding);
 		height: 55px;
 		gap: 2rem;
 		margin: 0 auto;
+		position: relative;
 	}
 
 	.nav-links {
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%);
 		display: flex;
 		gap: 2rem;
 		align-items: center;
+		margin: 0;
+		padding: 0;
 	}
 
 	nav a {
-		
 		position: relative;
-		padding: 0.5rem 0;	
+		padding: 0.5rem 0;
 		color: var(--text-color);
 		text-decoration: none;
 		font-weight: 500;
 		transition: all 0.3s ease;
-		border-left: none !important;
 	}
 
 	nav a::after {
@@ -116,11 +122,11 @@
 		transition: width 0.3s ease;
 	}
 
-	nav a[aria-current="true"] {
+	nav a[aria-current='true'] {
 		color: var(--accent-color);
 	}
 
-	nav a[aria-current="true"]::after,
+	nav a[aria-current='true']::after,
 	nav a:hover::after {
 		width: 100%;
 	}
@@ -130,14 +136,20 @@
 	}
 
 	@media (max-width: 768px) {
+		.nav{
+			z-index: 10;
+		}
 		.nav-content {
 			height: 56px;
 			padding: 0 1rem;
 			gap: 1.5rem;
+			z-index: 10;
 		}
 
 		.nav-links {
 			gap: 1.5rem;
+			left: 50%;
+			transform: translateX(-50%);
 		}
 
 		nav a {
@@ -152,11 +164,11 @@
 			position: fixed;
 			bottom: 0;
 			left: 0;
+			z-index: 10;
 			right: 0;
 			width: 100%;
 			max-width: 100%;
 			gap: 1.2rem;
-			border: none;
 			box-shadow: 0 -2px 12px var(--shadow-color);
 		}
 
@@ -166,11 +178,13 @@
 		}
 
 		.nav-links {
+			position: static;
+			transform: none;
 			gap: 1.2rem;
 		}
 
 		.login-btn {
-			display: none;
+			;/* display: none; */ should be fix
 		}
 
 		nav a {
