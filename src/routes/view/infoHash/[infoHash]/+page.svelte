@@ -4,6 +4,5 @@
 </script>
 
 
-ZARABA!
 
 <Video infoHash={page.params.infoHash}/>

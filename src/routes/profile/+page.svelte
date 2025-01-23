@@ -30,7 +30,7 @@
     banner: <input type="search" bind:value={profile.banner}/>
     website: <input type="search" bind:value={profile.website}/>
     bot: <input type="search" bind:value={profile.bot}/>
-    <button on:click={onUpdate}>Update</button>
+    <button onclick={onUpdate}>Update</button>
     <img src={profile.picture} alt="profile picture"/>
     <img src={profile.banner} alt="banner"/>
     <a href={profile.website}>website</a>

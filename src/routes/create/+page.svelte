@@ -81,20 +81,26 @@
 		color: var(--text-primary);
 		transition: all 0.3s ease;
 		margin: 0;
-        will-change: box-shadow, border-color;
+		will-change: box-shadow, border-color;
 	}
 
 	.form-input:focus {
 		outline: none;
 		border-color: var(--accent-color);
+		transform: translateY(-1px);
+
 		box-shadow:
 			0 0 0 3px var(--accent-transparent),
-			0 2px 8px var(--color-hover); /* Добавляем тень при фокусе */
+			0 2px 8px var(--color-hover);
 	}
 	.form-input::placeholder {
 		color: var(--text-tertiary);
 	}
 
+	.form-input:has(:focus) {
+		transform: translateY(-1px);
+	}
+    
 	.submit-btn {
 		display: flex;
 		align-items: center;
@@ -124,12 +130,11 @@
 		fill: currentColor;
 	}
 
-	/* Исправляем выступы в мобильной версии */
 	.create-container {
 		max-width: 600px;
 		margin: 2rem auto;
 		padding: 0 1rem;
-		box-sizing: border-box; /* Добавляем для корректной ширины */
+		box-sizing: border-box;
 	}
 
 	.form-card {
@@ -138,12 +143,12 @@
 		border: 1px solid var(--border-color);
 		padding: 2rem;
 		box-shadow: 0 4px 12px var(--shadow-color);
-		overflow: hidden; /* Исправляем выступ закругленных углов */
+		overflow: hidden;
 	}
 
 	@media (max-width: 768px) {
 		.create-container {
-			padding: 0 0.5rem; /* Уменьшаем боковые отступы */
+			padding: 0 0.5rem;
 		}
 
 		.form-card {

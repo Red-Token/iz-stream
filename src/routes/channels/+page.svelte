@@ -235,9 +235,9 @@
 		align-items: center;
 		gap: 0.5rem;
 		padding: 0.75rem 1.5rem;
-		background: var(--accent-color);
+		border: 1px solid var(--border-color);
+		background: transparent;
 		color: white;
-		border: none;
 		border-radius: 8px;
 		font-weight: 500;
 		cursor: pointer;

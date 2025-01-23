@@ -57,7 +57,7 @@
     }
 
     .popup {
-        background: white;
+        background: rgb(122, 122, 122);
         padding: 20px;
         border-radius: 8px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
@@ -68,7 +68,7 @@
         padding: 10px 15px;
         border: none;
         background-color: #007BFF;
-        color: white;
+        color: rgb(69, 64, 143);
         cursor: pointer;
     }
 
