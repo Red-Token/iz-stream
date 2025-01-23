@@ -6,8 +6,9 @@
     import {normalizeRelayUrl, type TrustedEvent} from "@welshman/util";
     import {Nip35TorrentEvent, Nip35TorrentEventBuilder} from "$lib/org/nostr/nip35/Nip35TorrentEvent";
     import {goto} from "$app/navigation";
-    import {profiles} from "../../../../stores/profile.svelte";
+    import {me, profiles} from "../../../../stores/profile.svelte";
     import {NostrProfileMetaData} from "$lib/org/nostr/nip01/NostrProfileMetaData";
+    import {Follow, Nip02FollowListEvent} from "$lib/org/nostr/nip02/Nip02FollowListEvent";
 
     let session: SynchronisedSession
 
@@ -54,6 +55,12 @@
     }
 
     function follow() {
+        if (me.followList.find(follow => (follow.pubkey === page.params.pubkey)) !== undefined)
+            return;
+
+        const msg = new Nip02FollowListEvent([...me.followList, new Follow(page.params.pubkey)])
+
+        me.listPublisher?.publish(Nip02FollowListEvent.KIND, msg.createTemplate())
     }
 
 </script>

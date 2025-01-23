@@ -1,10 +1,18 @@
 import type {TrustedEvent} from "@welshman/util";
 
-export class AbstractNipMiniEvent {
+export class AbstractNipMiniMiniEvent {
     constructor(
-        public tags: string[][] = [],
         public event?: TrustedEvent
     ) {
+    }
+}
+
+export class AbstractNipMiniEvent extends AbstractNipMiniMiniEvent{
+    constructor(
+        public tags: string[][] = [],
+        event?: TrustedEvent
+    ) {
+        super(event);
     }
 }
 
