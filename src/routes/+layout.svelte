@@ -46,45 +46,139 @@
 
 <main>
 	<nav>
-		<a href="/search" aria-current={page.url.pathname === '/search'}> Search </a>
-		<a href="/create" aria-current={page.url.pathname === '/create'}> Create </a>
-		<a href="/channels" aria-current={page.url.pathname === '/channels'}> Channels </a>
-		<LogInComponent></LogInComponent>
+		<div class="nav-content">
+			<div class="nav-links">
+				<a href="/search" aria-current={page.url.pathname === '/search'}>Search</a>
+				<a href="/create" aria-current={page.url.pathname === '/create'}>Create</a>
+				<a href="/channels" aria-current={page.url.pathname === '/channels'}>Channels</a>
+			</div>
+			<LogInComponent></LogInComponent>
+			<!-- class="login-btn" -->
+		</div>
 	</nav>
 </main>
-
 {@render children()}
-
 <style>
 	main {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		text-align: center;
-		padding: 1em;
-		max-width: 100%;
-		margin: 0 auto;
+		position: relative;
+		padding: 0 1rem;
 	}
 
 	nav {
+		--nav-padding: 1.5rem;
+		--border-radius: 12px;
+		font-size: 20px;
+		background: var(--bg-1);
+		border-radius: var(--border-radius);
+		border: 1px solid var(--border-color);
+		box-shadow: 0 4px 12px var(--shadow-color);
+		backdrop-filter: blur(8px);
+		margin: 1rem auto;
+		max-width: 1200px;
+		transition: all 0.3s ease;
+	}
+
+	.nav-content {
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		width: 100%;
-		font-size: 18px;
-		text-align: center;
-		margin-top: 2rem;
-		padding: 1rem 0;
+		padding: 0 var(--nav-padding);
+		height: 55px;
+		gap: 2rem;
+		margin: 0 auto;
+	}
+
+	.nav-links {
+		display: flex;
+		gap: 2rem;
+		align-items: center;
 	}
 
 	nav a {
-		display: inline-block;
-		padding: 0 1rem;
-		border-left: 1px solid var(--color-border);
-		text-align: center;
+		
+		position: relative;
+		padding: 0.5rem 0;
+		color: var(--text-color);
+		font-weight: 500;
+		transition: all 0.3s ease;
+		border-left: none !important;
 	}
 
-	nav a:first-of-type {
-		border: 0;
+	nav a::after {
+		content: '';
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 0;
+		height: 2px;
+		background: var(--accent-color);
+		transition: width 0.3s ease;
+	}
+
+	nav a[aria-current="true"] {
+		color: var(--accent-color);
+	}
+
+	nav a[aria-current="true"]::after,
+	nav a:hover::after {
+		width: 100%;
+	}
+
+	.login-btn {
+		margin-left: auto;
+	}
+
+	@media (max-width: 768px) {
+		.nav-content {
+			height: 56px;
+			padding: 0 1rem;
+			gap: 1.5rem;
+		}
+
+		.nav-links {
+			gap: 1.5rem;
+		}
+
+		nav a {
+			font-size: 0.95rem;
+		}
+	}
+
+	@media (max-width: 640px) {
+		nav {
+			border-radius: var(--border-radius) var(--border-radius) 0 0;
+			margin: 0 auto;
+			position: fixed;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			width: 100%;
+			max-width: 100%;
+			gap: 1.2rem;
+			border: none;
+			box-shadow: 0 -2px 12px var(--shadow-color);
+		}
+
+		.nav-content {
+			justify-content: center;
+			height: 56px;
+		}
+
+		.nav-links {
+			gap: 1.2rem;
+		}
+
+		.login-btn {
+			display: none;
+		}
+
+		nav a {
+			font-size: 0.9rem;
+			padding: 0.3rem 0;
+		}
+
+		nav a::after {
+			height: 1.2px;
+		}
 	}
 </style>
