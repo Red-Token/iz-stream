@@ -97,8 +97,9 @@
 	nav a {
 		
 		position: relative;
-		padding: 0.5rem 0;
+		padding: 0.5rem 0;	
 		color: var(--text-color);
+		text-decoration: none;
 		font-weight: 500;
 		transition: all 0.3s ease;
 		border-left: none !important;
