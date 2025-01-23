@@ -12,10 +12,12 @@
 	--link-active: #4baffb;
 	--border-radius: 16px;
 	--border-color: #262a2c63;
+    --shadow-hover:  #1e3d6679;
 	--overlay-background: rgba(0, 0, 0, 0.4);
 	--shadow-color: rgba(184, 184, 184, 0.2);
 	--input-field: #8a8a8a;
 	--button-text-color: #1e3d66;
+    --text-primary: #ffffff;
 }
 
 :root.light {
