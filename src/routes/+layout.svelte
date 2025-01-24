@@ -1,6 +1,7 @@
 <script lang="ts">
 	import {page, navigating} from '$app/state';
 	import '@src/style/app.css';
+	import '@src/style/tailwind.css'
 	console.log(import.meta.resolve('./org/nostr/ses/Subscription'));
 
 	import LogInComponent from '../components/login/LogInComponent.svelte';
@@ -67,14 +68,13 @@
 	}
 
 	nav {
-		--nav-padding: 1.5rem;
+		--nav-padding: 0.5rem;
 		--border-radius: 12px;
 		font-size: 20px;
 		background: var(--bg-1);
 		border-radius: var(--border-radius);
 		border: 1px solid var(--border-color);
 		box-shadow: 0 4px 12px var(--shadow-color);
-		backdrop-filter: blur(8px);
 		margin: 1rem auto;
 		max-width: 1200px;
 		transition: all 0.3s ease;
@@ -183,9 +183,9 @@
 			gap: 1.2rem;
 		}
 
-		.login-btn {
-			;/* display: none; */ should be fix
-		}
+		/* .login-btn {
+			display: none; should be fix
+		} */
 
 		nav a {
 			font-size: 0.9rem;

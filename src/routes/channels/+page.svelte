@@ -1,5 +1,5 @@
 <script lang="ts">
-	import {me, profiles} from '../../stores/profile.svelte.js';
+	import {me, profiles} from '@src/stores/profile.svelte.js';
 	import {goto} from '$app/navigation';
 
 	function gotoPage(key: string) {
@@ -51,7 +51,7 @@
 						</a>
 					{/if}
 
-					<button class="show-movies-btn" on:click={() => gotoPage(key)}>
+					<button class="show-movies-btn" onclick={() => gotoPage(key)}>
 						Show movies
 						<svg class="arrow-icon" viewBox="0 0 24 24">
 							<path d="M6.4 18 5 16.6 14.6 7H6V5h12v12h-2V8.4Z" />
