@@ -107,7 +107,6 @@
 		document.removeEventListener('click', handleClickOutside);
 	}
 
-	// Обработка клавиатуры
 	function handleKeydown(event) {
 		switch (event.key) {
 			case 'Escape':
@@ -122,7 +121,7 @@
 		}
 	}
 
-	// Очистка при размонтировании
+	
 </script>
 
 <div class="auth-container">
