@@ -5,7 +5,10 @@
 	function gotoPage(key: string) {
 		goto(`/channels/${key}/torrents`);
 	}
+	//TODO add limit the number of items loaded or paginate them to avoid overload due to an excessive number of elements.
+	
 </script>
+
 
 <div class="profiles-container">
 	{#each profiles.keys() as key, i}
@@ -43,6 +46,7 @@
 					{#if profiles.get(key)?.website}
 						<a href={profiles.get(key)?.website} class="website-link" target="_blank" rel="noopener noreferrer">
 							<svg class="link-icon" viewBox="0 0 24 24">
+								<!-- TODO Move all svgs to a separate library. -->
 								<path
 									d="M11 17H7Q4.925 17 3.463 15.537T2 12Q2 9.925 3.463 8.462T7 7H11V9H7Q5.75 9 4.875 9.875T4 12Q4 13.25 4.875 14.125T7 15H11V17ZM8 13V11H16V13H8ZM13 17V15H17Q18.25 15 19.125 14.125T20 12Q20 10.75 19.125 9.875T17 9H13V7H17Q19.075 7 20.538 8.462T22 12Q22 14.075 20.538 15.537T17 17H13Z"
 								/>
@@ -165,19 +169,19 @@
 		font-size: 1.5rem;
 		font-weight: 600;
 		margin: 0 0 0.25rem;
-		color: var(--text-primary);
+		color: var(--fg-1);
 	}
 
 	.username {
 		font-size: 1rem;
 		font-weight: 400;
 		margin: 0;
-		color: var(--text-secondary);
+		color: var(--fg-2);
 	}
 
 	.profile-key {
 		font-size: 0.875rem;
-		color: var(--text-tertiary);
+		color: var(--text-tertiary); /* TODO: check css variable.  */
 		margin-top: 0.5rem;
 		word-break: break-all;
 		overflow: hidden;
@@ -230,12 +234,12 @@
 		fill: currentColor;
 	}
 
-	.show-movies-btn {
+	.show-movies-btn {        /* TODO fix the margin of the view button, reducing the margin between key and about. */
 		display: inline-flex;
 		align-items: center;
 		gap: 0.5rem;
 		padding: 0.75rem 1.5rem;
-		border: 1px solid var(--border-color);
+		border: 1px solid var(--border-color); 
 		background: transparent;
 		color: white;
 		border-radius: 8px;

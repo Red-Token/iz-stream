@@ -23,7 +23,8 @@
 
 		publisher = me.profilesSession.createPublisher();
 	});
-
+//TODO This function not working. it needs to be fixed to 
+// upload an image to 'https://image.nostr.build/{key}' or find a way to set base64 in the profile.picture 
 	const handleAddImage = (event , type: imageLoad) => {
 		const file = event.target?.files[0];
 		if (file) {
@@ -210,7 +211,7 @@
 		height: 28px;
 		border: none;
 		border-radius: 50%;
-		background: rgba(255, 0, 0, 0.8);
+		background: rgba(255, 185, 185, 0.8);
 		color: white;
 		cursor: pointer;
 		font-size: 1.2rem;
@@ -233,7 +234,7 @@
 		padding: 0.5rem 1rem;
 		border: 1px solid var(--border-color);
 		background: var(--bg-2);
-		color: var(--text-secondary);
+		color: var(--fg-2);
 		border-radius: 6px;
 		cursor: pointer;
 		transition: all 0.2s ease;
@@ -276,7 +277,7 @@
 		border: 1px solid var(--border-color);
 		border-radius: 6px;
 		background: var(--bg-1);
-		color: var(--text-primary);
+		color: var(--fg-1);
 	}
 
 	.url-button {
