@@ -1,7 +1,7 @@
 <script lang="ts">
 	import {onMount} from 'svelte';
 
-	let isExpanded: boolean = $state(false);
+	let {isExpanded = $bindable(false)} = $props();
 
 	const communities = [
 		{id: 1, name: 'Welshman', avatar: '🎨', online: true},
@@ -23,9 +23,11 @@
 	}
 </script>
 
+<!-- onmouseenter={isExpanded ? undefined : () => temporaryExpand(true)}
+onmouseleave={isExpanded ? undefined : () => temporaryExpand(false)} -->
 <div class="sidebar-wrapper {!isExpanded && 'collapsed'}">
-	<nav class="sidebar" aria-label="Communities">
-		<div class="communities-list">
+	<aside class="sidebar" aria-label="Communities">
+		<div class="communities-list" style="">
 			{#each communities as community}
 				<a href="/communities/{community.id}" class="community-item" title={community.name}>
 					<div class="avatar-container">
@@ -34,24 +36,25 @@
 						</div>
 					</div>
 					{#if isExpanded}
-						<span class="community-name">{community.name}</span>
+						<span class="community-name">
+							{community.name}
+						</span>
 					{/if}
 				</a>
 			{/each}
 		</div>
-	</nav>
+	</aside>
 
-	<button
-		class="sidebar-toggle"
-		onclick={toggleSidebar}
-		onmouseenter={isExpanded ? undefined : () => temporaryExpand(true)}
-		onmouseleave={isExpanded ? undefined : () => temporaryExpand(false)}
-	>
-		<!-- {#if isExpanded}
-          <icon size={20} />
-        {:else}
-          < size={20} />
-        {/if} -->
+	<button class="sidebar-toggle" onclick={toggleSidebar}>
+		{#if isExpanded}
+			<svg width="24" height="24" viewBox="0 0 24 24">
+				<path d="M15 18l-6-6 6-6" stroke="currentColor" fill="none" />
+			</svg>
+		{:else}
+			<svg width="24" height="24" viewBox="0 0 24 24">
+				<path d="M9 18l6-6-6-6" stroke="currentColor" fill="none" />
+			</svg>
+		{/if}
 	</button>
 </div>
 
@@ -75,20 +78,25 @@
 	.sidebar {
 		height: 100%;
 		overflow-y: auto;
+		overflow-x: hidden;
 		padding: 12px 8px;
 	}
 
 	.communities-list {
-		display: grid;
+		flex-direction: column;
 		gap: 2px;
+		text-overflow: ellipsis;
 	}
 
 	.community-item {
 		display: flex;
+		flex-direction: column;
 		align-items: center;
+		gap: 0.5rem;
 		padding: 8px;
 		border-radius: 10px;
 		text-decoration: none;
+		text-overflow: ellipsis;
 		color: var(--text-color);
 
 		&:hover {
@@ -109,7 +117,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		font-size: 24px;
+		font-size: 30px;
 
 		&.online::after {
 			content: '';
@@ -125,10 +133,12 @@
 	}
 
 	.community-name {
-		font-size: 16px;
+		font-size: 12px;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
+		width: 100%;
+		box-sizing: border-box;
 	}
 
 	.sidebar-toggle {
