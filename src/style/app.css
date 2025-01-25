@@ -20,9 +20,13 @@
 	--shadow-hover: #1e3d6679;
 	--input-field: #8a8a8a;
 	--button-text-color: #1e3d66;
-	--accent-color: #2564ebb6; 
-	--accent-hover: #1d4fd88f; 
-	--accent-transparent: rgba(37, 99, 235, 0.15); 
+	--accent-color: #2564ebb6;
+	--accent-hover: #1d4fd88f;
+	--accent-transparent: rgba(37, 99, 235, 0.15);
+	--sidebar-width: 260px;
+	--sidebar-collapsed-width: 0px;
+	--avatar-size: 48px;
+	--online-indicator: #00c853;
 }
 
 :root.light {
@@ -37,7 +41,7 @@
 	--link-hover: #0056b3;
 	--link-active: #004080;
 	/* --border-color: #8798a0; */
-    --border-color: #e5e7eb;
+	--border-color: #e5e7eb;
 	--overlay-background: rgba(0, 0, 0, 0.4);
 }
 

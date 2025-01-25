@@ -1,29 +1,29 @@
+
 export class Asset {
     magnet: string = '';
 }
 
 export class Episode {
-    data: any = ''
+    data: any = $state({});
 }
 
 export class Season {
-    id: number = 0;
-    episodes: Episode[] = $state([])
-    data: any = ''
+    id: number = $state(0);
+    episodes: Episode[] = $state([]);
+    data: any = $state({});
 }
 
-class SearchResultItem {
+export class SearchResultItem {
     id: string = '';
     title: string = '';
     description: string = '';
     imdbResult: any;
-    seasons: Season[] = $derived([]);
+    seasons: Season[] = $state([]);
     assets: Asset[] = $state([]);
 }
 
-class SearchResult {
-    items: SearchResultItem[] = [];
+export class SearchResult {
+    items: SearchResultItem[] = $state([]);
 }
 
-export const searchResult: SearchResult = $state(new SearchResult())
-
+export const searchResult: SearchResult = $state(new SearchResult());

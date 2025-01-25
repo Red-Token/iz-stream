@@ -1,10 +1,11 @@
 <script lang="ts">
 	import {page, navigating} from '$app/state';
 	import '@src/style/app.css';
-	import '@src/style/tailwind.css'
+	import '@src/style/tailwind.css';
 	console.log(import.meta.resolve('./org/nostr/ses/Subscription'));
 
 	import LogInComponent from '../components/login/LogInComponent.svelte';
+	import Communities from '@src/components/Communities.svelte';
 	import {EventType, NostrClient, type SynchronisedSession} from 'iz-nostrlib';
 	import {onMount} from 'svelte';
 	import {normalizeRelayUrl, type TrustedEvent} from '@welshman/util';
@@ -58,15 +59,22 @@
 			</div>
 		</div>
 	</nav>
+	<Communities />
+	<div class="main-content">
+		{@render children()}
+	</div>
 </main>
-{@render children()}
+
 <style>
 	main {
 		position: relative;
 		padding: 0 1rem;
 		z-index: 10;
 	}
-
+	.main-content {
+		padding: 1rem;
+	}
+	
 	.primary-nav {
 		--nav-padding: 0.5rem;
 		--border-radius: 12px;
@@ -136,7 +144,7 @@
 	}
 
 	@media (max-width: 768px) {
-		.primary-nav{
+		.primary-nav {
 			z-index: 10;
 		}
 		.nav-content {
