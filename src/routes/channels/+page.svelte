@@ -1,5 +1,5 @@
 <script lang="ts">
-	import {me, profiles} from '@src/stores/profile.svelte.js';
+	import {profiles} from '@src/stores/profile.svelte.js';
 	import {goto} from '$app/navigation';
 
 	function gotoPage(key: string) {

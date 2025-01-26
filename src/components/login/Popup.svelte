@@ -1,30 +1,24 @@
 <script lang="ts">
 	import {type SignerData, SignerType} from 'iz-nostrlib';
-	import {getNip07} from '@welshman/signer';
+	import {getNip07, type Nip07, Nip59} from '@welshman/signer';
 	import {QRCode} from '@red-token/iz-svelte-library';
 	import LogInBunker from './test/LogInBunker.svelte';
+	import {onMount} from 'svelte';
+	import {logIn} from '@src/stores/community.svelte';
 
-	let {
-		isOpen = false,
-		closePopup,
-		logIn = (data: SignerData) => {}
-	}: {isOpen: boolean; closePopup: Function; logIn: Function} = $props();
+	let {isOpen = false, closePopup}: {isOpen: boolean; closePopup: Function} = $props();
 
-	async function zil() {
-		console.log('zil');
+	let nip07: Nip07 | undefined = undefined;
 
-		// const aliceNSec = 'nsec18c4t7czha7g7p9cm05ve4gqx9cmp9w2x6c06y6l4m52jrry9xp7sl2su9x'
-		// const aliceSignerData = { type: SignerType.NIP01, nsec: aliceNSec }
+	onMount(() => {
+		nip07 = getNip07();
+	});
 
-		const pubkey = await getNip07()?.getPublicKey();
-		console.log('pubkey', pubkey);
+	async function nip07LogIn() {
+		if (nip07 === undefined) throw Error('No plugin found');
 
-		const aliceSignerData = {type: SignerType.NIP07, pubkey: pubkey};
-
-		// {method: "nip07", pubkey}
-
-		console.log(aliceSignerData);
-		logIn(aliceSignerData);
+		const signerData = {type: SignerType.NIP07, pubkey: nip07.getPublicKey()};
+		logIn(signerData);
 		closePopup();
 	}
 </script>
@@ -34,8 +28,10 @@
 		<div class="popup" onclick={(event) => event.stopPropagation()}>
 			<h2>This is a Popup!</h2>
 			<p>Click outside to close or press the button.</p>
-			<LogInBunker></LogInBunker>
-			<button onclick={() => zil()}>LogIn NIP07</button>
+			<LogInBunker {closePopup}></LogInBunker>
+			{#if nip07 !== undefined}
+				<button onclick={() => nip07LogIn()}>LogIn NIP07</button>
+			{/if}
 			<button onclick={() => closePopup()}>Close</button>
 		</div>
 	</div>

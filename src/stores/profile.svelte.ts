@@ -1,7 +1,7 @@
-import {NostrProfileMetaData} from '$lib/org/nostr/nip01/NostrProfileMetaData';
 import {SvelteMap} from 'svelte/reactivity';
-import {NostrClient, type Publisher, type Subscription, type SynchronisedSession} from 'iz-nostrlib';
+import {type Publisher, type Subscription, type SynchronisedSession} from 'iz-nostrlib';
 import type {Follow} from '$lib/org/nostr/nip02/Nip02FollowListEvent';
+import {NostrProfileMetaData} from 'iz-nostrlib/dist/org/nostr/nip01/NostrProfileMetaData';
 
 const unknown = new NostrProfileMetaData();
 

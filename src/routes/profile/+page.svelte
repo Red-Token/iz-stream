@@ -1,12 +1,18 @@
 <script lang="ts">
 	import {onMount} from 'svelte';
 	import {type Publisher} from 'iz-nostrlib';
-	import {me} from '../../stores/profile.svelte';
-	import {Nip01UserMetaDataEvent} from '$lib/org/nostr/nip01/Nip01UserMetaData';
-	import {NostrProfileMetaData} from '$lib/org/nostr/nip01/NostrProfileMetaData';
+	import {NostrProfileMetaData} from 'iz-nostrlib/dist/org/nostr/nip01/NostrProfileMetaData';
+	import {communities} from '@src/stores/community.svelte';
+	import {profiles} from '@src/stores/profile.svelte';
+	import {Nip01UserMetaDataEvent} from 'iz-nostrlib/dist/org/nostr/nip01/Nip01UserMetaData';
 
-	let publisher: Publisher;
-	let profile: NostrProfileMetaData = me.profile !== undefined ? {...me.profile} : {...new NostrProfileMetaData()};
+	// TODO We need to fix this
+	const ci = communities[0].identities.values().toArray()[0];
+
+	let publisher: Publisher = ci.profilePublisher;
+	let profile: NostrProfileMetaData =
+		profiles.get(ci.pubkey) !== undefined ? profiles.get(ci.pubkey) : new NostrProfileMetaData();
+
 	type imageLoad = 'picture' | 'banner';
 	let urlInputs = {
 		picture: false,
@@ -18,13 +24,10 @@
 		banner: ''
 	};
 
-	onMount(async () => {
-		if (me.profilesSession === undefined) throw Error('sfsfsfsfsd');
+	onMount(async () => {});
 
-		publisher = me.profilesSession.createPublisher();
-	});
 	//TODO This function not working. it needs to be fixed to
-	// upload an image to 'https://image.nostr.build/{key}' or find a way to set base64 in the profile.picture
+	// upload an image to 'https://image.nostr.build/{key}' or find a way to set base64 in the profile.picture .
 	const handleAddImage = (event, type: imageLoad) => {
 		const file = event.target?.files[0];
 		if (file) {

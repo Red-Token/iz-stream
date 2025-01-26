@@ -1,22 +1,25 @@
 <script lang="ts">
-	import {NostrClient, Publisher} from 'iz-nostrlib';
+	import {NostrClient, Publisher, SynchronisedSession} from 'iz-nostrlib';
 	import {normalizeRelayUrl} from '@welshman/util';
 	import {onMount} from 'svelte';
-	import {Nip35TorrentEvent} from '$lib/org/nostr/nip35/Nip35TorrentEvent';
+	import {Nip35TorrentEvent} from 'iz-nostrlib/dist/org/nostr/nip35/Nip35TorrentEvent';
+	import {communities} from '@src/stores/community.svelte';
 
 	let title = 'Big Buck Bunny';
 	let imdbId = 'tt1254207';
 	let infoHash = 'f0a7541549b94782eec5049e2fae7c9fad3210e9';
 
-	const url = 'wss://relay.stream.labs.h3.se';
-	const relays = [normalizeRelayUrl(url)];
-
-	let session;
-	let publisher: Publisher;
+	const publishers: Publisher[] = [];
 
 	onMount(async () => {
-		session = await NostrClient.getInstance().createSession(relays);
-		publisher = session.createPublisher();
+		// We do this as a mashinegun we need a way to select what communities we should publish, and as who
+		communities.forEach((communitie) => {
+			const session = new SynchronisedSession(communitie.relays);
+
+			communitie.identities.forEach((ci) => {
+				publishers.push(new Publisher(session, ci));
+			});
+		});
 	});
 
 	async function onCreate() {
@@ -25,7 +28,9 @@
 
 		const te: Nip35TorrentEvent = new Nip35TorrentEvent(title, infoHash, 'Description', [], [], [imdbId], []);
 
-		publisher.publish(Nip35TorrentEvent.KIND, te.createTemplate());
+		publishers.forEach((publisher) => {
+			publisher.publish(Nip35TorrentEvent.KIND, te.createTemplate());
+		});
 	}
 </script>
 
@@ -51,6 +56,7 @@
 	.submit-btn {
 		box-sizing: border-box;
 	}
+
 	.create-container {
 		max-width: 600px;
 		margin: 2rem auto;
@@ -71,6 +77,7 @@
 		gap: 1.5rem;
 		margin-bottom: 2rem;
 	}
+
 	.form-input {
 		width: 100%;
 		padding: 1rem;
@@ -93,6 +100,7 @@
 			0 0 0 3px var(--accent-transparent),
 			0 2px 8px var(--color-hover);
 	}
+
 	.form-input::placeholder {
 		color: var(--text-tertiary);
 	}
@@ -170,6 +178,7 @@
 	.form-input {
 		will-change: box-shadow, border-color;
 	}
+
 	@media (max-width: 480px) {
 		.form-card {
 			padding: 1rem;

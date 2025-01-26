@@ -12,6 +12,7 @@
 	import {QRCode} from '@red-token/iz-svelte-library';
 	import {NostrClient, type SignerData, SignerType} from 'iz-nostrlib';
 	import {me} from '../../../stores/profile.svelte';
+	import {logIn} from '@src/stores/community.svelte';
 
 	const abortController = new AbortController();
 
@@ -35,6 +36,8 @@
 		// image: PLATFORM_LOGO,
 		abortController
 	});
+
+	let {closePopup}: {closePopup: Function} = $props();
 
 	// const onSubmit = async () => {
 	// 	const { pubkey, token, relays } = Nip46Broker.parseBunkerLink(bunker);
@@ -91,18 +94,8 @@
 				secret: init.clientSecret
 			};
 
-			console.log(remoteSignerPubkey);
-			console.log(init.clientSecret);
-
 			const broker = Nip46Broker.get(params);
 			const userPubkey = await broker.getPublicKey();
-
-			// const wdata = {
-			//     pubkey: userPubkey,
-			//     method: 'nip46',
-			//     secret: init.clientSecret,
-			//     handler
-			// }
 
 			const sg: SignerData = {
 				pubkey: userPubkey,
@@ -112,18 +105,8 @@
 				secret: init.clientSecret
 			};
 
-			const client = NostrClient.getInstance();
-
-			client.logIn(sg).then(() => {
-				me.pubkey = client.publicKey !== undefined ? client.publicKey : '';
-			});
-
-			// addSession(wdata);
-
-			// await loadUserData(userPubkey);
-
-			// setChecked('*');
-			// clearModals();
+			logIn(sg);
+			closePopup();
 		}
 	});
 
@@ -149,6 +132,7 @@
 		background: var(--bg-2);
 		border-radius: 8px;
 	}
+
 	.qr-container {
 		border-radius: 12px;
 		margin-top: 5px;

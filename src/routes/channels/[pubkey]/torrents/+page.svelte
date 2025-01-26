@@ -2,15 +2,15 @@
 	import {page} from '$app/state';
 
 	import {onMount} from 'svelte';
-	import {EventType, NostrClient, type SynchronisedSession} from 'iz-nostrlib';
-	import {normalizeRelayUrl, type TrustedEvent} from '@welshman/util';
-	import {Nip35TorrentEvent, Nip35TorrentEventBuilder} from '$lib/org/nostr/nip35/Nip35TorrentEvent';
+	import {EventType, Subscription, SynchronisedSession} from 'iz-nostrlib';
+	import {type TrustedEvent} from '@welshman/util';
 	import {goto} from '$app/navigation';
-	import {me, profiles} from '../../../../stores/profile.svelte';
-	import {NostrProfileMetaData} from '$lib/org/nostr/nip01/NostrProfileMetaData';
-	import {Follow, Nip02FollowListEvent} from '$lib/org/nostr/nip02/Nip02FollowListEvent';
-
-	let session: SynchronisedSession;
+	import {profiles} from '../../../../stores/profile.svelte';
+	import {Nip35TorrentEvent, Nip35TorrentEventBuilder} from 'iz-nostrlib/dist/org/nostr/nip35/Nip35TorrentEvent';
+	import {NostrProfileMetaData} from 'iz-nostrlib/dist/org/nostr/nip01/NostrProfileMetaData';
+	import {communities} from '@src/stores/community.svelte';
+	import type {CommunityIdentity} from 'iz-nostrlib/dist/org/nostr/communities/Community';
+	import {Follow, Nip02FollowListEvent} from 'iz-nostrlib/dist/org/nostr/nip02/Nip02FollowListEvent';
 
 	let events: Nip35TorrentEvent[] = $state([]);
 
@@ -21,31 +21,45 @@
 	});
 
 	onMount(async () => {
-		const url = 'wss://relay.stream.labs.h3.se';
-		const relays = [normalizeRelayUrl(url)];
+		communities.forEach((community) => {
+			const session = new SynchronisedSession(community.relays);
 
-		NostrClient.getInstance()
-			.createSession(relays)
-			.then((session) => {
-				session;
+			for (const relay of community.relays) {
+				const sub = new Subscription(
+					session,
+					[
+						{
+							kinds: [Nip35TorrentEvent.KIND]
+							// authors: [page.params.pubkey]
+						}
+					],
+					[relay]
+				);
+			}
 
-				const sub = session.createSubscription([{kinds: [Nip35TorrentEvent.KIND], authors: [page.params.pubkey]}]);
+			session.eventStream.emitter.on(EventType.DISCOVERED, (event: TrustedEvent) => {
+				if (event.kind === Nip35TorrentEvent.KIND) {
+					const te = new Nip35TorrentEventBuilder(event).build();
 
-				session.eventStream.emitter.on(EventType.DISCOVERED, (event: TrustedEvent) => {
-					if (event.kind === Nip35TorrentEvent.KIND) {
-						const te = new Nip35TorrentEventBuilder(event).build();
+					if (te.event === undefined) throw Error(`Unknown event: ${event}`);
 
-						console.log('Found Torrent event', te);
-
-						if (te.event === undefined) throw Error(`Unknown event: ${event}`);
-
-						events.push(te);
-					} else {
-						console.log('Unknown event ', event);
-					}
-				});
+					events.push(te);
+				} else {
+					console.log('Unknown event ', event);
+				}
 			});
+		});
 	});
+
+	// const url = 'wss://relay.stream.labs.h3.se';
+	// const relays = [normalizeRelayUrl(url)];
+	//
+	// NostrClient.getInstance()
+	//     .createSession(relays)
+	//     .then((session) => {
+	//         session;
+	//
+	//     });
 
 	function view(event: Nip35TorrentEvent) {
 		console.log('view', event);
@@ -53,11 +67,13 @@
 	}
 
 	function follow() {
-		if (me.followList.find((follow) => follow.pubkey === page.params.pubkey) !== undefined) return;
-
-		const msg = new Nip02FollowListEvent([...me.followList, new Follow(page.params.pubkey)]);
-
-		me.listPublisher?.publish(Nip02FollowListEvent.KIND, msg.createTemplate());
+		// TODO: We have to make this more precis now we follow a person with all identities and in all communities
+		communities.forEach((community) => {
+			community.identities.forEach((communityIdentity: CommunityIdentity) => {
+				const msg = new Nip02FollowListEvent([...communityIdentity.followList, new Follow(page.params.pubkey)]);
+				communityIdentity.followPublisher.publish(Nip02FollowListEvent.KIND, msg.createTemplate());
+			});
+		});
 	}
 </script>
 
