@@ -6,7 +6,7 @@
 	import {profiles} from '@src/stores/profile.svelte';
 	import {Nip01UserMetaDataEvent} from 'iz-nostrlib/dist/org/nostr/nip01/Nip01UserMetaData';
 
-	// TODO We need to fix this
+	// TODO We need to fix this.
 	const ci = communities[0].identities.values().toArray()[0];
 
 	let publisher: Publisher = ci.profilePublisher;
