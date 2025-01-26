@@ -33,7 +33,7 @@
 		if (file) {
 			const reader = new FileReader();
 			reader.onload = (e) => {
-				profile[type] = e.target?.result;
+				//profile[type] = e.target?.result;
 			};
 			reader.readAsDataURL(file);
 		}
