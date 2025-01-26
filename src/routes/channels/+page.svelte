@@ -6,7 +6,6 @@
 		goto(`/channels/${key}/torrents`);
 	}
 	//TODO add limit the number of items loaded or paginate them to avoid overload due to an excessive number of elements.
-
 </script>
 
 <div class="profiles-container">
@@ -233,7 +232,8 @@
 		fill: currentColor;
 	}
 
-	.show-movies-btn {        /* TODO fix the margin of the view button, reducing the margin between key and about. */
+	.show-movies-btn {
+		/* TODO fix the margin of the view button, reducing the margin between key and about. */
 		display: inline-flex;
 		align-items: center;
 		gap: 0.5rem;

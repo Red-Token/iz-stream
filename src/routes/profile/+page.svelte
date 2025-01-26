@@ -1,18 +1,19 @@
 <script lang="ts">
 	import {onMount} from 'svelte';
 	import {type Publisher} from 'iz-nostrlib';
-	import {NostrProfileMetaData} from "iz-nostrlib/dist/org/nostr/nip01/NostrProfileMetaData";
-	import {communities} from "@src/stores/community.svelte";
-	import {profiles} from "@src/stores/profile.svelte";
-	import {Nip01UserMetaDataEvent} from "iz-nostrlib/dist/org/nostr/nip01/Nip01UserMetaData";
+	import {NostrProfileMetaData} from 'iz-nostrlib/dist/org/nostr/nip01/NostrProfileMetaData';
+	import {communities} from '@src/stores/community.svelte';
+	import {profiles} from '@src/stores/profile.svelte';
+	import {Nip01UserMetaDataEvent} from 'iz-nostrlib/dist/org/nostr/nip01/Nip01UserMetaData';
 
 	// TODO We need to fix this
-	const ci = communities[0].identities.values().toArray()[0]
+	const ci = communities[0].identities.values().toArray()[0];
 
 	let publisher: Publisher = ci.profilePublisher;
-	let profile: NostrProfileMetaData = profiles.get(ci.pubkey) !== undefined ? profiles.get(ci.pubkey) : new NostrProfileMetaData();
+	let profile: NostrProfileMetaData =
+		profiles.get(ci.pubkey) !== undefined ? profiles.get(ci.pubkey) : new NostrProfileMetaData();
 
-	type imageLoad = 'picture' | 'banner'
+	type imageLoad = 'picture' | 'banner';
 	let urlInputs = {
 		picture: false,
 		banner: false
@@ -23,12 +24,11 @@
 		banner: ''
 	};
 
-	onMount(async () => {
-	});
+	onMount(async () => {});
 
-//TODO This function not working. it needs to be fixed to
-// upload an image to 'https://image.nostr.build/{key}' or find a way to set base64 in the profile.picture
-	const handleAddImage = (event , type: imageLoad) => {
+	//TODO This function not working. it needs to be fixed to
+	// upload an image to 'https://image.nostr.build/{key}' or find a way to set base64 in the profile.picture
+	const handleAddImage = (event, type: imageLoad) => {
 		const file = event.target?.files[0];
 		if (file) {
 			const reader = new FileReader();
@@ -66,13 +66,11 @@
 	const isValidUrl = (url: string) => {
 		const pattern = /^(https?:\/\/).+\.(jpg|jpeg|png|gif|webp)(\?.*)?$/i;
 		return pattern.test(url);
-
 	};
 </script>
 
 <div class="profile-edit">
 	<div class="image-previews">
-
 		<div class="image-preview avatar-section">
 			{#if profile.picture}
 				<img src={profile.picture} alt="profile" class="preview-img avatar" />
@@ -98,7 +96,6 @@
 				</div>
 			{/if}
 		</div>
-
 
 		<div class="image-preview banner-section">
 			{#if profile.banner}
