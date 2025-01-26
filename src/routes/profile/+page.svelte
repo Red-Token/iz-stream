@@ -1,12 +1,17 @@
 <script lang="ts">
 	import {onMount} from 'svelte';
 	import {type Publisher} from 'iz-nostrlib';
-	import {me} from '../../stores/profile.svelte';
-	import {Nip01UserMetaDataEvent} from '$lib/org/nostr/nip01/Nip01UserMetaData';
-	import {NostrProfileMetaData} from '$lib/org/nostr/nip01/NostrProfileMetaData';
+	import {NostrProfileMetaData} from "iz-nostrlib/dist/org/nostr/nip01/NostrProfileMetaData";
+	import {communities} from "@src/stores/community.svelte";
+	import {profiles} from "@src/stores/profile.svelte";
+	import {Nip01UserMetaDataEvent} from "iz-nostrlib/dist/org/nostr/nip01/Nip01UserMetaData";
 
-	let publisher: Publisher;
-	let profile: NostrProfileMetaData = me.profile !== undefined ? {...me.profile} : {...new NostrProfileMetaData()};
+	// TODO We need to fix this
+	const ci = communities[0].identities.values().toArray()[0]
+
+	let publisher: Publisher = ci.profilePublisher;
+	let profile: NostrProfileMetaData = profiles.get(ci.pubkey) !== undefined ? profiles.get(ci.pubkey) : new NostrProfileMetaData();
+
 	type imageLoad = 'picture' | 'banner'
 	let urlInputs = {
 		picture: false,
@@ -19,12 +24,10 @@
 	};
 
 	onMount(async () => {
-		if (me.profilesSession === undefined) throw Error('sfsfsfsfsd');
-
-		publisher = me.profilesSession.createPublisher();
 	});
-//TODO This function not working. it needs to be fixed to 
-// upload an image to 'https://image.nostr.build/{key}' or find a way to set base64 in the profile.picture 
+
+//TODO This function not working. it needs to be fixed to
+// upload an image to 'https://image.nostr.build/{key}' or find a way to set base64 in the profile.picture
 	const handleAddImage = (event , type: imageLoad) => {
 		const file = event.target?.files[0];
 		if (file) {
@@ -63,13 +66,13 @@
 	const isValidUrl = (url: string) => {
 		const pattern = /^(https?:\/\/).+\.(jpg|jpeg|png|gif|webp)(\?.*)?$/i;
 		return pattern.test(url);
-		
+
 	};
 </script>
 
 <div class="profile-edit">
 	<div class="image-previews">
-		
+
 		<div class="image-preview avatar-section">
 			{#if profile.picture}
 				<img src={profile.picture} alt="profile" class="preview-img avatar" />
@@ -96,7 +99,7 @@
 			{/if}
 		</div>
 
-		
+
 		<div class="image-preview banner-section">
 			{#if profile.banner}
 				<img src={profile.banner} alt="banner" class="preview-img banner" />

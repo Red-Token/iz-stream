@@ -1,16 +1,13 @@
 <script lang="ts">
     import {page} from '$app/state';
-    import SimplePeer from "simple-peer/simplepeer.min"
-    import WebTorrent from 'webtorrent/dist/webtorrent.min'
-    import {EventType, NostrClient} from "iz-nostrlib";
-    import {normalizeRelayUrl, type TrustedEvent} from "@welshman/util";
+    import {EventType, Subscription, SynchronisedSession} from "iz-nostrlib";
+    import {type TrustedEvent} from "@welshman/util";
     import {onMount} from "svelte";
-    import {Nip35TorrentEvent, Nip35TorrentEventBuilder} from "$lib/org/nostr/nip35/Nip35TorrentEvent";
     import {wt} from "@src/stores/wtZool.svelte";
-    import TorrentTalk from "@src/components/torrenttalk/TorrentTalk.svelte";
     import TorrentLike from "@src/components/torrenttalk/TorrentLike.svelte";
     import {s} from "@src/stores/assetStore.svelte";
-    // import WebTorrent from "webtorrent";
+    import {Nip35TorrentEvent, Nip35TorrentEventBuilder} from "iz-nostrlib/dist/org/nostr/nip35/Nip35TorrentEvent";
+    import {communities} from "@src/stores/community.svelte";
 
     let options = {
         announce: ['wss://tracker.webtorrent.dev'],
@@ -61,34 +58,26 @@
         });
     }
 
-    let session
-
-    // let playing: Nip35TorrentEvent | undefined = undefined
-
     onMount(async () => {
-        const url = 'wss://relay.stream.labs.h3.se'
-        const relays = [normalizeRelayUrl(url)]
+        communities.forEach(communitie => {
+            const session: SynchronisedSession = new SynchronisedSession(communitie.relays)
 
-        session = await NostrClient.getInstance().createSession(relays)
+            communitie.relays.forEach(relay => {
+                const sub = new Subscription(session, [{kinds: [Nip35TorrentEvent.KIND], '#i': [page.params.id]}], [relay])
+            })
 
-        session.createSubscription([
-            // Here we subscribe to the membership kind
-            {kinds: [Nip35TorrentEvent.KIND], '#i': 'tt1254207'}
-        ])
+            session.eventStream.emitter.on(EventType.DISCOVERED, (event: TrustedEvent) => {
+                const out = new Nip35TorrentEventBuilder(event).build()
+                out.event = event
+                s.assets.push(out)
 
-        console.log("Subsription created")
+                console.log(s.assets.length)
 
-        session.eventStream.emitter.on(EventType.DISCOVERED, (event: TrustedEvent) => {
-            const out = new Nip35TorrentEventBuilder(event).build()
-            out.event = event
-            s.assets.push(out)
-
-            console.log(s.assets.length)
-
-            if (s.playing === undefined) {
-                s.playing = out
-                download(s.playing)
-            }
+                if (s.playing === undefined) {
+                    s.playing = out
+                    download(s.playing)
+                }
+            })
         })
     })
 

@@ -1,13 +1,14 @@
 <script lang="ts">
 	import {onMount} from 'svelte';
+	import {communities} from "@src/stores/community.svelte";
 
 	let isExpanded: boolean = $state(false);
 
-	const communities = [
-		{id: 1, name: 'Welshman', avatar: '🎨', online: true},
-		{id: 2, name: 'Nostr', avatar: '💻', online: false},
-		{id: 3, name: 'Red-Token', avatar: '🎮', online: true}
-	];
+	// const communities = [
+	// 	{id: 1, name: 'Welshman', avatar: '🎨', online: true},
+	// 	{id: 2, name: 'Nostr', avatar: '💻', online: false},
+	// 	{id: 3, name: 'Red-Token', avatar: '🎮', online: true}
+	// ];
 
 	const toggleSidebar = () => {
 		isExpanded = !isExpanded;
@@ -27,10 +28,10 @@
 	<nav class="sidebar" aria-label="Communities">
 		<div class="communities-list">
 			{#each communities as community}
-				<a href="/communities/{community.id}" class="community-item" title={community.name}>
+				<a href="/communities/{community.name}" class="community-item" title={community.name}>
 					<div class="avatar-container">
-						<div class="avatar {community.online && 'online'}">
-							{community.avatar || community.name.slice(0, 2)}
+						<div class="avatar {true && 'online'}">
+							{community.name.slice(0, 2)}
 						</div>
 					</div>
 					{#if isExpanded}

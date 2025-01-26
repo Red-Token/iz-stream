@@ -1,11 +1,12 @@
 <script lang="ts">
     import {onMount} from "svelte";
-    import {normalizeRelayUrl, type TrustedEvent} from "@welshman/util";
-    import {EventType, NostrClient, type Publisher, Subscription, SynchronisedSession} from "iz-nostrlib";
-    import {Nip25ReactionsEvent, Nip25ReactionsEventBuilder} from "$lib/org/nostr/nip25/Nip25Reactions";
-    import {createRefETags} from "$lib/org/nostr/nip35/Nip35TorrentEvent";
+    import {type TrustedEvent} from "@welshman/util";
+    import {EventType, Publisher, Subscription, SynchronisedSession} from "iz-nostrlib";
     import {s} from "../../stores/assetStore.svelte";
     import {SvelteMap} from "svelte/reactivity";
+    import {Nip25ReactionsEvent, Nip25ReactionsEventBuilder} from "iz-nostrlib/dist/org/nostr/nip25/Nip25Reactions";
+    import {createRefETags} from "iz-nostrlib/dist/org/nostr/nip35/Nip35TorrentEvent";
+    import {communities} from "@src/stores/community.svelte";
 
     let session: SynchronisedSession
     let sub: Subscription
@@ -16,30 +17,37 @@
         return reactions.values().filter(reaction => reaction.description === '+').toArray().length
     })
 
+    const publishers: Publisher[] = []
+
     onMount(async () => {
-        const url = 'wss://relay.stream.labs.h3.se'
-        const relays = [normalizeRelayUrl(url)]
+        communities.forEach((community) => {
+            const session = new SynchronisedSession(community.relays);
 
-        session = await NostrClient.getInstance().createSession(relays)
+            for (const relay of community.relays) {
+                const sub = new Subscription(session, [{
+                    kinds: [Nip25ReactionsEvent.KIND],
+                    '#e': s?.playing?.event?.id
+                }], [relay]);
+            }
 
-        sub = session.createSubscription([
-            {kinds: [Nip25ReactionsEvent.KIND], '#e': s?.playing?.event?.id}
-        ])
+            session.eventStream.emitter.on(EventType.DISCOVERED, (event: TrustedEvent) => {
+                if (event.kind === Nip25ReactionsEvent.KIND) {
+                    const re = new Nip25ReactionsEventBuilder(event).build()
 
-        session.eventStream.emitter.on(EventType.DISCOVERED, (event: TrustedEvent) => {
-            if (event.kind === Nip25ReactionsEvent.KIND) {
-                const re = new Nip25ReactionsEventBuilder(event).build()
+                    if (re.event === undefined)
+                        throw new Error("How did this happen")
 
-                if (re.event === undefined)
-                    throw new Error("How did this happen")
+                    reactions.set(re.event.pubkey, re)
+                } else {
+                    console.log("Unknown event ", event)
+                }
+            })
 
-                reactions.set(re.event.pubkey,re)
-            } else {
-                console.log("Unknown event ", event)
+            for (const ci of community.identities.values()) {
+                const p = new Publisher(session, ci)
+                publishers.push(p)
             }
         })
-
-        publisher = session.createPublisher()
     })
 
     function like() {
@@ -47,7 +55,10 @@
             throw new Error("Playing is undefined2")
 
         const nip25ReactionsEvent = new Nip25ReactionsEvent('+', createRefETags(s.playing.event))
-        publisher.publish(Nip25ReactionsEvent.KIND, nip25ReactionsEvent.createTemplate())
+
+        publishers.forEach((p: Publisher) => {
+            p.publish(Nip25ReactionsEvent.KIND, nip25ReactionsEvent.createTemplate())
+        })
     }
 
     function count() {
