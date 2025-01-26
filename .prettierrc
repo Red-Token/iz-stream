@@ -3,6 +3,7 @@
 	"bracketSpacing": false,
 	"singleQuote": true,
 	"trailingComma": "none",
+	"endOfLine": "lf",
 	"printWidth": 120,
 	"plugins": ["prettier-plugin-svelte", "prettier-plugin-tailwindcss"],
 	"overrides": [
