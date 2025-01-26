@@ -96,7 +96,7 @@
 		cursor: pointer;
 		transition: all 0.3s ease;
 	}
-	
+
 	.popup button:focus {
 		outline: 2px solid var(--accent-color);
 		outline-offset: 2px;

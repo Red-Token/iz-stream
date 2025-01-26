@@ -7,7 +7,7 @@
 
 	let publisher: Publisher;
 	let profile: NostrProfileMetaData = me.profile !== undefined ? {...me.profile} : {...new NostrProfileMetaData()};
-	type imageLoad = 'picture' | 'banner'
+	type imageLoad = 'picture' | 'banner';
 	let urlInputs = {
 		picture: false,
 		banner: false
@@ -23,9 +23,9 @@
 
 		publisher = me.profilesSession.createPublisher();
 	});
-//TODO This function not working. it needs to be fixed to 
-// upload an image to 'https://image.nostr.build/{key}' or find a way to set base64 in the profile.picture 
-	const handleAddImage = (event , type: imageLoad) => {
+	//TODO This function not working. it needs to be fixed to
+	// upload an image to 'https://image.nostr.build/{key}' or find a way to set base64 in the profile.picture
+	const handleAddImage = (event, type: imageLoad) => {
 		const file = event.target?.files[0];
 		if (file) {
 			const reader = new FileReader();
@@ -63,13 +63,11 @@
 	const isValidUrl = (url: string) => {
 		const pattern = /^(https?:\/\/).+\.(jpg|jpeg|png|gif|webp)(\?.*)?$/i;
 		return pattern.test(url);
-		
 	};
 </script>
 
 <div class="profile-edit">
 	<div class="image-previews">
-		
 		<div class="image-preview avatar-section">
 			{#if profile.picture}
 				<img src={profile.picture} alt="profile" class="preview-img avatar" />
@@ -96,7 +94,6 @@
 			{/if}
 		</div>
 
-		
 		<div class="image-preview banner-section">
 			{#if profile.banner}
 				<img src={profile.banner} alt="banner" class="preview-img banner" />

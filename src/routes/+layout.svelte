@@ -54,20 +54,20 @@
 </main>
 
 <style>
-    main {
-        transition: margin-left 0.3s ease;
-        min-height: 100vh;
-    }
+	main {
+		transition: margin-left 0.3s ease;
+		min-height: 100vh;
+	}
 
-    .content-area {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 1rem;
-    }
+	.content-area {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 1rem;
+	}
 
-    @media (max-width: 768px) {
-        main {
-            margin-left: 0 !important;
-        }
-    }
+	@media (max-width: 768px) {
+		main {
+			margin-left: 0 !important;
+		}
+	}
 </style>

@@ -130,7 +130,7 @@
 	onDestroy(() => {
 		abortController.abort();
 	});
-    //TODO Should be add the clipboard on the qr field
+	//TODO Should be add the clipboard on the qr field
 </script>
 
 <div>Connect your signer by scanning the QR code below or pasting a bunker link.</div>
@@ -150,7 +150,7 @@
 		border-radius: 8px;
 	}
 	.qr-container {
-        border-radius: 12px;
+		border-radius: 12px;
 		margin-top: 5px;
 		margin-bottom: 5px;
 	}

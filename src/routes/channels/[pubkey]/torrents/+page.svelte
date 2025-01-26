@@ -74,7 +74,7 @@
 				<img class="channel-avatar" src={channelOwner.picture} alt="Channel avatar" loading="lazy" />
 			{:else}
 				<div class="avatar-placeholder">
-					{channelOwner.name?.charAt(0) || '?'} 
+					{channelOwner.name?.charAt(0) || '?'}
 					<!-- TODO fix the correct rendering of the first letter of the name in the avatar circle -->
 				</div>
 			{/if}

@@ -1,25 +1,23 @@
 <script>
-    	import LogInComponent from '../components/login/LogInComponent.svelte';
-        import {page, navigating} from '$app/state'
-        
+	import LogInComponent from '../components/login/LogInComponent.svelte';
+	import {page, navigating} from '$app/state';
 </script>
 
 <nav class="primary-nav">
-    <div class="nav-content">
-        <div class="nav-links">
-            <a href="/search" aria-current={page.url.pathname === '/search'}>Search</a>
-            <a href="/create" aria-current={page.url.pathname === '/create'}>Create</a>
-            <a href="/channels" aria-current={page.url.pathname === '/channels'}>Channels</a>
-        </div>
-        <div class="login-btn">
-            <LogInComponent></LogInComponent>
-        </div>
-    </div>
+	<div class="nav-content">
+		<div class="nav-links">
+			<a href="/search" aria-current={page.url.pathname === '/search'}>Search</a>
+			<a href="/create" aria-current={page.url.pathname === '/create'}>Create</a>
+			<a href="/channels" aria-current={page.url.pathname === '/channels'}>Channels</a>
+		</div>
+		<div class="login-btn">
+			<LogInComponent></LogInComponent>
+		</div>
+	</div>
 </nav>
 
-
 <style>
-    .primary-nav {
+	.primary-nav {
 		--nav-padding: 0.5rem;
 		--border-radius: 12px;
 		font-size: 20px;

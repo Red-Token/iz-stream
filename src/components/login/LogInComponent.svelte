@@ -120,8 +120,6 @@
 				break;
 		}
 	}
-
-	
 </script>
 
 <div class="auth-container">
@@ -281,12 +279,12 @@
 		background: var(--bg-2);
 	}
 
-    .lock-icon {
-        fill:#ef4444;
-    }
-    .profile-icon {
-        fill: var(--fg-1);
-    }
+	.lock-icon {
+		fill: #ef4444;
+	}
+	.profile-icon {
+		fill: var(--fg-1);
+	}
 	.menu-icon {
 		width: 18px;
 		height: 18px;

@@ -100,7 +100,7 @@
 	.form-input:has(:focus) {
 		transform: translateY(-1px);
 	}
-    
+
 	.submit-btn {
 		display: flex;
 		align-items: center;
