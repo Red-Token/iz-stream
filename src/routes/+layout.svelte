@@ -22,25 +22,9 @@
 	onMount(() => {
 		communities.forEach((community: Community) => {
 			community.connect();
-			// =======
-			// 	let {children} = $props();
-			// 	import '@src/style/app.css';
-			// 	import '@src/style/tailwind.css';
-			// 	console.log(import.meta.resolve('./org/nostr/ses/Subscription'));
-			// 	import PrimaryNav from '@src/components/PrimaryNav.svelte';
-			// 	import Communities from '@src/components/Communities.svelte';
-			// 	import {EventType, NostrClient, type SynchronisedSession} from 'iz-nostrlib';
-			// 	import {onMount} from 'svelte';
-			// 	import {normalizeRelayUrl, type TrustedEvent} from '@welshman/util';
-			// 	import {Nip01UserMetaDataEvent, Nip01UserMetaDataEventBuilder} from '$lib/org/nostr/nip01/Nip01UserMetaData';
-			// 	import {me, profiles, profileSession} from '../stores/profile.svelte';
-			//
-			// 	// let profileSession: SynchronisedSession
-			// 	let isSidebarExpanded: boolean = $state(true);
-			// 	onMount(() => {
+
 			// 		const url = 'wss://relay.stream.labs.h3.se';
 			// 		const relays = [normalizeRelayUrl(url)];
-			// >>>>>>> b7c33811845ad36026ad3752d084dec6419b526c
 
 			community.notifications.on(NotificationEventType.TORRENT, (event) => {
 				console.log('updating', event);
@@ -58,6 +42,7 @@
 				throw new Error('Unknown event');
 			});
 		});
+
 		//
 		//
 		// const url = 'wss://relay.stream.labs.h3.se';
@@ -89,8 +74,8 @@
 	});
 </script>
 
-<main style="margin-left: {isSidebarExpanded ? '80px' : '0'}">
-	<Communities bind:isExpanded={isSidebarExpanded} />
+<main>
+	<Communities />
 	<div class="content-area">
 		<PrimaryNav />
 		<div class="main-content">
@@ -101,14 +86,16 @@
 
 <style>
 	main {
-		transition: margin-left 0.3s ease;
 		min-height: 100vh;
+		width: calc(100% - var(--sidebar-width));
+		transition: width 0.3s ease;
 	}
 
 	.content-area {
-		max-width: 1200px;
+		max-width: 1400px;
 		margin: 0 auto;
-		padding: 1rem;
+		transition: transform 0.3s ease;
+		transform: translateX(var(--sidebar-width));
 	}
 
 	@media (max-width: 768px) {

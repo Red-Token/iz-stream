@@ -13,7 +13,9 @@
 	const toggleSidebar = () => {
 		isExpanded = !isExpanded;
 	};
-
+	$effect(() => {
+		document.documentElement.style.setProperty('--sidebar-width', isExpanded ? '80px' : '0px');
+	});
 	onMount(() => {
 		const savedState = localStorage.getItem('sidebar-state');
 		isExpanded = savedState ? JSON.parse(savedState) : true;
@@ -26,8 +28,8 @@
 
 <!-- onmouseenter={isExpanded ? undefined : () => temporaryExpand(true)}
 onmouseleave={isExpanded ? undefined : () => temporaryExpand(false)} -->
-<div class="sidebar-wrapper {!isExpanded && 'collapsed'}">
-	<aside class="sidebar" aria-label="Communities">
+<div class="sidebar-wrapper">
+	<nav class="sidebar" aria-label="Communities">
 		<div class="communities-list" style="">
 			{#each communities as community}
 				<a href="/communities/{community.name}" class="community-item" title={community.name}>
@@ -44,7 +46,7 @@ onmouseleave={isExpanded ? undefined : () => temporaryExpand(false)} -->
 				</a>
 			{/each}
 		</div>
-	</aside>
+	</nav>
 
 	<button class="sidebar-toggle" onclick={toggleSidebar}>
 		{#if isExpanded}
@@ -65,115 +67,134 @@ onmouseleave={isExpanded ? undefined : () => temporaryExpand(false)} -->
 		left: 0;
 		top: 0;
 		bottom: 0;
-		width: var(--sidebar-width);
 		background: var(--bg-1);
 		border-right: 1px solid var(--border-color);
 		transition: transform 0.3s ease;
 		z-index: 1000;
-
-		&.collapsed {
-			transform: translateX(calc(-100% + var(--sidebar-collapsed-width)));
-		}
+		transform: translateX(calc(-100% + var(--sidebar-width)));
+		width: var(--sidebar-width);
+		/* transition: all 0.3s ease; TODO fix animation and avatar hiding */
 	}
 
 	.sidebar {
 		height: 100%;
 		overflow-y: auto;
 		overflow-x: hidden;
-		padding: 12px 8px;
+		padding: 12px 0;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
 	}
 
 	.communities-list {
+		display: flex;
 		flex-direction: column;
-		gap: 2px;
-		text-overflow: ellipsis;
+		gap: 8px;
+		width: 100%;
+		padding: 0 4px;
 	}
 
 	.community-item {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		gap: 0.5rem;
-		padding: 8px;
-		border-radius: 10px;
+		width: 100%;
+		padding: 8px 0;
+		border-radius: 8px;
 		text-decoration: none;
-		text-overflow: ellipsis;
 		color: var(--text-color);
+		position: relative;
+		transition: background 0.2s ease;
+	}
 
-		&:hover {
-			background: var(--bg-2);
-		}
+	.community-item:hover {
+		background: var(--bg-2);
 	}
 
 	.avatar-container {
 		position: relative;
-		margin-right: 12px;
+		width: 48px;
+		height: 48px;
+		flex-shrink: 0;
 	}
 
 	.avatar {
-		width: var(--avatar-size);
-		height: var(--avatar-size);
+		width: 100%;
+		height: 100%;
 		border-radius: 50%;
 		background: var(--bg-3);
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		font-size: 30px;
+		position: relative;
+	}
 
-		&.online::after {
-			content: '';
-			position: absolute;
-			bottom: 0;
-			right: 0;
-			width: 12px;
-			height: 12px;
-			background: var(--online-indicator);
-			border-radius: 50%;
-			border: 2px solid var(--bg-1);
-		}
+	.avatar.online::after {
+		content: '';
+		position: absolute;
+		bottom: -2px;
+		right: -2px;
+		width: 12px;
+		height: 12px;
+		background: var(--online-indicator);
+		border-radius: 50%;
+		border: 2px solid var(--bg-1);
 	}
 
 	.community-name {
-		font-size: 12px;
+		font-size: 11px;
+		line-height: 1.3;
+		max-width: calc(var(--sidebar-width) - 16px);
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
-		width: 100%;
-		box-sizing: border-box;
+		text-align: center;
+		margin-top: 6px;
+		padding: 0 4px;
 	}
 
 	.sidebar-toggle {
 		position: absolute;
 		right: -40px;
-		top: 12px;
+		bottom: 20px;
 		width: 32px;
 		height: 32px;
 		background: var(--bg-1);
-		border: 1px solid var(--border-color);
+		border: 2px solid var(--border-color);
 		border-radius: 8px;
 		cursor: pointer;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		transition: all 0.2s ease;
+		box-shadow: 0 2px 8px rgba(59, 59, 59, 0.1);
+	}
 
-		&:hover {
-			background: var(--bg-2);
+	@media (max-width: 768px) {
+		.sidebar-toggle {
+			right: -36px;
+			bottom: 16px;
+			width: 28px;
+			height: 28px;
 		}
+	}
+
+	.sidebar-toggle:hover {
+		background: var(--bg-2);
 	}
 
 	@media (max-width: 768px) {
 		.sidebar-wrapper {
 			transform: translateX(-100%);
-
-			&.collapsed {
-				transform: translateX(0);
-				width: var(--sidebar-collapsed-width);
-			}
 		}
 
 		.sidebar-toggle {
 			right: -36px;
+		}
+
+		.avatar {
+			font-size: 18px;
 		}
 	}
 </style>
