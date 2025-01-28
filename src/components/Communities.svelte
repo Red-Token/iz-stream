@@ -2,7 +2,7 @@
 	import {onMount} from 'svelte';
 	import {communities} from '@src/stores/community.svelte';
 
-	let {isExpanded = $bindable(false)} = $props();
+	let {isExpanded = $bindable()} = $props();
 
 	// const communities = [
 	// 	{id: 1, name: 'Welshman', avatar: '🎨', online: true},
@@ -10,20 +10,10 @@
 	// 	{id: 3, name: 'Red-Token', avatar: '🎮', online: true}
 	// ];
 
-	const toggleSidebar = () => {
-		isExpanded = !isExpanded;
-	};
-	$effect(() => {
-		document.documentElement.style.setProperty('--sidebar-width', isExpanded ? '80px' : '0px');
-	});
 	onMount(() => {
 		const savedState = localStorage.getItem('sidebar-state');
 		isExpanded = savedState ? JSON.parse(savedState) : true;
 	});
-
-	function temporaryExpand(arg: boolean): void {
-		isExpanded = arg;
-	}
 </script>
 
 <!-- onmouseenter={isExpanded ? undefined : () => temporaryExpand(true)}
@@ -38,27 +28,13 @@ onmouseleave={isExpanded ? undefined : () => temporaryExpand(false)} -->
 							{community.name.slice(0, 2)}
 						</div>
 					</div>
-					{#if isExpanded}
-						<span class="community-name">
-							{community.name}
-						</span>
-					{/if}
+					<span class="community-name">
+						{community.name}
+					</span>
 				</a>
 			{/each}
 		</div>
 	</nav>
-
-	<button class="sidebar-toggle" onclick={toggleSidebar}>
-		{#if isExpanded}
-			<svg width="24" height="24" viewBox="0 0 24 24">
-				<path d="M15 18l-6-6 6-6" stroke="currentColor" fill="none" />
-			</svg>
-		{:else}
-			<svg width="24" height="24" viewBox="0 0 24 24">
-				<path d="M9 18l6-6-6-6" stroke="currentColor" fill="none" />
-			</svg>
-		{/if}
-	</button>
 </div>
 
 <style>
@@ -154,43 +130,9 @@ onmouseleave={isExpanded ? undefined : () => temporaryExpand(false)} -->
 		padding: 0 4px;
 	}
 
-	.sidebar-toggle {
-		position: absolute;
-		right: -40px;
-		bottom: 20px;
-		width: 32px;
-		height: 32px;
-		background: var(--bg-1);
-		border: 2px solid var(--border-color);
-		border-radius: 8px;
-		cursor: pointer;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		transition: all 0.2s ease;
-		box-shadow: 0 2px 8px rgba(59, 59, 59, 0.1);
-	}
-
-	@media (max-width: 768px) {
-		.sidebar-toggle {
-			right: -36px;
-			bottom: 16px;
-			width: 28px;
-			height: 28px;
-		}
-	}
-
-	.sidebar-toggle:hover {
-		background: var(--bg-2);
-	}
-
 	@media (max-width: 768px) {
 		.sidebar-wrapper {
 			transform: translateX(-100%);
-		}
-
-		.sidebar-toggle {
-			right: -36px;
 		}
 
 		.avatar {
