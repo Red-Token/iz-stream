@@ -46,11 +46,8 @@
 	{#if item.imdbResult.Type === 'series'}
 		{item.imdbResult.imdbID}
 		{item.imdbResult.totalSeasons}
-		S
-		<SeriesComponent imdbId={item.imdbResult.imdbID} numberOfSeasons={item.imdbResult.totalSeasons} />
+		<SeriesComponent {item} imdbId={item.imdbResult.imdbID} numberOfSeasons={item.imdbResult.totalSeasons} />
 	{:else}
-		<h1>{item.title}</h1>
-		{item.description}
-		<MovieComponent imdbId={item.imdbResult}></MovieComponent>
+		<MovieComponent {item}></MovieComponent>
 	{/if}
 {/each}

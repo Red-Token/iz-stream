@@ -80,15 +80,72 @@
 	});
 </script>
 
-<div>
-	<video id="video-container" controls>
-		<track kind="captions" />
-	</video>
+<div class="video-page">
+	<div class="torrent-title">{page.params.id}</div>
+	<div class="video-container">
+		<video id="video-player" controls>
+			<track kind="captions" />
+		</video>
 
-	{#if s.playing !== undefined}
-		<h1>Torrent Like</h1>
-		<TorrentLike></TorrentLike>
-	{/if}
+		{#if s.playing !== undefined}
+			<TorrentLike></TorrentLike>
+		{/if}
+	</div>
 </div>
 
-VIEW THE WORLD {page.params.id}
+<style>
+	.video-page {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		padding: 2rem;
+		min-height: 100vh;
+		background-color: var(--bg-1);
+	}
+
+	.video-container {
+		width: 100%;
+		max-width: 1200px;
+		background: var(--bg-2);
+		border: 1px solid var(--border-color);
+		border-radius: 16px;
+		box-shadow: 0 4px 12px var(--shadow-color);
+		padding: 1.5rem;
+		position: relative;
+	}
+
+	#video-player {
+		width: 100%;
+		height: auto;
+		border-radius: 8px;
+		outline: none;
+	}
+
+	.torrent-title {
+		font-size: 1.5rem;
+		font-weight: 600;
+		color: var(--fg-1);
+		margin-top: 1.5rem;
+		text-align: center;
+	}
+
+	@media (max-width: 768px) {
+		.video-container {
+			padding: 1rem;
+		}
+
+		.torrent-title {
+			font-size: 1.3rem;
+		}
+	}
+
+	@media (max-width: 480px) {
+		.video-container {
+			padding: 0.5rem;
+		}
+
+		.torrent-title {
+			font-size: 1.1rem;
+		}
+	}
+</style>
