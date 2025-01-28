@@ -6,7 +6,7 @@
 	import {profiles} from '@src/stores/profile.svelte';
 	import {Nip01UserMetaDataEvent} from 'iz-nostrlib/dist/org/nostr/nip01/Nip01UserMetaData';
 
-	// TODO We need to fix this
+	// TODO We need to fix this.
 	const ci = communities[0].identities.values().toArray()[0];
 
 	let publisher: Publisher = ci.profilePublisher;
@@ -27,7 +27,7 @@
 	onMount(async () => {});
 
 	//TODO This function not working. it needs to be fixed to
-	// upload an image to 'https://image.nostr.build/{key}' or find a way to set base64 in the profile.picture
+	// upload an image to 'https://image.nostr.build/{key}' or find a way to set base64 in the profile.picture .
 	const handleAddImage = (event, type: imageLoad) => {
 		const file = event.target?.files[0];
 		if (file) {
