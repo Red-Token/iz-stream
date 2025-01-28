@@ -1,6 +1,5 @@
 <script lang="ts">
-import VideoPlayer from '@src/components/VideoPlayer.svelte';
-
+	import VideoPlayer from '@src/components/VideoPlayer.svelte';
 </script>
 
 <h1>Welcome to SvelteKit</h1>
@@ -9,4 +8,4 @@ import VideoPlayer from '@src/components/VideoPlayer.svelte';
 My VIDEOJS TEST
 
 <h1>Video.js in Svelte</h1>
-<VideoPlayer/>
+<VideoPlayer />
