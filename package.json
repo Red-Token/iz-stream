@@ -43,6 +43,7 @@
 	"dependencies": {
 		"@red-token/iz-svelte-library": "^0.0.12",
 		"@types/simple-peer": "^9.11.8",
+		"@videojs/http-streaming": "^3.16.2",
 		"@welshman/app": "0.0.29",
 		"@welshman/content": "0.0.12",
 		"@welshman/dvm": "0.0.10",
@@ -58,6 +59,7 @@
 		"parse-torrent": "^11.0.17",
 		"simple-peer": "^9.11.1",
 		"svelte-routing": "^2.13.0",
+		"video.js": "^8.21.0",
 		"webtorrent": "^2.5.12"
 	}
 }
