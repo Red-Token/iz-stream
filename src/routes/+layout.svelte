@@ -22,7 +22,6 @@
 	// let profileSession: SynchronisedSession
 
 	onMount(() => {
-
 		setContext({
 			net: getDefaultNetContext(),
 			app: getDefaultAppContext()

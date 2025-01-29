@@ -19,7 +19,6 @@
 		const torrent = wt.add(infoHash, options);
 
 		torrent.on('ready', () => {
-
 			// Add support for MPEG
 			let playFile = torrent.files.find((file: File) => {
 				return file.name.endsWith('.mpd');
@@ -83,9 +82,9 @@
 </div>
 
 <style>
-    /* Optional: Add custom styles for the player */
-    .video-js {
-        width: 100%;
-        height: 100%;
-    }
+	/* Optional: Add custom styles for the player */
+	.video-js {
+		width: 100%;
+		height: 100%;
+	}
 </style>

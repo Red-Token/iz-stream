@@ -17,10 +17,10 @@
 	async function nip07LogIn() {
 		if (nip07 === undefined) throw Error('No plugin found');
 
-		const pubkey = await nip07.getPublicKey()
+		const pubkey = await nip07.getPublicKey();
 
 		const signerData = {type: SignerType.NIP07, pubkey: pubkey};
-		console.log(signerData.pubkey)
+		console.log(signerData.pubkey);
 		logIn(signerData);
 		closePopup();
 	}
