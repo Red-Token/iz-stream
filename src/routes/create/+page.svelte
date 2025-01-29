@@ -5,9 +5,9 @@
 	import {Nip35TorrentEvent} from 'iz-nostrlib/dist/org/nostr/nip35/Nip35TorrentEvent';
 	import {communities} from '@src/stores/community.svelte';
 
-	let title = 'Big Buck Bunny';
+	let title = 'Big Buck Bunny DASH';
 	let imdbId = 'tt1254207';
-	let infoHash = 'f0a7541549b94782eec5049e2fae7c9fad3210e9';
+	let infoHash = '5bcb88dd5f1f2ec8940964987b6b0c2357f6a9f9';
 
 	const publishers: Publisher[] = [];
 
@@ -29,7 +29,7 @@
 		const te: Nip35TorrentEvent = new Nip35TorrentEvent(title, infoHash, 'Description', [], [], [imdbId], []);
 
 		publishers.forEach((publisher) => {
-			publisher.publish(Nip35TorrentEvent.KIND, te.createTemplate());
+			const x = publisher.publish(Nip35TorrentEvent.KIND, te.createTemplate());
 		});
 	}
 </script>
