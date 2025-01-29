@@ -16,6 +16,19 @@
 	};
 
 	onMount(() => {
+		if (videoElement) {
+			const videoOptions: PlayerOptions = {
+				controls: true,
+				responsive: true,
+				fluid: true,
+				poster: 'https://t4.ftcdn.net/jpg/01/22/97/01/360_F_122970161_S5JEt3v3wTdR7QXavi9seSKpuVBsUQsn.jpg'
+				// preload: 'auto',
+				// sources: []
+			};
+
+			player = videojs(videoElement, videoOptions);
+		}
+
 		const torrent = wt.add(infoHash, options);
 
 		torrent.on('ready', () => {
@@ -32,20 +45,14 @@
 			}
 
 			if (videoElement) {
-				const videoOptions: PlayerOptions = {
-					controls: true,
-					responsive: true,
-					fluid: true,
-					preload: 'auto',
-					sources: [
-						{
-							src: playFile.streamURL,
-							type: playFile.type
-						}
-					]
-				};
-
-				player = videojs(videoElement, videoOptions);
+				player.src([
+					{
+						src: playFile.streamURL,
+						type: playFile.type
+					}
+				]);
+				player.load();
+				player.play();
 			}
 		});
 
