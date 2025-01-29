@@ -1,9 +1,6 @@
 <script lang="ts">
-	// <<<<<<< HEAD
-	import {page} from '$app/state';
 	import '@src/style/app.css';
 	import '@src/style/tailwind.css';
-	import LogInComponent from '../components/login/LogInComponent.svelte';
 	import Communities from '@src/components/Communities.svelte';
 	import {onMount} from 'svelte';
 	import {communities} from '@src/stores/community.svelte';
@@ -17,8 +14,11 @@
 	console.log(import.meta.resolve('./org/nostr/ses/Subscription'));
 
 	let {children} = $props();
-	let isSidebarExpanded: boolean = $state(true);
+	let isExpanded: boolean = $state(true);
 
+	$effect(() => {
+		document.documentElement.style.setProperty('--sidebar-width', isExpanded ? '80px' : '0px');
+	});
 	// let profileSession: SynchronisedSession
 
 	onMount(() => {
@@ -50,7 +50,6 @@
 				throw new Error('Unknown event');
 			});
 		});
-
 		//
 		//
 		// const url = 'wss://relay.stream.labs.h3.se';
@@ -83,7 +82,20 @@
 </script>
 
 <main>
-	<Communities />
+	<div class="left-sidebar {isExpanded ? 'expanded' : ''}">
+		<Communities isExpanded />
+		<button class="sidebar-toggle" onclick={() => (isExpanded = !isExpanded)}>
+			{#if isExpanded}
+				<svg width="24" height="24" viewBox="0 0 24 24">
+					<path d="M15 18l-6-6 6-6" stroke="currentColor" fill="none" />
+				</svg>
+			{:else}
+				<svg width="24" height="24" viewBox="0 0 24 24">
+					<path d="M9 18l6-6-6-6" stroke="currentColor" fill="none" />
+				</svg>
+			{/if}
+		</button>
+	</div>
 	<div class="content-area">
 		<PrimaryNav />
 		<div class="main-content">
@@ -95,20 +107,64 @@
 <style>
 	main {
 		min-height: 100vh;
-		width: calc(100% - var(--sidebar-width));
-		transition: width 0.3s ease;
 	}
 
 	.content-area {
-		max-width: 1400px;
-		margin: 0 auto;
-		transition: transform 0.3s ease;
-		transform: translateX(var(--sidebar-width));
+		flex: 1;
+		margin-left: calc(-1 * var(--sidebar-width));
+		transition: margin-left 0.3s ease;
 	}
 
+	.sidebar-toggle {
+		position: absolute;
+		right: -40px;
+		top: 20px;
+		width: 32px;
+		height: 32px;
+		z-index: 1000;
+		background: var(--bg-1);
+		border: 2px solid var(--border-color);
+		border-radius: 8px;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition: all 0.3s ease;
+		box-shadow: 0 2px 8px rgba(80, 80, 80, 0.1);
+		transform: translateX(50%);
+	}
+
+	.sidebar-toggle:hover {
+		background: var(--bg-2);
+	}
+
+	.left-sidebar {
+		position: fixed;
+		top: 0;
+		left: 0;
+		height: 100%;
+		width: var(--sidebar-width);
+		transform: translateX(calc(-1 * var(--sidebar-width)));
+		transition: transform 0.3s ease;
+	}
+
+	.left-sidebar.expanded {
+		width: 80px;
+		transform: translateX(0);
+	}
+
+	.left-sidebar.expanded ~ .content-area {
+		margin-left: var(--sidebar-width);
+	}
 	@media (max-width: 768px) {
 		main {
 			margin-left: 0 !important;
+		}
+		.sidebar-toggle {
+			right: -36px;
+			bottom: 16px;
+			width: 28px;
+			height: 28px;
 		}
 	}
 </style>
