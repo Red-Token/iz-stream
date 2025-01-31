@@ -8,6 +8,8 @@
 	import {Nip01UserMetaDataEvent} from 'iz-nostrlib/dist/org/nostr/nip01/Nip01UserMetaData';
 	import {profiles} from '@src/stores/profile.svelte';
 	import PrimaryNav from '@src/components/PrimaryNav.svelte';
+	import {setContext} from '@welshman/lib';
+	import {getDefaultAppContext, getDefaultNetContext} from '@welshman/app';
 
 	console.log(import.meta.resolve('./org/nostr/ses/Subscription'));
 
@@ -20,6 +22,11 @@
 	// let profileSession: SynchronisedSession
 
 	onMount(() => {
+		setContext({
+			net: getDefaultNetContext(),
+			app: getDefaultAppContext()
+		});
+
 		communities.forEach((community: Community) => {
 			community.connect();
 
