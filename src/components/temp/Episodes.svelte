@@ -28,8 +28,8 @@
 	<div class="episode-page">
 		<div class="episode-content">
 			{#if currentEpisode}
-				<h1>{currentEpisode.data.Title}</h1>
 				<img src={currentEpisode.data.Poster} alt={currentEpisode.data.Title} />
+				<h1>{currentEpisode.data.Title}</h1>
 				<p>{currentEpisode.data.description}</p>
 			{:else}
 				<p>Turn on the episode to watch</p>
@@ -103,8 +103,29 @@
 		padding: 1.5rem;
 		box-shadow: 0 4px 12px var(--shadow-color);
 		overflow-y: auto;
+		scrollbar-width: thin;
+		scrollbar-color: var(--scroll-thumb) var(--scroll-track);
 	}
 
+	.episodes-sidebar::-webkit-scrollbar {
+		width: 8px;
+	}
+
+	.episodes-sidebar::-webkit-scrollbar-track {
+		background: var(--scroll-track);
+		border-radius: 4px;
+	}
+
+	.episodes-sidebar::-webkit-scrollbar-thumb {
+		background: var(--scroll-thumb);
+		border-radius: 4px;
+		border: 2px solid transparent;
+		background-clip: content-box;
+	}
+
+	.episodes-sidebar::-webkit-scrollbar-thumb:hover {
+		background: var(--scroll-thumb-hover);
+	}
 	.episodes-list {
 		display: flex;
 		flex-direction: column;
