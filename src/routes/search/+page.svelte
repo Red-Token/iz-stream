@@ -3,12 +3,12 @@
 	import {goto} from '$app/navigation';
 	import imdbApi from '$lib/api/ImdbApi';
 
-	let search = 'Big Buck Bunny';
-	// let search = 'Game of Thrones'
+	//let search = 'Big Buck Bunny';
+	let search = 'Game of Thrones';
 
 	function onSearch(): void {
 		imdbApi.searchTitle(search).then((result) => {
-			console.log(result);
+			// console.log(result);
 			searchResult.items = [
 				{id: '1', title: result.Title, description: result.Plot, assets: [], seasons: [], imdbResult: result}
 			];
