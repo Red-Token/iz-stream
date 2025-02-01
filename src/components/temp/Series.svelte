@@ -8,11 +8,10 @@
 
 	let {item}: {item: SearchResultItem} = $props();
 	let currentSeason: number | undefined = $state();
-	const select = (season: number) => {
-		currentSeason = season;
-	};
+	$inspect(currentSeason);
+
 	onMount(() => {
-		for (let i = 0; i < item.imdbResult.totalSeasons; i++) {
+		for (let i = 1; i <= item.imdbResult.totalSeasons; i++) {
 			const season: Season = $state({
 				id: i,
 				data: {},
@@ -22,11 +21,11 @@
 
 			imdbApi.getInfoOnSeason(item.imdbResult.imdbID, i).then((res) => {
 				for (let e of res.Episodes) {
-					console.log(e);
+					//console.log(e);
 					const episode: Episode = $state({data: e});
 					season.episodes.push(episode);
 					imdbApi.getInfoOnEpisode(item.imdbResult.imdbID, i, e.Episode).then((res2) => {
-						console.log(res2);
+						//console.log(res2);
 						episode.data = res2;
 					});
 				}
@@ -37,7 +36,7 @@
 
 <!-- {item.imdbResult.totalSeasons}  -->
 {#if item.imdbResult.imdbID}
-	{#if !currentSeason}
+	{#if currentSeason === undefined}
 		<Seasons imdbPoster={item.imdbResult.Poster} seasons={item.seasons} bind:currentSeason></Seasons>
 	{:else}
 		{#key currentSeason}

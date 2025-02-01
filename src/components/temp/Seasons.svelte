@@ -1,14 +1,15 @@
 <script lang="ts">
 	let {imdbPoster, seasons, currentSeason = $bindable()} = $props();
 
-	const select = (season: number) => {
-		currentSeason = season;
+	const select = (id: number) => {
+		currentSeason = id;
+		console.log(id);
 	};
 </script>
 
 <div class="seasons-list">
-	{#each seasons as season}
-		<div class="season-card" onclick={() => select(season.id)}>
+	{#each seasons as season, id}
+		<div class="season-card" onclick={() => select(id)}>
 			<div class="banner-container">
 				{#if imdbPoster}
 					<img src={imdbPoster} alt="" class="season-banner" />
