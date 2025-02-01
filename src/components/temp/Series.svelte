@@ -41,7 +41,6 @@
 		<Seasons imdbPoster={item.imdbResult.Poster} seasons={item.seasons} bind:currentSeason></Seasons>
 	{:else}
 		{#key currentSeason}
-			<!-- <Series imdbId={item.imdbResult.imdbID} numberOfSeasons={item.imdbResult.totalSeasons} /> -->
 			<Episodes episodes={item.seasons[currentSeason].episodes}></Episodes>
 		{/key}
 	{/if}

@@ -24,36 +24,35 @@
 	}
 </script>
 
-{#key currentEpisode}
-	<div class="episode-page">
+<div class="episode-page">
+	{#key currentEpisode}
 		<div class="episode-content">
 			{#if currentEpisode}
 				<img src={currentEpisode.data.Poster} alt={currentEpisode.data.Title} />
 				<h1>{currentEpisode.data.Title}</h1>
-				<p>{currentEpisode.data.description}</p>
+				<p>{currentEpisode.data.Plot}</p>
 			{:else}
 				<p>Turn on the episode to watch</p>
 			{/if}
 		</div>
-
-		<div class="episodes-sidebar">
-			<h2>All episodes</h2>
-			<div class="episodes-list">
-				{#each episodes as episode}
-					<div class="episode-item" onclick={() => selectEpisode(episode.data.Episode)}>
-						<img src={episode.data.Poster} alt={episode.data.Title} />
-						<div>
-							<p class="episode-title">{episode.data.Title}</p>
-							{#if episode.data.Runtime}
-								<p class="episode-duration">{episode.data.Runtime}</p>
-							{/if}
-						</div>
+	{/key}
+	<div class="episodes-sidebar">
+		<h2>All episodes</h2>
+		<div class="episodes-list">
+			{#each episodes as episode, id}
+				<div class="episode-item" onclick={() => selectEpisode(id)}>
+					<img src={episode.data.Poster} alt={episode.data.Title} />
+					<div>
+						<p class="episode-title">{episode.data.Title}</p>
+						{#if episode.data.Runtime}
+							<p class="episode-duration">{episode.data.Runtime}</p>
+						{/if}
 					</div>
-				{/each}
-			</div>
+				</div>
+			{/each}
 		</div>
 	</div>
-{/key}
+</div>
 
 <style>
 	.episode-page {
@@ -62,7 +61,7 @@
 		max-width: 1400px;
 		margin: 0 auto;
 		padding: 2rem;
-		height: 100vh;
+		height: 850px;
 	}
 
 	.episode-content {
@@ -91,7 +90,7 @@
 
 	.episode-content p {
 		line-height: 1.6;
-		color: var(--text-primary);
+		color: var(--fg-2);
 		font-size: 1.1rem;
 	}
 
@@ -164,7 +163,7 @@
 	.episode-duration {
 		margin: 0.3rem 0 0;
 		font-size: 0.85rem;
-		color: var(--text-secondary);
+		color: var(--fg-2);
 	}
 
 	@media (max-width: 768px) {
