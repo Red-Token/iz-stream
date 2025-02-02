@@ -33,6 +33,9 @@
 		})
 	}
 
+	function handleSubmit(event: any) {
+		console.log(event);
+	}
 
 	// function handleFileChange(event: any) {
 	// 	console.log('I am a file');
