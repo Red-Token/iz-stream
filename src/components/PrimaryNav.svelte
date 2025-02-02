@@ -9,6 +9,10 @@
 			<a href="/search" aria-current={page.url.pathname === '/search'}>Search</a>
 			<a href="/create" aria-current={page.url.pathname === '/create'}>Create</a>
 			<a href="/channels" aria-current={page.url.pathname === '/channels'}>Channels</a>
+			<a href="/upload" aria-current={page.url.pathname === '/upload'}>Upload</a>
+			<a href="/upload2" aria-current={page.url.pathname === '/upload2'}>Upload2</a>
+			<a href="/upload3" aria-current={page.url.pathname === '/upload3'}>Upload3</a>
+
 		</div>
 		<div class="login-btn">
 			<LogInComponent></LogInComponent>

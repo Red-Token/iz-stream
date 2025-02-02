@@ -56,7 +56,7 @@
 		"@welshman/signer": "0.0.14",
 		"@welshman/store": "0.0.12",
 		"@welshman/util": "0.0.45",
-		"iz-nostrlib": "^0.1.4",
+		"iz-nostrlib": "^0.1.7",
 		"leaflet": "^1.9.4",
 		"ngeohash": "^0.6.3",
 		"parse-torrent": "^11.0.17",
