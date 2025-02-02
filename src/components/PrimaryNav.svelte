@@ -30,7 +30,7 @@
 		border: 1px solid var(--border-color);
 		box-shadow: 0 4px 12px var(--shadow-color);
 		margin: 1rem auto;
-		max-width: 1200px;
+		max-width: 1380px;
 		transition: all 0.3s ease;
 	}
 

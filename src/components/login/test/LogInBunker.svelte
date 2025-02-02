@@ -77,7 +77,7 @@
 	// };
 
 	// let bunker = '';
-	let loading = false;
+	let loading = $state(false);
 
 	init.result.then(async (remoteSignerPubkey) => {
 		if (remoteSignerPubkey) {

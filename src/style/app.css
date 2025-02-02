@@ -29,6 +29,9 @@
 	--sidebar-collapsed-width: 0px;
 	--avatar-size: 48px;
 	--online-indicator: #00c853;
+	--scroll-track: rgba(75, 75, 75, 0.1);
+	--scroll-thumb: rgba(75, 75, 75, 0.3);
+	--scroll-thumb-hover: rgba(75, 75, 75, 0.5);
 }
 
 :root.light {

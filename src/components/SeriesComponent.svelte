@@ -26,10 +26,12 @@
 </script>
 
 <div>
-	Rendering series {imdbId}
+	{#if imdbId}
+		Rendering series {imdbId}
 
-	{#each seasons as season}
-		{season.id}
-		<SeasonComponent {imdbId} seasonNumber={season.id}></SeasonComponent>
-	{/each}
+		{#each seasons as season}
+			{season.id}
+			<SeasonComponent {imdbId} seasonNumber={season.id}></SeasonComponent>
+		{/each}
+	{/if}
 </div>

@@ -2,7 +2,7 @@
 	import {onMount} from 'svelte';
 	import {communities} from '@src/stores/community.svelte';
 
-	let {isExpanded = $bindable()} = $props();
+	let {isExpanded} = $props();
 
 	// const communities = [
 	// 	{id: 1, name: 'Welshman', avatar: '🎨', online: true},

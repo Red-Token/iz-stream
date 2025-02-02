@@ -84,14 +84,20 @@
 	});
 </script>
 
-<div>
-	<video controls class="video-js vjs-big-play-centered" bind:this={videoElement} width="640" height="360"></video>
+<div class="video-container">
+	<video controls class="video-js vjs-big-play-centered" bind:this={videoElement}></video>
 </div>
 
 <style>
-	/* Optional: Add custom styles for the player */
+	.video-container {
+		padding-top: 2rem;
+		display: flex;
+		justify-content: center;
+		max-width: 1200px;
+		height: auto;
+		margin: 0 auto;
+	}
 	.video-js {
 		width: 100%;
-		height: 100%;
 	}
 </style>
