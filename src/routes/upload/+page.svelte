@@ -1,77 +1,107 @@
 <script lang="ts">
 	import {onMount} from 'svelte';
+	import {wt} from '@src/stores/wtZool.svelte';
+	import {EventType, Nip9999SeederTorrentTransformationResponseEvent, NostrCommunityServiceClient} from 'iz-nostrlib';
+	import {communities} from '@src/stores/community.svelte';
+	import type {TrustedEvent} from '@welshman/util';
+	import {Nip9999SeederTorrentTransformationRequestEvent} from 'iz-nostrlib/dist/org/nostr/seederbot/Nip9999SeederControllEvents.js';
+	import {safeFindSingleTagValue} from 'iz-nostrlib/dist/org/nostr/AbstractNipEvent';
 
-	let file: File | null = null;
+	let file: File;
 
-	// const socket = new WebSocket('ws://localhost:3400');
-	const socket = new WebSocket('wss://seeder.pre-alfa.iz-collaborator.com/ws');
+	let state = $state({resp: {state: {state: 'not started', msg: 'Not started the request'}}, infoHash: ''});
 
-	onMount(() => {
+	onMount(() => {});
 
-		socket.addEventListener('message', (event) => {
-			const message = JSON.parse(event.data);
-			console.log(message);
-		});
-
-		socket.addEventListener('open', () => {
-			console.log('Open');
-		});
-	});
-
-	// Handle file selection
-	const handleFileChange = (event: Event) => {
-		const input = event.target as HTMLInputElement;
-		if (input.files && input.files[0]) {
-			file = input.files[0];
-		}
+	const options = {
+		announce: ['wss://tracker.webtorrent.dev', 'wss://tracker.btorrent.xyz', 'wss://tracker.openwebtorrent.com'],
+		// announce: ['wss://tracker.webtorrent.dev'],
+		maxWebConns: 500
 	};
 
-	// Handle form submission
-	const handleSubmit = async () => {
-		if (!file) {
-			alert('Please select a file.');
-			return;
-		}
+	function handleSubmit() {
+		console.log(file);
+		console.log('submit!');
 
-		// Create a FormData object
-		const formData = new FormData();
-		formData.append('file', file);
+		const community = communities.at(0);
 
-		try {
-			// Send the file to the REST API
-			// const response = await fetch('http://localhost:3000/api/upload', {
-			const endpoint = 'https://seeder.pre-alfa.iz-collaborator.com/api/upload'
-			console.log("trying to connect to" + endpoint);
-			const response = await fetch(endpoint, {
-				method: 'POST',
-				body: formData
-			});
+		if (community === undefined) throw new Error('Community does not exist!');
 
-			if (response.ok) {
-				const result = await response.json();
-				console.log('File uploaded successfully:', result);
+		const ci = community.identities.values().toArray()[0];
 
-				socket.send(JSON.stringify({type: 'progress-request', id: result.id}));
+		if (ci === undefined) throw new Error('CI does not exist!');
 
-			} else {
-				console.error('Failed to upload file:', response.statusText);
-				alert('Failed to upload file.');
+		const ncs = new NostrCommunityServiceClient(community, ci);
+
+		ncs.session.eventStream.emitter.on(EventType.DISCOVERED, (event: TrustedEvent) => {
+			console.log(event);
+
+			if (event.kind === Nip9999SeederTorrentTransformationResponseEvent.KIND) {
+				const resp = Nip9999SeederTorrentTransformationResponseEvent.build(event);
+
+				if (resp.state.state === 'seeding' && resp.event !== undefined) {
+					state.infoHash = safeFindSingleTagValue(resp.event, 'x');
+				}
+
+				state.resp = resp;
 			}
-		} catch (error) {
-			console.error('Error uploading file:', error);
-			alert('Error uploading file.');
-		}
-	};
+		});
+
+		const torrent = wt.seed(file, options);
+
+		torrent.on('infoHash', () => {
+			console.log('infoHash:' + torrent.infoHash);
+			console.log('magnetURI:' + torrent.magnetURI);
+
+			const req = new Nip9999SeederTorrentTransformationRequestEvent('NN1', torrent.infoHash, {transform: 'cool'});
+			ncs.publisher.publish(Nip9999SeederTorrentTransformationRequestEvent.KIND, req.createTemplate());
+		});
+
+		torrent.on('upload', (bytes: any) => {
+			console.log(bytes);
+		});
+
+		torrent.on('error', (err: any) => {
+			console.log(err);
+		});
+
+		torrent.on('wire', (wire: any) => {
+			console.log(wire);
+		});
+	}
+
+	function handleChange(event: any) {
+		file = event.target.files[0];
+	}
+
+	function publish(event: any) {
+		console.log('publish');
+	}
+
+	// function handleFileChange(event: any) {
+	// 	console.log('I am a file');
+	// 	const file = event.target.files[0];
+	// 	console.log(file);
+	// }
 </script>
+
 <div>
-
 	<h1>File Upload Form</h1>
-	<form on:submit|preventDefault={handleSubmit}>
-		<div>
-			<label for="file">Choose a file:</label>
-			<input type="file" id="file" name="file" on:change={handleFileChange} />
-		</div>
-		<button type="submit" class="update-btn">Upload</button>
-	</form>
-
+	<div>
+		<label for="file">Choose a file:</label>
+		<input type="file" id="file" name="file" onchange={handleChange} />
+	</div>
+	<button type="submit" class="update-btn" onclick={handleSubmit}>Upload</button>
+	<div>
+		<input type="text" bind:value={state.infoHash} placeholder="InfoHash" class="form-input" />
+		<p></p>
+		{#if state.infoHash !== ''}
+			<button type="submit" class="update-btn" onclick={publish}>Publish</button>
+		{/if}
+	</div>
+	<div>
+		state: {state.resp.state.state}
+		<p></p>
+		msg: {state.resp.state.msg}
+	</div>
 </div>

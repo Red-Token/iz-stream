@@ -1,6 +1,7 @@
 <script>
 	import LogInComponent from '../components/login/LogInComponent.svelte';
 	import {page, navigating} from '$app/state';
+	import {me} from '../stores/profile.svelte';
 </script>
 
 <nav class="primary-nav">
@@ -9,10 +10,9 @@
 			<a href="/search" aria-current={page.url.pathname === '/search'}>Search</a>
 			<a href="/create" aria-current={page.url.pathname === '/create'}>Create</a>
 			<a href="/channels" aria-current={page.url.pathname === '/channels'}>Channels</a>
-			<a href="/upload" aria-current={page.url.pathname === '/upload'}>Upload</a>
-			<a href="/upload2" aria-current={page.url.pathname === '/upload2'}>Upload2</a>
-			<a href="/upload3" aria-current={page.url.pathname === '/upload3'}>Upload3</a>
-
+			{#if me.pubkey !== ''}
+				<a href="/upload" aria-current={page.url.pathname === '/upload'}>Upload</a>
+			{/if}
 		</div>
 		<div class="login-btn">
 			<LogInComponent></LogInComponent>
@@ -93,6 +93,7 @@
 		.primary-nav {
 			z-index: 10;
 		}
+
 		.nav-content {
 			height: 56px;
 			padding: 0 1rem;
@@ -138,9 +139,8 @@
 		}
 
 		/* .login-btn {
-			display: none; should be fix
-		} */
-
+					display: none; should be fix
+				} */
 		.primary-nav a {
 			font-size: 0.9rem;
 			padding: 0.3rem 0;

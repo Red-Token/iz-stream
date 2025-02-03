@@ -4,12 +4,9 @@
 	import {EventType, NostrCommunityServiceClient} from 'iz-nostrlib';
 	import {communities} from '@src/stores/community.svelte';
 	import type {TrustedEvent} from '@welshman/util';
-	import {
-		Nip9999SeederTorrentTransformationRequestEvent
-	} from 'iz-nostrlib/dist/org/nostr/seederbot/Nip9999SeederControllEvents.js';
+	import {Nip9999SeederTorrentTransformationRequestEvent} from 'iz-nostrlib/dist/org/nostr/seederbot/Nip9999SeederControllEvents.js';
 
-	onMount(() => {
-	});
+	onMount(() => {});
 
 	const options = {
 		announce: ['wss://tracker.webtorrent.dev', 'wss://tracker.btorrent.xyz', 'wss://tracker.openwebtorrent.com'],
@@ -22,15 +19,20 @@
 
 		torrent.on('infoHash', () => {
 			console.log('infoHash: ' + torrent.infoHash);
-		})
+			console.log('metadata: ' + torrent.magnetURI);
+		});
+
+		torrent.on('metadata', () => {
+			console.log('metadata: ' + torrent.magnetURI);
+		});
 
 		torrent.on('error', (err: any) => {
 			console.log('errorHash: ' + err);
-		})
+		});
 
 		torrent.on('warning', (err: any) => {
 			console.log('warningHash: ' + err);
-		})
+		});
 	}
 
 	function handleSubmit(event: any) {
@@ -42,8 +44,8 @@
 	// 	const file = event.target.files[0];
 	// 	console.log(file);
 	// }
-
 </script>
+
 <div>
 	<h1>File Upload Form</h1>
 	<div>

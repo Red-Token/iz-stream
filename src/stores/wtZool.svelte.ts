@@ -49,5 +49,4 @@ navigator.serviceWorker.register('/sw.min.js', {scope: '/'}).then((reg) => {
 	}
 });
 
-console.log("HERE I STAND");
-
+console.log('HERE I STAND');

@@ -71,7 +71,7 @@
 		// 	console.log('received: ' + torrent.received);
 		// 	console.log('downloaded: ' + torrent.downloaded);
 		// });
-		// torrent.on('upload', (bytes) => {
+		// torrent.on('uploadold', (bytes) => {
 		// 	console.log(bytes);
 		// 	console.log('uploaded: ' + torrent.uploaded);
 		// });
