@@ -1,6 +1,6 @@
 import {SvelteMap} from 'svelte/reactivity';
 import {type Publisher, type Subscription, type SynchronisedSession} from 'iz-nostrlib';
-import type {Follow} from '$lib/org/nostr/nip02/Nip02FollowListEvent';
+import type {Follow} from '$lib/org/nostr/nip02/Nip02FollowListEvent'; //TODO fixed Follow. Module not found
 import {NostrProfileMetaData} from 'iz-nostrlib/dist/org/nostr/nip01/NostrProfileMetaData';
 
 const unknown = new NostrProfileMetaData();
