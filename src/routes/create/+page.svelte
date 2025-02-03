@@ -16,16 +16,12 @@
 	import {goto} from '$app/navigation';
 
 	const state = $state({
-		title: 'NN1',
+		title: '',
 		imdbId: '',
 		infoHash: '',
 		file: null,
-		resp: {state: {state: null, msg: 'Not started the request'}}
+		resp: {state: {state: null, msg: 'Not started the request', progress: 0}}
 	});
-
-	// let title = 'Big Buck Bunny DASH';
-	// let imdbId = 'tt1254207';
-	// let infoHash = '5bcb88dd5f1f2ec8940964987b6b0c2357f6a9f9';
 
 	const publishers: Publisher[] = [];
 
@@ -136,7 +132,9 @@
 		<div class="input-group">
 			<input type="text" bind:value={state.title} placeholder="Movie title" class="form-input" />
 			<input type="text" bind:value={state.imdbId} placeholder="IMDB ID" class="form-input" />
-			<input type="file" id="file" name="file" onchange={handleChange} />
+			<label class="upload-label">
+				<input type="file" id="file" accept="video/*" onchange={handleChange} class="file-input" />
+			</label>
 
 			{#if state.resp.state.state === null}
 				{#if state.file !== null}
@@ -148,24 +146,20 @@
 					</button>
 				{/if}
 			{:else}
-				<div>
-					state: {state.resp.state.state}
-					<p></p>
-					msg: {state.resp.state.msg}
+				<div class="progressbar-container">
+					<div class="progressbar-bar" style="width: {state.resp.state.progress}%;"></div>
+					<div class="progressbar-text">{state.resp.state.state}</div>
 				</div>
 			{/if}
 
 			<input type="text" bind:value={state.infoHash} placeholder="Info Hash" class="form-input" />
 		</div>
-
-		{#if state.infoHash !== ''}
-			<button class="submit-btn" onclick={() => onCreate().then()}>
-				Create
-				<svg class="submit-icon" viewBox="0 0 24 24">
-					<path d="M3 20v-6l8-2-8-2V4l19 8-19 8Z" />
-				</svg>
-			</button>
-		{/if}
+		<button disabled={state.infoHash === ''} class="submit-btn" onclick={() => onCreate().then()}>
+			Create
+			<svg class="submit-icon" viewBox="0 0 24 24">
+				<path d="M3 20v-6l8-2-8-2V4l19 8-19 8Z" />
+			</svg>
+		</button>
 	</div>
 </div>
 
@@ -203,7 +197,7 @@
 		background: var(--bg-2);
 		border: 1px solid var(--border-color);
 		border-radius: 8px;
-		color: var(--text-primary);
+		color: var(--text-fg-1);
 		transition: all 0.3s ease;
 		margin: 0;
 		will-change: box-shadow, border-color;
@@ -220,11 +214,56 @@
 	}
 
 	.form-input::placeholder {
-		color: var(--text-tertiary);
+		color: var(--fg-2);
 	}
 
 	.form-input:has(:focus) {
 		transform: translateY(-1px);
+	}
+
+	.upload-label {
+		display: block;
+		padding: 0.75rem;
+		background: var(--bg-3);
+		color: var(--fg-1);
+		border-radius: 6px;
+		cursor: pointer;
+		transition: background 0.2s ease;
+	}
+
+	.upload-label:hover {
+		background: var(--border-color);
+	}
+	.file-input {
+		cursor: pointer;
+	}
+
+	.progressbar-container {
+		width: 100%;
+		height: 30px;
+		position: relative;
+		background: var(--bg-2);
+		border: 2px solid var(--border-color);
+		border-radius: 8px;
+		align-items: center;
+		overflow: hidden;
+	}
+
+	.progressbar-bar {
+		text-align: justify;
+		height: 100%;
+		background: var(--accent-color);
+		animation: width 0.4s easy;
+	}
+
+	.progressbar-text {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		color: #fff;
+		font-size: 14px;
+		pointer-events: none;
 	}
 
 	.submit-btn {
@@ -233,9 +272,9 @@
 		gap: 0.75rem;
 		width: 100%;
 		padding: 1rem;
-		background: var(--accent-color);
+		border: 2px solid var(--border-color);
+		background: transparent;
 		color: white;
-		border: none;
 		border-radius: 8px;
 		font-size: 1.1rem;
 		font-weight: 500;
@@ -246,8 +285,17 @@
 	}
 
 	.submit-btn:hover {
-		background: var(--accent-hover);
 		transform: translateY(-1px);
+		background: var(--accent-color);
+	}
+
+	.submit-btn:disabled {
+		color: #999;
+		cursor: not-allowed;
+	}
+
+	.submit-btn:disabled:hover {
+		background-color: var(--bg-2);
 	}
 
 	.submit-icon {
