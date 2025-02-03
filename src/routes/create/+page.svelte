@@ -1,53 +1,171 @@
 <script lang="ts">
-	import {NostrClient, Publisher, SynchronisedSession} from 'iz-nostrlib';
-	import {normalizeRelayUrl} from '@welshman/util';
+	import {
+		EventType,
+		Nip9999SeederTorrentTransformationResponseEvent,
+		NostrCommunityServiceClient,
+		Publisher,
+		SynchronisedSession
+	} from 'iz-nostrlib';
 	import {onMount} from 'svelte';
 	import {Nip35TorrentEvent} from 'iz-nostrlib/dist/org/nostr/nip35/Nip35TorrentEvent';
 	import {communities} from '@src/stores/community.svelte';
+	import type {TrustedEvent} from '@welshman/util';
+	import {safeFindSingleTagValue} from 'iz-nostrlib/dist/org/nostr/AbstractNipEvent';
+	import {wt} from '@src/stores/wtZool.svelte';
+	import {Nip9999SeederTorrentTransformationRequestEvent} from 'iz-nostrlib/dist/org/nostr/seederbot/Nip9999SeederControllEvents';
+	import {goto} from '$app/navigation';
 
-	let title = 'Big Buck Bunny DASH';
-	let imdbId = 'tt1254207';
-	let infoHash = '5bcb88dd5f1f2ec8940964987b6b0c2357f6a9f9';
+	const state = $state({
+		title: 'NN1',
+		imdbId: '',
+		infoHash: '',
+		file: null,
+		resp: {state: {state: null, msg: 'Not started the request'}}
+	});
+
+	// let title = 'Big Buck Bunny DASH';
+	// let imdbId = 'tt1254207';
+	// let infoHash = '5bcb88dd5f1f2ec8940964987b6b0c2357f6a9f9';
 
 	const publishers: Publisher[] = [];
 
 	onMount(async () => {
 		// We do this as a mashinegun we need a way to select what communities we should publish, and as who
-		communities.forEach((communitie) => {
-			const session = new SynchronisedSession(communitie.relays);
+		communities.forEach((community) => {
+			const session = new SynchronisedSession(community.relays);
 
-			communitie.identities.forEach((ci) => {
+			community.identities.forEach((ci) => {
 				publishers.push(new Publisher(session, ci));
 			});
 		});
 	});
 
+	const options = {
+		announce: ['wss://tracker.webtorrent.dev', 'wss://tracker.btorrent.xyz', 'wss://tracker.openwebtorrent.com'],
+		maxWebConns: 500
+	};
+
 	async function onCreate() {
 		// Send the message
-		console.log(title);
+		const mediaTags: string[] = [];
 
-		const te: Nip35TorrentEvent = new Nip35TorrentEvent(title, infoHash, 'Description', [], [], [imdbId], []);
+		if (state.imdbId !== '') {
+			mediaTags.push(`imdb:${state.imdbId}`);
+		}
+
+		const te: Nip35TorrentEvent = new Nip35TorrentEvent(
+			state.title,
+			state.infoHash,
+			'Description',
+			[],
+			[],
+			mediaTags,
+			[]
+		);
 
 		publishers.forEach((publisher) => {
 			const x = publisher.publish(Nip35TorrentEvent.KIND, te.createTemplate());
 		});
+
+		goto(`/view/infoHash/${state.infoHash}`).then((r) => {
+			console.log(r);
+		});
+	}
+
+	function onTranscode() {
+		console.log(state.file);
+		console.log('transcode!');
+
+		const community = communities.at(0);
+
+		if (community === undefined) throw new Error('Community does not exist!');
+
+		const ci = community.identities.values().toArray()[0];
+
+		if (ci === undefined) throw new Error('CI does not exist!');
+
+		const ncs = new NostrCommunityServiceClient(community, ci);
+
+		ncs.session.eventStream.emitter.on(EventType.DISCOVERED, (event: TrustedEvent) => {
+			console.log(event);
+
+			if (event.kind === Nip9999SeederTorrentTransformationResponseEvent.KIND) {
+				const resp = Nip9999SeederTorrentTransformationResponseEvent.build(event);
+
+				if (resp.state.state === 'seeding' && resp.event !== undefined) {
+					state.infoHash = safeFindSingleTagValue(resp.event, 'x');
+					wt.remove(torrent.infoHash);
+				}
+
+				state.resp = resp;
+			}
+		});
+
+		const torrent = wt.seed(state.file, options);
+
+		torrent.on('infoHash', () => {
+			console.log('infoHash:' + torrent.infoHash);
+			console.log('magnetURI:' + torrent.magnetURI);
+
+			const req = new Nip9999SeederTorrentTransformationRequestEvent(state.title, torrent.infoHash, {
+				transform: 'cool'
+			});
+			ncs.publisher.publish(Nip9999SeederTorrentTransformationRequestEvent.KIND, req.createTemplate());
+		});
+
+		torrent.on('upload', (bytes: any) => {
+			console.log(bytes);
+		});
+
+		torrent.on('error', (err: any) => {
+			console.log(err);
+		});
+
+		torrent.on('wire', (wire: any) => {
+			console.log(wire);
+		});
+	}
+
+	async function handleChange(event: any) {
+		state.file = event.target.files[0];
 	}
 </script>
 
 <div class="create-container">
 	<div class="form-card">
 		<div class="input-group">
-			<input type="text" bind:value={title} placeholder="Movie title" class="form-input" />
-			<input type="text" bind:value={imdbId} placeholder="IMDB ID" class="form-input" />
-			<input type="text" bind:value={infoHash} placeholder="Info Hash" class="form-input" />
+			<input type="text" bind:value={state.title} placeholder="Movie title" class="form-input" />
+			<input type="text" bind:value={state.imdbId} placeholder="IMDB ID" class="form-input" />
+			<input type="file" id="file" name="file" onchange={handleChange} />
+
+			{#if state.resp.state.state === null}
+				{#if state.file !== null}
+					<button class="submit-btn" onclick={() => onTranscode()}>
+						Submit to Seeder for transcoding
+						<svg class="submit-icon" viewBox="0 0 24 24">
+							<path d="M3 20v-6l8-2-8-2V4l19 8-19 8Z" />
+						</svg>
+					</button>
+				{/if}
+			{:else}
+				<div>
+					state: {state.resp.state.state}
+					<p></p>
+					msg: {state.resp.state.msg}
+				</div>
+			{/if}
+
+			<input type="text" bind:value={state.infoHash} placeholder="Info Hash" class="form-input" />
 		</div>
 
-		<button class="submit-btn" onclick={() => onCreate().then()}>
-			ZOOL
-			<svg class="submit-icon" viewBox="0 0 24 24">
-				<path d="M3 20v-6l8-2-8-2V4l19 8-19 8Z" />
-			</svg>
-		</button>
+		{#if state.infoHash !== ''}
+			<button class="submit-btn" onclick={() => onCreate().then()}>
+				Create
+				<svg class="submit-icon" viewBox="0 0 24 24">
+					<path d="M3 20v-6l8-2-8-2V4l19 8-19 8Z" />
+				</svg>
+			</button>
+		{/if}
 	</div>
 </div>
 

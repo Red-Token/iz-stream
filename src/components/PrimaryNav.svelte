@@ -8,10 +8,9 @@
 	<div class="nav-content">
 		<div class="nav-links">
 			<a href="/search" aria-current={page.url.pathname === '/search'}>Search</a>
-			<a href="/create" aria-current={page.url.pathname === '/create'}>Create</a>
 			<a href="/channels" aria-current={page.url.pathname === '/channels'}>Channels</a>
 			{#if me.pubkey !== ''}
-				<a href="/upload" aria-current={page.url.pathname === '/upload'}>Upload</a>
+				<a href="/create" aria-current={page.url.pathname === '/create'}>Create</a>
 			{/if}
 		</div>
 		<div class="login-btn">
@@ -139,8 +138,8 @@
 		}
 
 		/* .login-btn {
-					display: none; should be fix
-				} */
+							display: none; should be fix
+						} */
 		.primary-nav a {
 			font-size: 0.9rem;
 			padding: 0.3rem 0;

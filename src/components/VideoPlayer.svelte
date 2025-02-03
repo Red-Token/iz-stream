@@ -20,8 +20,8 @@
 			const videoOptions: PlayerOptions = {
 				controls: true,
 				responsive: true,
-				fluid: true,
-				poster: 'https://t4.ftcdn.net/jpg/01/22/97/01/360_F_122970161_S5JEt3v3wTdR7QXavi9seSKpuVBsUQsn.jpg'
+				fluid: true
+				// poster: 'https://t4.ftcdn.net/jpg/01/22/97/01/360_F_122970161_S5JEt3v3wTdR7QXavi9seSKpuVBsUQsn.jpg'
 				// preload: 'auto',
 				// sources: []
 			};
@@ -33,6 +33,12 @@
 
 		torrent.on('ready', () => {
 			// Add support for MPEG
+
+			torrent.files.forEach((file: any) => {
+				console.log(file.name);
+				console.log(file.streamURL);
+			});
+
 			let playFile = torrent.files.find((file: File) => {
 				return file.name.endsWith('.mpd');
 			});

@@ -41,6 +41,7 @@
 
 				if (resp.state.state === 'seeding' && resp.event !== undefined) {
 					state.infoHash = safeFindSingleTagValue(resp.event, 'x');
+					wt.remove(torrent.infoHash);
 				}
 
 				state.resp = resp;
