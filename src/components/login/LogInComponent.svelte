@@ -25,11 +25,12 @@
 		goto('/profile');
 	}
 
+	//TODO fix this trash...
 	function handleClickOutside(event) {
 		if (
 			menuButton &&
 			!menuButton.contains(event.target) &&
-			!document.querySelector('.dropdown-menu')?.contains(event.target)
+			!document.querySelector('.dropdown-menu')?.contains(event.target) //wtf
 		) {
 			closeMenu();
 		}
@@ -39,7 +40,7 @@
 		event.stopPropagation();
 		isMenuOpen = !isMenuOpen;
 		if (isMenuOpen) {
-			setTimeout(() => document.addEventListener('click', handleClickOutside));
+			setTimeout(() => document.addEventListener('click', handleClickOutside)); //wtf two
 		}
 	}
 
@@ -56,7 +57,7 @@
 			case 'ArrowDown':
 				if (isMenuOpen) {
 					event.preventDefault();
-					document.querySelector('.menu-item')?.focus();
+					document.querySelector('.menu-item'); // wtf three
 				}
 				break;
 		}
