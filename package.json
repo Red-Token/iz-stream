@@ -44,7 +44,7 @@
 		"vitest": "^2.1.8"
 	},
 	"dependencies": {
-		"@red-token/iz-svelte-library": "^0.0.12",
+		"@red-token/iz-svelte-library": "^0.0.13",
 		"@types/simple-peer": "^9.11.8",
 		"@videojs/http-streaming": "^3.16.2",
 		"@welshman/app": "0.0.29",

@@ -8,7 +8,7 @@
 	<div class="nav-content">
 		<div class="nav-links">
 			<a href="/search" aria-current={page.url.pathname === '/search'}>Search</a>
-			<a href="/channels" aria-current={page.url.pathname === '/channels'}>Channels</a>
+			<a href="/channels" data-sveltekit-preload-data aria-current={page.url.pathname === '/channels'}>Channels</a>
 			{#if me.pubkey !== ''}
 				<a href="/create" aria-current={page.url.pathname === '/create'}>Create</a>
 			{/if}

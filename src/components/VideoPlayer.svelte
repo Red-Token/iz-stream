@@ -91,7 +91,9 @@
 </script>
 
 <div class="video-container">
-	<video controls class="video-js vjs-big-play-centered" bind:this={videoElement}></video>
+	<video controls class="video-js vjs-big-play-centered" bind:this={videoElement}>
+		<track kind="captions" />
+	</video>
 </div>
 
 <style>
