@@ -7,7 +7,7 @@
 	let isPopupOpen = $state(false); // Track the popup visibility
 
 	let isMenuOpen = $state(false);
-	let menuButton;
+	let menuButton: any; //TODO replace 'any'
 
 	function openPopup() {
 		isPopupOpen = true;
@@ -26,7 +26,7 @@
 	}
 
 	//TODO fix this trash...
-	function handleClickOutside(event) {
+	function handleClickOutside(event: any) {
 		if (
 			menuButton &&
 			!menuButton.contains(event.target) &&
@@ -36,7 +36,8 @@
 		}
 	}
 
-	function toggleUserMenu(event) {
+	function toggleUserMenu(event: any) {
+		//TODO replace 'any'
 		event.stopPropagation();
 		isMenuOpen = !isMenuOpen;
 		if (isMenuOpen) {
@@ -66,26 +67,27 @@
 
 <div class="auth-container">
 	{#if me.pubkey !== ''}
-		<button
-			class="user-menu"
-			onclick={toggleUserMenu}
-			onkeydown={handleKeydown}
-			bind:this={menuButton}
-			aria-haspopup="true"
-			aria-expanded={isMenuOpen}
-			aria-label="User menu"
-		>
-			<span class="username">{me.profile?.name || 'User'}</span>
-			<div class="user-avatar">
-				{#if me.profile?.picture}
-					<img src={me.profile.picture} alt="Avatar" class="avatar-img" />
-				{:else}
-					<div class="avatar-fallback">
-						{me.profile?.name?.charAt(0) || '?'}
-					</div>
-				{/if}
-			</div>
-
+		<div>
+			<button
+				class="user-menu"
+				onclick={toggleUserMenu}
+				onkeydown={handleKeydown}
+				bind:this={menuButton}
+				aria-haspopup="true"
+				aria-expanded={isMenuOpen}
+				aria-label="User menu"
+			>
+				<span class="username">{me.profile?.name || 'User'}</span>
+				<div class="user-avatar">
+					{#if me.profile?.picture}
+						<img src={me.profile.picture} alt="Avatar" class="avatar-img" />
+					{:else}
+						<div class="avatar-fallback">
+							{me.profile?.name?.charAt(0) || '?'}
+						</div>
+					{/if}
+				</div>
+			</button>
 			{#if isMenuOpen}
 				<div class="dropdown-menu" role="menu" aria-labelledby="user-menu-button">
 					<button class="menu-item" onclick={goToProfilePage} role="menuitem" tabindex="0">
@@ -116,7 +118,7 @@
 					</button>
 				</div>
 			{/if}
-		</button>
+		</div>
 	{:else}
 		<button class="login-btn" onclick={openPopup} tabindex="0" aria-label="Login">
 			<svg class="lock-icon" viewBox="0 0 24 24">

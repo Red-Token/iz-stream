@@ -27,7 +27,7 @@
 
 	//TODO This function not working. it needs to be fixed to
 	// uploadold an image to 'https://image.nostr.build/{key}' or find a way to set base64 in the profile.picture .
-	const handleAddImage = (event, type: imageLoad) => {
+	const handleAddImage = (event: any, type: imageLoad) => {
 		const file = event.target?.files[0];
 		if (file) {
 			const reader = new FileReader();
