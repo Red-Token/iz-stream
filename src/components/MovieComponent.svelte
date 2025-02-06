@@ -15,7 +15,7 @@
 	});
 
 	function view(id: string): any {
-		console.log(id);
+		// console.log(id);
 		goto('/view/imdb/' + id);
 	}
 </script>

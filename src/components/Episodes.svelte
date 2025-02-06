@@ -16,10 +16,10 @@
 	// });
 	const selectEpisode = (selected: number) => {
 		currentEpisode = episodes[selected];
-		console.log(selected);
+		// console.log(selected);
 	};
 	function view(id: string): any {
-		console.log(id);
+		// console.log(id);
 		goto('/view/imdb/' + id);
 	}
 </script>
