@@ -10,8 +10,11 @@
 	import PrimaryNav from '@src/components/PrimaryNav.svelte';
 	import {setContext} from '@welshman/lib';
 	import {getDefaultAppContext, getDefaultNetContext} from '@welshman/app';
+	import {Log} from '@src/services/Logger';
 
-	console.log(import.meta.resolve('./org/nostr/ses/Subscription'));
+	const layout = Log.child({component: '+layout.svelte'});
+
+	layout.info(import.meta.resolve('./org/nostr/ses/Subscription'));
 
 	let {children} = $props();
 	let isExpanded: boolean = $state(true);
@@ -34,14 +37,14 @@
 			// 		const relays = [normalizeRelayUrl(url)];
 
 			community.notifications.on(NotificationEventType.TORRENT, (event) => {
-				console.log('updating', event);
+				layout.info('update torrent event', event);
 			});
 
 			community.notifications.on(NotificationEventType.PROFILE, (event) => {
 				if (event instanceof Nip01UserMetaDataEvent) {
 					if (event.event === undefined) throw new Error('event event is null');
 
-					console.log('profile', event.event.pubkey, event.profile);
+					layout.info('profile', event.event.pubkey, event.profile);
 					profiles.set(event.event.pubkey, event.profile);
 					return;
 				}
