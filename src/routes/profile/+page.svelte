@@ -28,11 +28,11 @@
 	//TODO This function not working. it needs to be fixed to
 	// uploadold an image to 'https://image.nostr.build/{key}' or find a way to set base64 in the profile.picture .
 	const handleAddImage = (event: any, type: imageLoad) => {
-		const file = event.target?.files[0];
+		const file: File = event?.target?.files[0];
 		if (file) {
 			const reader = new FileReader();
 			reader.onload = (e) => {
-				//profile[type] = e.target?.result;
+				if (profile) profile[type] = e.target!.result; //TODO fix it
 			};
 			reader.readAsDataURL(file);
 		}
@@ -126,21 +126,25 @@
 
 		<div class="form-fields">
 			<div class="form-row">
+				<!-- svelte-ignore a11y_label_has_associated_control -->
 				<label>Name:</label>
 				<input type="text" bind:value={profile.name} class="form-input" />
 			</div>
 
 			<div class="form-row">
+				<!-- svelte-ignore a11y_label_has_associated_control -->
 				<label>Display Name:</label>
 				<input type="text" bind:value={profile.display_name} class="form-input" />
 			</div>
 
 			<div class="form-row">
+				<!-- svelte-ignore a11y_label_has_associated_control -->
 				<label>About:</label>
 				<textarea bind:value={profile.about} class="form-input textarea"></textarea>
 			</div>
 
 			<div class="form-row">
+				<!-- svelte-ignore a11y_label_has_associated_control -->
 				<label>Website:</label>
 				<input type="url" bind:value={profile.website} class="form-input" />
 				{#if profile.website}

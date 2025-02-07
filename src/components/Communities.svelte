@@ -1,8 +1,13 @@
 <script lang="ts">
 	import {onMount} from 'svelte';
 	import {communities} from '@src/stores/community.svelte';
+	import {goto} from '$app/navigation';
+	import {Log} from '@src/services/Logger';
 
 	let {isExpanded} = $props();
+	let communitiesList = communities;
+
+	Log.warn('Communities.svelte', communitiesList[0].image);
 
 	// const communities = [
 	// 	{id: 1, name: 'Welshman', avatar: '🎨', online: true},
@@ -25,7 +30,11 @@ onmouseleave={isExpanded ? undefined : () => temporaryExpand(false)} -->
 				<a href="/communities/{community.name}" class="community-item" title={community.name}>
 					<div class="avatar-container">
 						<div class="avatar {true && 'online'}">
-							{community.name.slice(0, 2)}
+							{#if community.image}
+								<img class="avatar" src={community.image} alt="" />
+							{:else}
+								{community.name.slice(0, 2)}
+							{/if}
 						</div>
 					</div>
 					<span class="community-name">
