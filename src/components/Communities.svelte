@@ -33,6 +33,7 @@ onmouseleave={isExpanded ? undefined : () => temporaryExpand(false)} -->
 					</span>
 				</a>
 			{/each}
+			<button>ADD</button>
 		</div>
 	</nav>
 </div>

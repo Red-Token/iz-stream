@@ -6,25 +6,25 @@
 	import {type TrustedEvent} from '@welshman/util';
 	import {goto} from '$app/navigation';
 	import {profiles} from '../../../../stores/profile.svelte';
-	import {Nip35TorrentEvent, Nip35TorrentEventBuilder} from 'iz-nostrlib/dist/org/nostr/nip35/Nip35TorrentEvent';
-	import {NostrProfileMetaData} from 'iz-nostrlib/dist/org/nostr/nip01/NostrProfileMetaData';
+	import {Nip35TorrentEvent} from 'iz-nostrlib/dist/org/nostr/nip35/Nip35TorrentEvent';
 	import {communities} from '@src/stores/community.svelte';
-	import type {CommunityIdentity} from 'iz-nostrlib/dist/org/nostr/communities/Community';
-	import {Follow, Nip02FollowListEvent} from 'iz-nostrlib/dist/org/nostr/nip02/Nip02FollowListEvent';
+	import {Followee, Nip02FollowListEvent} from 'iz-nostrlib/dist/org/nostr/nip02/Nip02FollowListEvent';
+	import {NostrUserProfileMetaData} from 'iz-nostrlib/dist/org/nostr/nip01/NostrUserProfileMetaData';
+	import {CommunityIdentity, type Identity} from 'iz-nostrlib/dist/org/nostr/communities/CommunityNostrContext';
 
 	let events: Nip35TorrentEvent[] = $state([]);
 
 	// TODO mage a get or default
-	let channelOwner: NostrProfileMetaData = $derived.by(() => {
+	let channelOwner: NostrUserProfileMetaData = $derived.by(() => {
 		const profile = profiles.get(page.params.pubkey);
-		return profile !== undefined ? profile : new NostrProfileMetaData();
+		return profile?.nip01Event?.profile ?? new NostrUserProfileMetaData();
 	});
 
 	onMount(async () => {
 		communities.forEach((community) => {
-			const session = new SynchronisedSession(community.relays);
+			const session = new SynchronisedSession(community.relays.value);
 
-			for (const relay of community.relays) {
+			for (const relay of community.relays.value) {
 				const sub = new Subscription(
 					session,
 					[
@@ -39,10 +39,9 @@
 
 			session.eventStream.emitter.on(EventType.DISCOVERED, (event: TrustedEvent) => {
 				if (event.kind === Nip35TorrentEvent.KIND) {
-					const te = new Nip35TorrentEventBuilder(event).build();
+					const te = Nip35TorrentEvent.buildFromEvent(event);
 
 					if (te.event === undefined) throw Error(`Unknown event: ${event}`);
-
 					events.push(te);
 				} else {
 					console.log('Unknown event ', event);
@@ -67,13 +66,17 @@
 	}
 
 	function follow() {
-		// TODO: We have to make this more precis now we follow a person with all identities and in all communities
-		communities.forEach((community) => {
-			community.identities.forEach((communityIdentity: CommunityIdentity) => {
-				const msg = new Nip02FollowListEvent([...communityIdentity.followList, new Follow(page.params.pubkey)]);
-				communityIdentity.followPublisher.publish(Nip02FollowListEvent.KIND, msg.createTemplate());
-			});
-		});
+
+		// BELOW IS NOT HOW WE SHALL FOLLOW, we have a GLOBAL follow list
+
+		// // TODO: We have to make this more precis now we follow a person with all identities and in all communities
+		// communities.forEach((community) => {
+		//
+		// 	community.identities.value.forEach((communityIdentity: CommunityIdentity) => {
+		// 		const msg = new Nip02FollowListEvent([...communityIdentity., new Followee(page.params.pubkey)]);
+		// 		communityIdentity.followPublisher.publish(Nip02FollowListEvent.KIND, msg.opts);
+		// 	});
+		// });
 	}
 </script>
 
@@ -133,220 +136,219 @@
 </div>
 
 <style>
-	.channel-container {
-		max-width: 1200px;
-		margin: 0 auto;
-		padding: 2rem 1rem;
-	}
+    .channel-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+    }
 
-	.channel-header {
-		background: var(--bg-1);
-		border-radius: 16px;
-		border: 1px solid var(--border-color);
-		box-shadow: 0 4px 12px var(--shadow-color);
-		margin-bottom: 2rem;
-		overflow: hidden;
-	}
+    .channel-header {
+        background: var(--bg-1);
+        border-radius: 16px;
+        border: 1px solid var(--border-color);
+        box-shadow: 0 4px 12px var(--shadow-color);
+        margin-bottom: 2rem;
+        overflow: hidden;
+    }
 
-	.banner-container {
-		position: relative;
-		height: 240px;
-		background: var(--bg-2);
-	}
+    .banner-container {
+        position: relative;
+        height: 240px;
+        background: var(--bg-2);
+    }
 
-	.channel-banner {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		opacity: 0.9;
-	}
+    .channel-banner {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.9;
+    }
 
-	.banner-placeholder {
-		height: 100%;
-		background: linear-gradient(135deg, var(--bg-2) 0%, var(--border-color) 100%);
-	}
+    .banner-placeholder {
+        height: 100%;
+        background: linear-gradient(135deg, var(--bg-2) 0%, var(--border-color) 100%);
+    }
 
-	.channel-avatar {
-		position: absolute;
-		bottom: -48px;
-		left: 32px;
-		width: 120px;
-		height: 120px;
-		border-radius: 50%;
-		border: 3px solid var(--bg-1);
-		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-		object-fit: cover;
-		/* TODO fix the margin between the avatar and the name. */
-	}
+    .channel-avatar {
+        position: absolute;
+        bottom: -48px;
+        left: 32px;
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        border: 3px solid var(--bg-1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        object-fit: cover;
+        /* TODO fix the margin between the avatar and the name. */
+    }
 
-	.channel-info {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		padding: 2rem 32px 32px;
-	}
+    .channel-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 2rem 32px 32px;
+    }
 
-	.channel-name {
-		font-size: 2rem;
-		margin: 0 0 0.5rem;
-		color: var(--text-primary);
-	}
+    .channel-name {
+        font-size: 2rem;
+        margin: 0 0 0.5rem;
+        color: var(--text-primary);
+    }
 
-	.channel-pubkey {
-		font-size: 0.9rem;
-		color: var(--text-tertiary);
-		word-break: break-all;
-	}
+    .channel-pubkey {
+        font-size: 0.9rem;
+        color: var(--text-tertiary);
+        word-break: break-all;
+    }
 
-	.follow-btn {
-		display: flex;
-		align-items: center;
-		gap: 0.75rem;
-		padding: 0.75rem 1.5rem;
-		background: var(--accent-color);
-		color: white;
-		border: none;
-		border-radius: 8px;
-		font-size: 1rem;
-		cursor: pointer;
-		transition:
-			transform 0.2s ease,
-			background 0.3s ease;
-	}
+    .follow-btn {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.75rem 1.5rem;
+        background: var(--accent-color);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: transform 0.2s ease,
+        background 0.3s ease;
+    }
 
-	.follow-btn:hover {
-		background: var(--accent-hover);
-		transform: translateY(-1px);
-	}
+    .follow-btn:hover {
+        background: var(--accent-hover);
+        transform: translateY(-1px);
+    }
 
-	.follow-icon {
-		width: 20px;
-		height: 20px;
-		fill: currentColor;
-	}
+    .follow-icon {
+        width: 20px;
+        height: 20px;
+        fill: currentColor;
+    }
 
-	.events-list {
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-		gap: 1.5rem;
-	}
+    .events-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+    }
 
-	.event-card {
-		background: var(--bg-1);
-		position: relative;
-		padding-right: 120px;
-		border-radius: 12px;
-		border: 1px solid var(--border-color);
-		padding: 1.5rem;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		transition: transform 0.3s ease;
-	}
+    .event-card {
+        background: var(--bg-1);
+        position: relative;
+        padding-right: 120px;
+        border-radius: 12px;
+        border: 1px solid var(--border-color);
+        padding: 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: transform 0.3s ease;
+    }
 
-	.event-card:hover {
-		transform: translateY(-3px);
-		box-shadow: 0 4px 12px var(--shadow-hover);
-	}
+    .event-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 12px var(--shadow-hover);
+    }
 
-	.event-content {
-		flex: 1;
-		margin-right: 1rem;
-		max-width: calc(100% - 140px);
-		overflow: hidden;
-	}
+    .event-content {
+        flex: 1;
+        margin-right: 1rem;
+        max-width: calc(100% - 140px);
+        overflow: hidden;
+    }
 
-	.event-title {
-		font-size: 1.1rem;
-		margin: 0 0 0.5rem;
-		color: var(--text-primary);
-	}
+    .event-title {
+        font-size: 1.1rem;
+        margin: 0 0 0.5rem;
+        color: var(--text-primary);
+    }
 
-	.event-x {
-		font-size: 0.9rem;
-		color: var(--text-secondary);
-		margin: 0;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		display: -webkit-box;
-		-webkit-line-clamp: 2;
-		-webkit-box-orient: vertical;
-	}
+    .event-x {
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        margin: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
 
-	.view-btn {
-		position: absolute;
-		top: 50%;
-		margin-left: 0;
-		display: flex;
-		right: 1.5rem;
-		background: var(--bg-2);
-		color: var(--fg-2);
-		align-items: center;
-		gap: 0.5rem;
-		padding: 0.5rem 1.25rem;
-		background: transparent;
-		border: 2px solid var(--border-color);
-		border-radius: 6px;
-		transform: translateY(-50%);
-		transition: all 0.3s ease;
-		margin-left: auto;
-	}
+    .view-btn {
+        position: absolute;
+        top: 50%;
+        margin-left: 0;
+        display: flex;
+        right: 1.5rem;
+        background: var(--bg-2);
+        color: var(--fg-2);
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1.25rem;
+        background: transparent;
+        border: 2px solid var(--border-color);
+        border-radius: 6px;
+        transform: translateY(-50%);
+        transition: all 0.3s ease;
+        margin-left: auto;
+    }
 
-	.view-btn:hover {
-		background: var(--accent-color);
-		color: white;
-	}
+    .view-btn:hover {
+        background: var(--accent-color);
+        color: white;
+    }
 
-	@media (max-width: 768px) {
-		.event-card {
-			padding-right: 1rem;
-			padding-bottom: 3.5rem;
-		}
+    @media (max-width: 768px) {
+        .event-card {
+            padding-right: 1rem;
+            padding-bottom: 3.5rem;
+        }
 
-		.channel-header {
-			border-radius: 12px;
-		}
+        .channel-header {
+            border-radius: 12px;
+        }
 
-		.banner-container {
-			height: 180px;
-		}
+        .banner-container {
+            height: 180px;
+        }
 
-		.channel-avatar {
-			width: 80px;
-			height: 80px;
-			bottom: -32px;
-			left: 16px;
-		}
+        .channel-avatar {
+            width: 80px;
+            height: 80px;
+            bottom: -32px;
+            left: 16px;
+        }
 
-		.channel-info {
-			flex-direction: column;
-			align-items: flex-start;
-			padding: 1.5rem 16px;
-		}
+        .channel-info {
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 1.5rem 16px;
+        }
 
-		.channel-name {
-			font-size: 1.5rem;
-		}
+        .channel-name {
+            font-size: 1.5rem;
+        }
 
-		.follow-btn {
-			margin-top: 1rem;
-			width: 100%;
-			justify-content: center;
-		}
+        .follow-btn {
+            margin-top: 1rem;
+            width: 100%;
+            justify-content: center;
+        }
 
-		.view-btn {
-			top: auto;
-			bottom: 1rem;
-			right: 1rem;
-			transform: none;
-		}
+        .view-btn {
+            top: auto;
+            bottom: 1rem;
+            right: 1rem;
+            transform: none;
+        }
 
-		.events-list {
-			grid-template-columns: 1fr;
-		}
+        .events-list {
+            grid-template-columns: 1fr;
+        }
 
-		.event-content {
-			max-width: 100%;
-		}
-	}
+        .event-content {
+            max-width: 100%;
+        }
+    }
 </style>

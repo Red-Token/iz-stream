@@ -3,13 +3,10 @@
 	import '@src/style/tailwind.css';
 	import Communities from '@src/components/Communities.svelte';
 	import {onMount} from 'svelte';
-	import {communities} from '@src/stores/community.svelte';
-	import {type Community, NotificationEventType} from 'iz-nostrlib/dist/org/nostr/communities/Community';
-	import {Nip01UserMetaDataEvent} from 'iz-nostrlib/dist/org/nostr/nip01/Nip01UserMetaData';
-	import {profiles} from '@src/stores/profile.svelte';
 	import PrimaryNav from '@src/components/PrimaryNav.svelte';
 	import {setContext} from '@welshman/lib';
 	import {getDefaultAppContext, getDefaultNetContext} from '@welshman/app';
+	import {normalizeRelayUrl} from '@welshman/util';
 
 	console.log(import.meta.resolve('./org/nostr/ses/Subscription'));
 
@@ -27,28 +24,68 @@
 			app: getDefaultAppContext()
 		});
 
-		communities.forEach((community: Community) => {
-			community.connect();
+		// // load the master relays
+		// globalState.relays = [];
 
-			// 		const url = 'wss://relay.stream.labs.h3.se';
-			// 		const relays = [normalizeRelayUrl(url)];
+		// const url = 'wss://relay.stream.labs.h3.se';
+		const url = 'wss://relay.lxc';
+		const relays = [normalizeRelayUrl(url)];
 
-			community.notifications.on(NotificationEventType.TORRENT, (event) => {
-				console.log('updating', event);
-			});
+		// const globalCommunity = new GlobalNostrContext(relays);
+		//
+		// globalCommunity.profileService.nip01Map.addListener((keys: string[]) => {
+		// 	for(let key of keys) {
+		// 		console.log('GESUND');
+		// 		const profile = getOrCreateProfile(key);
+		// 		profile.nip01Event = globalCommunity.profileService.nip01Map.value.get(key)
+		// 	}
+		// });
+		//
+		// globalCommunity.profileService.nip65Map.addListener((keys: string[]) => {
+		// 	for(let key of keys) {
+		// 		console.log('GESUND2');
+		// 		const profile = getOrCreateProfile(key);
+		// 		profile.nip65Event = globalCommunity.profileService.nip65Map.value.get(key)
+		// 	}
+		// });
 
-			community.notifications.on(NotificationEventType.PROFILE, (event) => {
-				if (event instanceof Nip01UserMetaDataEvent) {
-					if (event.event === undefined) throw new Error('event event is null');
+		// const globalCommunity = new CommunityNostrContext('globalNostrCommunity', relays, '');
 
-					console.log('profile', event.event.pubkey, event.profile);
-					profiles.set(event.event.pubkey, event.profile);
-					return;
-				}
+		// globalCommunity.notifications.on(NotificationEventType.PROFILE, (event) => {
+		// 	if (event instanceof Nip01UserMetaDataEvent) {
+		// 		if (event.event === undefined) throw new Error('event event is null');
+		//
+		// 		console.log('profile', event.event.pubkey, event.profile);
+		// 		profiles.set(event.event.pubkey, event.profile);
+		//
+		// 		return;
+		// 	}
+		//
+		// 	throw new Error('Unknown event');
+		// });
 
-				throw new Error('Unknown event');
-			});
-		});
+		// communities.forEach((community: CommunityNostrContext) => {
+		// 	community.connect();
+		//
+		// 	// 		const url = 'wss://relay.stream.labs.h3.se';
+		// 	// 		const relays = [normalizeRelayUrl(url)];
+		//
+		// 	community.notifications.on(NotificationEventType.TORRENT, (event) => {
+		// 		console.log('updating', event);
+		// 	});
+		//
+		// 	community.notifications.on(NotificationEventType.PROFILE, (event) => {
+		// 		if (event instanceof Nip01UserMetaDataEvent) {
+		// 			if (event.event === undefined) throw new Error('event event is null');
+		//
+		// 			console.log('profile', event.event.pubkey, event.profile);
+		// 			profiles.set(event.event.pubkey, event.profile);
+		// 			return;
+		// 		}
+		//
+		// 		throw new Error('Unknown event');
+		// 	});
+		// });
 		//
 		//
 		// const url = 'wss://relay.stream.labs.h3.se';
@@ -104,66 +141,68 @@
 </main>
 
 <style>
-	main {
-		min-height: 100vh;
-	}
+    main {
+        min-height: 100vh;
+    }
 
-	.content-area {
-		flex: 1;
-		margin-left: calc(-1 * var(--sidebar-width));
-		transition: margin-left 0.3s ease;
-	}
+    .content-area {
+        flex: 1;
+        margin-left: calc(-1 * var(--sidebar-width));
+        transition: margin-left 0.3s ease;
+    }
 
-	.sidebar-toggle {
-		position: absolute;
-		right: -40px;
-		top: 20px;
-		width: 32px;
-		height: 32px;
-		z-index: 1000;
-		background: var(--bg-1);
-		border: 2px solid var(--border-color);
-		border-radius: 8px;
-		cursor: pointer;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		transition: all 0.3s ease;
-		box-shadow: 0 2px 8px rgba(80, 80, 80, 0.1);
-		transform: translateX(50%);
-	}
+    .sidebar-toggle {
+        position: absolute;
+        right: -40px;
+        top: 20px;
+        width: 32px;
+        height: 32px;
+        z-index: 1000;
+        background: var(--bg-1);
+        border: 2px solid var(--border-color);
+        border-radius: 8px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(80, 80, 80, 0.1);
+        transform: translateX(50%);
+    }
 
-	.sidebar-toggle:hover {
-		background: var(--bg-2);
-	}
+    .sidebar-toggle:hover {
+        background: var(--bg-2);
+    }
 
-	.left-sidebar {
-		position: fixed;
-		top: 0;
-		left: 0;
-		height: 100%;
-		width: var(--sidebar-width);
-		transform: translateX(calc(-1 * var(--sidebar-width)));
-		transition: transform 0.3s ease;
-	}
+    .left-sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: var(--sidebar-width);
+        transform: translateX(calc(-1 * var(--sidebar-width)));
+        transition: transform 0.3s ease;
+    }
 
-	.left-sidebar.expanded {
-		width: 80px;
-		transform: translateX(0);
-	}
+    .left-sidebar.expanded {
+        width: 80px;
+        transform: translateX(0);
+    }
 
-	.left-sidebar.expanded ~ .content-area {
-		margin-left: var(--sidebar-width);
-	}
-	@media (max-width: 768px) {
-		main {
-			margin-left: 0 !important;
-		}
-		.sidebar-toggle {
-			right: -36px;
-			bottom: 16px;
-			width: 28px;
-			height: 28px;
-		}
-	}
+    .left-sidebar.expanded ~ .content-area {
+        margin-left: var(--sidebar-width);
+    }
+
+    @media (max-width: 768px) {
+        main {
+            margin-left: 0 !important;
+        }
+
+        .sidebar-toggle {
+            right: -36px;
+            bottom: 16px;
+            width: 28px;
+            height: 28px;
+        }
+    }
 </style>

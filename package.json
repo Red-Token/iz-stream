@@ -44,6 +44,7 @@
 		"vitest": "^2.1.8"
 	},
 	"dependencies": {
+		"@noble/hashes": "^1.5.0",
 		"@red-token/iz-svelte-library": "^0.0.12",
 		"@types/simple-peer": "^9.11.8",
 		"@videojs/http-streaming": "^3.16.2",
@@ -56,9 +57,10 @@
 		"@welshman/signer": "0.0.14",
 		"@welshman/store": "0.0.12",
 		"@welshman/util": "0.0.45",
-		"iz-nostrlib": "^0.1.7",
+		"iz-nostrlib": "^0.1.13-2",
 		"leaflet": "^1.9.4",
 		"ngeohash": "^0.6.3",
+		"nostr-tools": "^2.10.4",
 		"parse-torrent": "^11.0.17",
 		"simple-peer": "^9.11.1",
 		"svelte-routing": "^2.13.0",

@@ -107,7 +107,9 @@
 			console.log('infoHash:' + torrent.infoHash);
 			console.log('magnetURI:' + torrent.magnetURI);
 
-			const req = new Nip9999SeederTorrentTransformationRequestEvent(state.title, torrent.infoHash, {
+			const botPubkey = 'b670e0e20fb6b7e96b0349139c03150d692a7403c986099a1aadf467daa67909'
+
+			const req = new Nip9999SeederTorrentTransformationRequestEvent(botPubkey, state.title, torrent.infoHash, {
 				transform: 'cool'
 			});
 			ncs.publisher.publish(Nip9999SeederTorrentTransformationRequestEvent.KIND, req.createTemplate());

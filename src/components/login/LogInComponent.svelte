@@ -74,13 +74,13 @@
 			aria-expanded={isMenuOpen}
 			aria-label="User menu"
 		>
-			<span class="username">{me.profile?.name || 'User'}</span>
+			<span class="username">{me.profile?.nip01Event.profile.name ?? 'User'}</span>
 			<div class="user-avatar">
-				{#if me.profile?.picture}
-					<img src={me.profile.picture} alt="Avatar" class="avatar-img" />
+				{#if me.profile?.nip01Event.profile.picture}
+					<img src={me.profile?.nip01Event.profile.picture} alt="Avatar" class="avatar-img" />
 				{:else}
 					<div class="avatar-fallback">
-						{me.profile?.name?.charAt(0) || '?'}
+						{me.profile?.nip01Event.profile.name?.charAt(0) || '?'}
 					</div>
 				{/if}
 			</div>
@@ -131,182 +131,182 @@
 </div>
 
 <style>
-	.auth-container {
-		position: relative;
-		margin-left: auto;
-	}
+    .auth-container {
+        position: relative;
+        margin-left: auto;
+    }
 
-	.user-menu {
-		display: flex;
-		align-items: center;
-		gap: 0rem;
-		padding: 0.5rem 0.5rem 0.5rem 1rem;
-		border-radius: 8px;
-		cursor: pointer;
-		transition: background 0.3s ease;
-		position: relative;
-		background: none;
-		border: none;
-		color: inherit;
-	}
+    .user-menu {
+        display: flex;
+        align-items: center;
+        gap: 0rem;
+        padding: 0.5rem 0.5rem 0.5rem 1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+        position: relative;
+        background: none;
+        border: none;
+        color: inherit;
+    }
 
-	.user-menu:hover {
-		background: var(--bg-2);
-	}
+    .user-menu:hover {
+        background: var(--bg-2);
+    }
 
-	.user-avatar {
-		width: 36px;
-		height: 36px;
-		border-radius: 50%;
-		overflow: hidden;
-		background: var(--accent-color);
-		flex-shrink: 0;
-	}
+    .user-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        overflow: hidden;
+        background: var(--accent-color);
+        flex-shrink: 0;
+    }
 
-	.avatar-img {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-	}
+    .avatar-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
 
-	.avatar-fallback {
-		width: 100%;
-		height: 100%;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		color: white;
-		font-weight: 500;
-	}
+    .avatar-fallback {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 500;
+    }
 
-	.username {
-		margin-right: 0.75rem;
-		font-weight: 500;
-		color: var(--text-primary);
-		max-width: 120px;
-		overflow: hidden;
-		text-overflow: ellipsis;
-	}
+    .username {
+        margin-right: 0.75rem;
+        font-weight: 500;
+        color: var(--text-primary);
+        max-width: 120px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 
-	.dropdown-menu {
-		position: absolute;
-		top: calc(100% + 8px);
-		right: 0;
-		background: var(--bg-1);
-		border: 1px solid var(--border-color);
-		border-radius: var(--border-radius);
-		box-shadow: 0 4px 12px var(--shadow-color);
-		min-width: 200px;
-		z-index: 100;
-		animation: slideDown 0.2s ease;
-	}
+    .dropdown-menu {
+        position: absolute;
+        top: calc(100% + 8px);
+        right: 0;
+        background: var(--bg-1);
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius);
+        box-shadow: 0 4px 12px var(--shadow-color);
+        min-width: 200px;
+        z-index: 100;
+        animation: slideDown 0.2s ease;
+    }
 
-	.menu-item {
-		display: flex;
-		align-items: center;
-		gap: 0.75rem;
-		width: 100%;
-		padding: 0.75rem 1rem;
-		background: none;
-		border: none;
-		color: var(--text-primary);
-		text-align: left;
-		text-decoration: none;
-		transition: background 0.2s ease;
-		font-size: 0.95rem;
-	}
+    .menu-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        width: 100%;
+        padding: 0.75rem 1rem;
+        background: none;
+        border: none;
+        color: var(--text-primary);
+        text-align: left;
+        text-decoration: none;
+        transition: background 0.2s ease;
+        font-size: 0.95rem;
+    }
 
-	.menu-item:hover {
-		background: var(--bg-2);
-	}
+    .menu-item:hover {
+        background: var(--bg-2);
+    }
 
-	.lock-icon {
-		fill: #ef4444;
-	}
+    .lock-icon {
+        fill: #ef4444;
+    }
 
-	.profile-icon {
-		fill: var(--fg-1);
-	}
+    .profile-icon {
+        fill: var(--fg-1);
+    }
 
-	.menu-icon {
-		width: 18px;
-		height: 18px;
-		flex-shrink: 0;
-	}
+    .menu-icon {
+        width: 18px;
+        height: 18px;
+        flex-shrink: 0;
+    }
 
-	.logout {
-		color: #ef4444;
-	}
+    .logout {
+        color: #ef4444;
+    }
 
-	.login-btn {
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-		padding: 0.3rem 0.6rem;
-		background: var(--accent-color);
-		color: white;
-		border: none;
-		border-radius: 8px;
-		transition: filter 0.3s ease;
-		cursor: pointer;
-	}
+    .login-btn {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.3rem 0.6rem;
+        background: var(--accent-color);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        transition: filter 0.3s ease;
+        cursor: pointer;
+    }
 
-	.login-btn:hover {
-		filter: brightness(1.1);
-	}
+    .login-btn:hover {
+        filter: brightness(1.1);
+    }
 
-	.lock-icon {
-		width: 18px;
-		height: 18px;
-		fill: currentColor;
-	}
+    .lock-icon {
+        width: 18px;
+        height: 18px;
+        fill: currentColor;
+    }
 
-	.login-text {
-		font-weight: 500;
-	}
+    .login-text {
+        font-weight: 500;
+    }
 
-	@keyframes slideDown {
-		from {
-			opacity: 0;
-			transform: translateY(-10px);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
-	}
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
 
-	@media (max-width: 768px) {
-		.username {
-			margin-right: 0.5rem;
-			max-width: 100px;
-			display: none;
-		}
+    @media (max-width: 768px) {
+        .username {
+            margin-right: 0.5rem;
+            max-width: 100px;
+            display: none;
+        }
 
-		.user-menu {
-			padding: 0.5rem;
-		}
+        .user-menu {
+            padding: 0.5rem;
+        }
 
-		.dropdown-menu {
-			min-width: 180px;
-			right: -10px;
-		}
-	}
+        .dropdown-menu {
+            min-width: 180px;
+            right: -10px;
+        }
+    }
 
-	@media (max-width: 480px) {
-		.login-text {
-			display: none;
-		}
+    @media (max-width: 480px) {
+        .login-text {
+            display: none;
+        }
 
-		.login-btn {
-			padding: 0.5rem;
-		}
-	}
+        .login-btn {
+            padding: 0.5rem;
+        }
+    }
 
-	/* Focus styles */
-	.user-menu:focus-visible,
-	.menu-item:focus-visible {
-		outline: 2px solid var(--accent-color);
-		outline-offset: 2px;
-	}
+    /* Focus styles */
+    .user-menu:focus-visible,
+    .menu-item:focus-visible {
+        outline: 2px solid var(--accent-color);
+        outline-offset: 2px;
+    }
 </style>

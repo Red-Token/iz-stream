@@ -4,8 +4,8 @@
 	import {EventType, Publisher, Subscription, SynchronisedSession} from 'iz-nostrlib';
 	import {s} from '../../stores/assetStore.svelte';
 	import {SvelteMap} from 'svelte/reactivity';
-	import {Nip25ReactionsEvent, Nip25ReactionsEventBuilder} from 'iz-nostrlib/dist/org/nostr/nip25/Nip25Reactions';
-	import {createRefETags} from 'iz-nostrlib/dist/org/nostr/nip35/Nip35TorrentEvent';
+	import {Nip25ReactionsEvent} from 'iz-nostrlib/dist/org/nostr/nip25/Nip25Reactions';
+	import {createRefETags} from 'iz-nostrlib/dist/org/nostr/util/scraps';
 	import {communities} from '@src/stores/community.svelte';
 
 	let session: SynchronisedSession;
@@ -26,37 +26,37 @@
 
 	onMount(async () => {
 		communities.forEach((community) => {
-			const session = new SynchronisedSession(community.relays);
-
-			for (const relay of community.relays) {
-				const sub = new Subscription(
-					session,
-					[
-						{
-							kinds: [Nip25ReactionsEvent.KIND],
-							'#e': s?.playing?.event?.id
-						}
-					],
-					[relay]
-				);
-			}
-
-			session.eventStream.emitter.on(EventType.DISCOVERED, (event: TrustedEvent) => {
-				if (event.kind === Nip25ReactionsEvent.KIND) {
-					const re = new Nip25ReactionsEventBuilder(event).build();
-
-					if (re.event === undefined) throw new Error('How did this happen');
-
-					reactions.set(re.event.pubkey, re);
-				} else {
-					console.log('Unknown event ', event);
-				}
-			});
-
-			for (const ci of community.identities.values()) {
-				const p = new Publisher(session, ci);
-				publishers.push(p);
-			}
+			// const session = new SynchronisedSession(community.relays);
+			//
+			// for (const relay of community.relays) {
+			// 	const sub = new Subscription(
+			// 		session,
+			// 		[
+			// 			{
+			// 				kinds: [Nip25ReactionsEvent.KIND],
+			// 				'#e': s?.playing?.event?.id
+			// 			}
+			// 		],
+			// 		[relay]
+			// 	);
+			// }
+			//
+			// session.eventStream.emitter.on(EventType.DISCOVERED, (event: TrustedEvent) => {
+			// 	if (event.kind === Nip25ReactionsEvent.KIND) {
+			// 		const re = new Nip25ReactionsEventBuilder(event).build();
+			//
+			// 		if (re.event === undefined) throw new Error('How did this happen');
+			//
+			// 		reactions.set(re.event.pubkey, re);
+			// 	} else {
+			// 		console.log('Unknown event ', event);
+			// 	}
+			// });
+			//
+			// for (const ci of community.identities.values()) {
+			// 	const p = new Publisher(session, ci);
+			// 	publishers.push(p);
+			// }
 		});
 	});
 
@@ -66,7 +66,7 @@
 		const nip25ReactionsEvent = new Nip25ReactionsEvent('+', createRefETags(s.playing.event));
 		liked = true; //TODO Need get status from nostr
 		publishers.forEach((p: Publisher) => {
-			p.publish(Nip25ReactionsEvent.KIND, nip25ReactionsEvent.createTemplate());
+			p.publish(nip25ReactionsEvent.kind, nip25ReactionsEvent.opts);
 		});
 	}
 
