@@ -7,7 +7,7 @@
 	let {isExpanded} = $props();
 	let communitiesList = communities;
 
-	Log.warn('Communities.svelte', communitiesList[0].image);
+	//Log.warn('Communities.svelte', communitiesList[0].image);
 
 	// const communities = [
 	// 	{id: 1, name: 'Welshman', avatar: '🎨', online: true},
