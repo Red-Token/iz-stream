@@ -50,7 +50,8 @@
 		document.removeEventListener('click', handleClickOutside);
 	}
 
-	function handleKeydown(event) {
+	function handleKeydown(event: any) {
+		//TODO: change it
 		switch (event.key) {
 			case 'Escape':
 				closeMenu();
@@ -77,13 +78,13 @@
 				aria-expanded={isMenuOpen}
 				aria-label="User menu"
 			>
-				<span class="username">{me.profile?.name || 'User'}</span>
+				<span class="username">{me.profile?.nip01Event.profile.name ?? 'User'}</span>
 				<div class="user-avatar">
-					{#if me.profile?.picture}
-						<img src={me.profile.picture} alt="Avatar" class="avatar-img" />
+					{#if me.profile?.nip01Event.profile.picture}
+						<img src={me.profile?.nip01Event.profile.picture} alt="Avatar" class="avatar-img" />
 					{:else}
 						<div class="avatar-fallback">
-							{me.profile?.name?.charAt(0) || '?'}
+							{me.profile?.nip01Event.profile.name?.charAt(0) || '?'}
 						</div>
 					{/if}
 				</div>

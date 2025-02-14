@@ -6,7 +6,7 @@
 	import {wt} from '@src/stores/wtZool.svelte';
 	import TorrentLike from '@src/components/torrenttalk/TorrentLike.svelte';
 	import {s} from '@src/stores/assetStore.svelte';
-	import {Nip35TorrentEvent, Nip35TorrentEventBuilder} from 'iz-nostrlib/dist/org/nostr/nip35/Nip35TorrentEvent';
+	import {Nip35TorrentEvent} from 'iz-nostrlib/dist/org/nostr/nip35/Nip35TorrentEvent';
 	import {communities} from '@src/stores/community.svelte';
 
 	let options = {
@@ -57,25 +57,27 @@
 	}
 
 	onMount(async () => {
+		//TODO MAKE A GLOBAL SEARCH
+
 		communities.forEach((communitie) => {
-			const session: SynchronisedSession = new SynchronisedSession(communitie.relays);
-
-			communitie.relays.forEach((relay) => {
-				const sub = new Subscription(session, [{kinds: [Nip35TorrentEvent.KIND], '#i': [page.params.id]}], [relay]);
-			});
-
-			session.eventStream.emitter.on(EventType.DISCOVERED, (event: TrustedEvent) => {
-				const out = new Nip35TorrentEventBuilder(event).build();
-				out.event = event;
-				s.assets.push(out);
-
-				console.log(s.assets.length);
-
-				if (s.playing === undefined) {
-					s.playing = out;
-					download(s.playing);
-				}
-			});
+			// const session: SynchronisedSession = new SynchronisedSession(communitie.relays);
+			//
+			// communitie.relays.forEach((relay) => {
+			// 	const sub = new Subscription(session, [{kinds: [Nip35TorrentEvent.KIND], '#i': [page.params.id]}], [relay]);
+			// });
+			//
+			// session.eventStream.emitter.on(EventType.DISCOVERED, (event: TrustedEvent) => {
+			// 	const out = new Nip35TorrentEventBuilder(event).build();
+			// 	out.event = event;
+			// 	s.assets.push(out);
+			//
+			// 	console.log(s.assets.length);
+			//
+			// 	if (s.playing === undefined) {
+			// 		s.playing = out;
+			// 		download(s.playing);
+			// 	}
+			// });
 		});
 	});
 </script>

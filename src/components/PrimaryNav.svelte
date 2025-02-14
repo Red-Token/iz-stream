@@ -1,5 +1,5 @@
 <script>
-	import LogInComponent from '../components/login/LogInComponent.svelte';
+	import LogInComponent from '@src/components/login/LogInComponent.svelte';
 	import {page, navigating} from '$app/state';
 	import {me} from '../stores/profile.svelte';
 </script>
@@ -9,6 +9,7 @@
 		<div class="nav-links">
 			<a href="/search" aria-current={page.url.pathname === '/search'}>Search</a>
 			<a href="/channels" data-sveltekit-preload-data aria-current={page.url.pathname === '/channels'}>Channels</a>
+			<a href="/communities" aria-current={page.url.pathname === '/communities'}>Communities</a>
 			{#if me.pubkey !== ''}
 				<a href="/create" aria-current={page.url.pathname === '/create'}>Create</a>
 			{/if}

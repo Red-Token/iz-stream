@@ -6,25 +6,25 @@
 	import {type TrustedEvent} from '@welshman/util';
 	import {goto} from '$app/navigation';
 	import {profiles} from '../../../../stores/profile.svelte';
-	import {Nip35TorrentEvent, Nip35TorrentEventBuilder} from 'iz-nostrlib/dist/org/nostr/nip35/Nip35TorrentEvent';
-	import {NostrProfileMetaData} from 'iz-nostrlib/dist/org/nostr/nip01/NostrProfileMetaData';
+	import {Nip35TorrentEvent} from 'iz-nostrlib/dist/org/nostr/nip35/Nip35TorrentEvent';
 	import {communities} from '@src/stores/community.svelte';
-	import type {CommunityIdentity} from 'iz-nostrlib/dist/org/nostr/communities/Community';
-	import {Follow, Nip02FollowListEvent} from 'iz-nostrlib/dist/org/nostr/nip02/Nip02FollowListEvent';
+	import {Followee, Nip02FollowListEvent} from 'iz-nostrlib/dist/org/nostr/nip02/Nip02FollowListEvent';
+	import {NostrUserProfileMetaData} from 'iz-nostrlib/dist/org/nostr/nip01/NostrUserProfileMetaData';
+	import {CommunityIdentity, type Identity} from 'iz-nostrlib/dist/org/nostr/communities/CommunityNostrContext';
 
 	let events: Nip35TorrentEvent[] = $state([]);
 
 	// TODO mage a get or default
-	let channelOwner: NostrProfileMetaData = $derived.by(() => {
+	let channelOwner: NostrUserProfileMetaData = $derived.by(() => {
 		const profile = profiles.get(page.params.pubkey);
-		return profile !== undefined ? profile : new NostrProfileMetaData();
+		return profile?.nip01Event?.profile ?? new NostrUserProfileMetaData();
 	});
 
 	onMount(async () => {
 		communities.forEach((community) => {
-			const session = new SynchronisedSession(community.relays);
+			const session = new SynchronisedSession(community.relays.value);
 
-			for (const relay of community.relays) {
+			for (const relay of community.relays.value) {
 				const sub = new Subscription(
 					session,
 					[
@@ -39,10 +39,9 @@
 
 			session.eventStream.emitter.on(EventType.DISCOVERED, (event: TrustedEvent) => {
 				if (event.kind === Nip35TorrentEvent.KIND) {
-					const te = new Nip35TorrentEventBuilder(event).build();
+					const te = Nip35TorrentEvent.buildFromEvent(event);
 
 					if (te.event === undefined) throw Error(`Unknown event: ${event}`);
-
 					events.push(te);
 				} else {
 					console.log('Unknown event ', event);
@@ -67,13 +66,15 @@
 	}
 
 	function follow() {
-		// TODO: We have to make this more precis now we follow a person with all identities and in all communities
-		communities.forEach((community) => {
-			community.identities.forEach((communityIdentity: CommunityIdentity) => {
-				const msg = new Nip02FollowListEvent([...communityIdentity.followList, new Follow(page.params.pubkey)]);
-				communityIdentity.followPublisher.publish(Nip02FollowListEvent.KIND, msg.createTemplate());
-			});
-		});
+		// BELOW IS NOT HOW WE SHALL FOLLOW, we have a GLOBAL follow list
+		// // TODO: We have to make this more precis now we follow a person with all identities and in all communities
+		// communities.forEach((community) => {
+		//
+		// 	community.identities.value.forEach((communityIdentity: CommunityIdentity) => {
+		// 		const msg = new Nip02FollowListEvent([...communityIdentity., new Followee(page.params.pubkey)]);
+		// 		communityIdentity.followPublisher.publish(Nip02FollowListEvent.KIND, msg.opts);
+		// 	});
+		// });
 	}
 </script>
 

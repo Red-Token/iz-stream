@@ -1,23 +1,44 @@
 import {normalizeRelayUrl} from '@welshman/util';
-import {asyncCreateWelshmanSession, Community} from 'iz-nostrlib/dist/org/nostr/communities/Community';
-import {NostrClient, type SignerData} from 'iz-nostrlib';
-import {me} from '@src/stores/profile.svelte';
+import {type SignerData} from 'iz-nostrlib';
+import {globalNostrContext, me} from '@src/stores/profile.svelte';
+import {asyncCreateWelshmanSession, Identifier, Identity} from 'iz-nostrlib/src/org/nostr/communities/Identity';
+import {CommunityNostrContext} from 'iz-nostrlib/src/org/nostr/communities/CommunityNostrContext';
+import {UserType} from 'iz-nostrlib/src/org/nostr/nip01/Nip01UserMetaData';
 
 const url = 'wss://relay.stream.labs.h3.se';
 const relays = [normalizeRelayUrl(url)];
 
-export const communities: Community[] = $state([
-	new Community('iz-stream', relays, 'https://img.freepik.com/free-psd/close-up-delicious-apple_23-2151868338.jpg')
+export const communities: CommunityNostrContext[] = $state([
+	// new CommunityNostrContext('iz-stream', relays, 'https://img.freepik.com/free-psd/close-up-delicious-apple_23-2151868338.jpg')
 ]);
 
 export function logIn(data: SignerData) {
 	asyncCreateWelshmanSession(data).then(async (wsession) => {
+		const identifier = new Identifier(wsession);
+		me.identity = new Identity(globalNostrContext, identifier);
 		me.pubkey = wsession.pubkey;
+		const identity = new Identifier(wsession);
+		globalNostrContext.identities.set(wsession.pubkey, new Identity(globalNostrContext, identity));
+
+		// globalNostrContext.profileService.nip02Map.addListener((keys) => {
+		// 	if (!keys.includes(identity.pubkey))
+		// 		return;
+		//
+		// 	const list = globalNostrContext.profileService.nip02Map.value.get(identity.pubkey)?.list ?? [];
+		//
+		// 	const xdr = list.filter((f) => globalNostrContext.profileService.nip01Map.value.get(f.pubkey)?.type === UserType.COMMUNITY);
+		//
+		// 	for (let l of list) {
+		// 		const x = globalNostrContext.profileService.nip01Map.value.get(l.pubkey);
+		// 	}
+		//
+		// });
 
 		// We login to the static communities
-		communities.forEach((community) => {
-			const ci = community.createCommunityIdentity(wsession);
-		});
+		// TODO: What do we do here?
+		// communities.forEach((community) => {
+		// 	const ci = community.createCommunityIdentity(wsession);
+		// });
 	});
 }
 
