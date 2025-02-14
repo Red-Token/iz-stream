@@ -20,7 +20,7 @@ setContext({
 	app: getDefaultAppContext()
 });
 
-export const profiles = $state(new SvelteMap<string, NostrProfile>);
+export const profiles = $state(new SvelteMap<string, NostrProfile>());
 
 const defaultNip01 = new Nip01UserMetaDataEvent(new NostrUserProfileMetaData('Who am I', 'I dont know', ''));
 const defaultNip02 = new Nip02FollowListEvent([]);
@@ -31,8 +31,7 @@ export class NostrProfile {
 		public nip01Event: Nip01UserMetaDataEvent = defaultNip01,
 		public nip02Event: Nip02FollowListEvent = defaultNip02,
 		public nip65Event: Nip65RelayListMetadataEvent = defaultNip65
-	) {
-	}
+	) {}
 }
 
 export const globalNostrContext = new GlobalNostrContext(relays);
@@ -79,7 +78,6 @@ globalNostrContext.identities.addListener((keys) => {
 	}
 });
 
-
 // export function getOrCreateProfile(key: string) {
 // 	let profile = profiles.get(key);
 //
@@ -91,10 +89,11 @@ globalNostrContext.identities.addListener((keys) => {
 // 	return profile;
 // }
 
-
 class Me {
 	identifier = $state<Identifier>();
-	identity: Identity | undefined = $derived(this.identifier !== undefined ? new Identity(globalNostrContext, this.identifier) : undefined);
+	identity: Identity | undefined = $derived(
+		this.identifier !== undefined ? new Identity(globalNostrContext, this.identifier) : undefined
+	);
 	pubkey: string = $derived(this.identifier?.pubkey ?? '');
 	profile = $derived(profiles.get(this.pubkey));
 	communities = $derived.by(() => {
@@ -105,7 +104,9 @@ class Me {
 	});
 	publisher = $derived.by(() => {
 		console.log('PUb TRIGGERED!');
-		return this.identity != undefined ? new DynamicPublisher(globalNostrContext.profileService, this.identity) : undefined;
+		return this.identity != undefined
+			? new DynamicPublisher(globalNostrContext.profileService, this.identity)
+			: undefined;
 	});
 	// profilesSession: SynchronisedSession | undefined = undefined;
 	// followees: Followee[] = $derived(profiles.get(this.pubkey)?.nip02Event.list ?? [])

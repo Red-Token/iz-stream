@@ -10,20 +10,18 @@
 	import {Nip65RelayListMetadataEvent} from 'iz-nostrlib/src/org/nostr/nip65/Nip65RelayListMetadata';
 
 	let communities = $derived.by(() => {
-			const fg = profiles.values();
-			return fg.filter((profile) => {
-				return profile.nip01Event.type === UserType.COMMUNITY;
-			});
-		}
-	);
+		const fg = profiles.values();
+		return fg.filter((profile) => {
+			return profile.nip01Event.type === UserType.COMMUNITY;
+		});
+	});
 
 	import {normalizeURL} from 'nostr-tools/utils';
 	import {Followee} from 'iz-nostrlib/dist/org/nostr/nip02/Nip02FollowListEvent';
 
 	let cred = $state({nsec: ''});
 	let pubkey = $derived.by(() => {
-		if (!cred.nsec.startsWith('nsec'))
-			return 'Incorrect credentials';
+		if (!cred.nsec.startsWith('nsec')) return 'Incorrect credentials';
 
 		return nip19.npubEncode(getPublicKey(<Uint8Array<ArrayBufferLike>>nip19.decode(cred.nsec).data));
 	});
@@ -38,9 +36,7 @@
 
 		if (me.profile === undefined || me.publisher === undefined) return;
 
-		me.publisher.publish(
-			new Nip02FollowListEvent([...me.profile.nip02Event.list, new Followee(pubkey)])
-		);
+		me.publisher.publish(new Nip02FollowListEvent([...me.profile.nip02Event.list, new Followee(pubkey)]));
 	}
 
 	function generate(): void {
@@ -68,7 +64,6 @@
 			publisher.publish(new Nip65RelayListMetadataEvent([[profile.relay]]));
 		});
 	}
-
 </script>
 
 Hello Community
@@ -80,13 +75,12 @@ Hello Community
 	<button onclick={() => join(community.nip01Event.pubkey)}>JOIN</button>
 {/each}
 <div>
-
 	<div>
 		<div>
 			PUB: {pubkey}
 		</div>
 		<div>
-			<input bind:value={cred.nsec}>
+			<input bind:value={cred.nsec} />
 		</div>
 		<div>
 			<button onclick={() => generate()}>GENERATE</button>
@@ -94,13 +88,13 @@ Hello Community
 	</div>
 
 	<div>
-		<input bind:value={profile.data.name}>
+		<input bind:value={profile.data.name} />
 	</div>
 	<div>
-		<input bind:value={profile.data.about}>
+		<input bind:value={profile.data.about} />
 	</div>
 	<div>
-		<input bind:value={profile.data.picture}>
+		<input bind:value={profile.data.picture} />
 	</div>
 	<div>
 		<textarea bind:value={profile.relay}>TEST</textarea>

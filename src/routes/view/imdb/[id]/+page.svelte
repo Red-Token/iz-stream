@@ -57,7 +57,6 @@
 	}
 
 	onMount(async () => {
-
 		//TODO MAKE A GLOBAL SEARCH
 
 		communities.forEach((communitie) => {
