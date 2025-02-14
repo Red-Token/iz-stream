@@ -1,5 +1,7 @@
-import SimplePeer from 'simple-peer/simplepeer.min';
-import WebTorrent from 'webtorrent/dist/webtorrent.min';
+//@ts-ignore //TODO something needs to be done about this.
+import SimplePeer from 'simple-peer/simplepeer.min.js';
+//@ts-ignore
+import WebTorrent from 'webtorrent/dist/webtorrent.min.js';
 
 const rtcConfig = {
 	iceServers: [
@@ -18,7 +20,7 @@ const rtcConfig = {
 	iceCandidatePoolSize: 0
 };
 
-export const wt = new WebTorrent({
+export const wt: WebTorrent = new WebTorrent({
 	tracker: {
 		rtcConfig: {
 			...SimplePeer.config,
@@ -28,7 +30,7 @@ export const wt = new WebTorrent({
 });
 
 let options = {
-	announce: ['wss://tracker.webtorrent.dev'],
+	announce: ['wss://tracker.webtorrent.dev', 'wss://tracker.btorrent.xyz', 'wss://tracker.openwebtorrent.com'],
 	maxWebConns: 500
 };
 
@@ -48,3 +50,5 @@ navigator.serviceWorker.register('/sw.min.js', {scope: '/'}).then((reg) => {
 		worker.addEventListener('statechange', ({target}) => checkState(target as ServiceWorker | null));
 	}
 });
+
+console.log('HERE I STAND');

@@ -1,14 +1,17 @@
 <script>
 	import LogInComponent from '../components/login/LogInComponent.svelte';
 	import {page, navigating} from '$app/state';
+	import {me} from '../stores/profile.svelte';
 </script>
 
 <nav class="primary-nav">
 	<div class="nav-content">
 		<div class="nav-links">
 			<a href="/search" aria-current={page.url.pathname === '/search'}>Search</a>
-			<a href="/create" aria-current={page.url.pathname === '/create'}>Create</a>
-			<a href="/channels" aria-current={page.url.pathname === '/channels'}>Channels</a>
+			<a href="/channels" data-sveltekit-preload-data aria-current={page.url.pathname === '/channels'}>Channels</a>
+			{#if me.pubkey !== ''}
+				<a href="/create" aria-current={page.url.pathname === '/create'}>Create</a>
+			{/if}
 		</div>
 		<div class="login-btn">
 			<LogInComponent></LogInComponent>
@@ -26,7 +29,7 @@
 		border: 1px solid var(--border-color);
 		box-shadow: 0 4px 12px var(--shadow-color);
 		margin: 1rem auto;
-		max-width: 1200px;
+		max-width: 1380px;
 		transition: all 0.3s ease;
 	}
 
@@ -89,6 +92,7 @@
 		.primary-nav {
 			z-index: 10;
 		}
+
 		.nav-content {
 			height: 56px;
 			padding: 0 1rem;
@@ -134,9 +138,8 @@
 		}
 
 		/* .login-btn {
-			display: none; should be fix
-		} */
-
+							display: none; should be fix
+						} */
 		.primary-nav a {
 			font-size: 0.9rem;
 			padding: 0.3rem 0;

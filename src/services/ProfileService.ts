@@ -1,6 +1,9 @@
 import {EventType, SynchronisedSession} from 'iz-nostrlib';
 import type {TrustedEvent} from '@welshman/util';
-import {Nip01UserMetaDataEvent, Nip01UserMetaDataEventBuilder} from '$lib/org/nostr/nip01/Nip01UserMetaData';
+import {
+	Nip01UserMetaDataEvent,
+	Nip01UserMetaDataEventBuilder
+} from 'iz-nostrlib/dist/org/nostr/nip01/Nip01UserMetaData';
 import {profiles} from '../stores/profile.svelte';
 
 class ProfileService extends SynchronisedSession {

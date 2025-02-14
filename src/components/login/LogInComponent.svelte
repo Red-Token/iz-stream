@@ -1,26 +1,13 @@
 <script lang="ts">
 	import Popup from './Popup.svelte';
-	import {NostrClient} from 'iz-nostrlib';
-	import {setContext} from '@welshman/lib';
-	import {getDefaultAppContext, getDefaultNetContext} from '@welshman/app';
 	import {me} from '../../stores/profile.svelte';
 	import {goto} from '$app/navigation';
-	// import {normalizeRelayUrl, type TrustedEvent} from '@welshman/util';
-	// import {Nip02FollowListEvent, Nip02FollowListEventBuilder} from '$lib/org/nostr/nip02/Nip02FollowListEvent';
-	// import {Nip35TorrentEvent} from '$lib/org/nostr/nip35/Nip35TorrentEvent';
 	import {logOut} from '@src/stores/community.svelte';
 
 	let isPopupOpen = $state(false); // Track the popup visibility
 
 	let isMenuOpen = $state(false);
-	let menuButton;
-
-	const client = NostrClient.getInstance();
-
-	setContext({
-		net: getDefaultNetContext(),
-		app: getDefaultAppContext()
-	});
+	let menuButton: any; //TODO replace 'any'
 
 	function openPopup() {
 		isPopupOpen = true;
@@ -30,24 +17,6 @@
 		isPopupOpen = false;
 	}
 
-	// function logIn(data: SignerData) {
-	//     asyncCreateWelshmanSession(data).then(async wsession => {
-	//         me.pubkey = wsession.pubkey
-	//
-	//         // We login to the static communities
-	//         communities.forEach((community) => {
-	//             const ci = community.createCommunityIdentity(wsession)
-	//         })
-	//
-	//         // We should load the private community links
-	//     })
-	// }
-	//
-	// function logOut() {
-	//     NostrClient.getInstance().logOut();
-	//     me.pubkey = client.publicKey !== undefined ? client.publicKey : '';
-	// }
-
 	function goToChannelPage() {
 		goto(`/channels/${me.pubkey}/torrents`);
 	}
@@ -56,21 +25,23 @@
 		goto('/profile');
 	}
 
-	function handleClickOutside(event) {
+	//TODO fix this trash...
+	function handleClickOutside(event: any) {
 		if (
 			menuButton &&
 			!menuButton.contains(event.target) &&
-			!document.querySelector('.dropdown-menu')?.contains(event.target)
+			!document.querySelector('.dropdown-menu')?.contains(event.target) //wtf
 		) {
 			closeMenu();
 		}
 	}
 
-	function toggleUserMenu(event) {
+	function toggleUserMenu(event: any) {
+		//TODO replace 'any'
 		event.stopPropagation();
 		isMenuOpen = !isMenuOpen;
 		if (isMenuOpen) {
-			setTimeout(() => document.addEventListener('click', handleClickOutside));
+			setTimeout(() => document.addEventListener('click', handleClickOutside)); //wtf two
 		}
 	}
 
@@ -87,7 +58,7 @@
 			case 'ArrowDown':
 				if (isMenuOpen) {
 					event.preventDefault();
-					document.querySelector('.menu-item')?.focus();
+					document.querySelector('.menu-item'); // wtf three
 				}
 				break;
 		}
@@ -96,26 +67,27 @@
 
 <div class="auth-container">
 	{#if me.pubkey !== ''}
-		<button
-			class="user-menu"
-			onclick={toggleUserMenu}
-			onkeydown={handleKeydown}
-			bind:this={menuButton}
-			aria-haspopup="true"
-			aria-expanded={isMenuOpen}
-			aria-label="User menu"
-		>
-			<span class="username">{me.profile?.name || 'User'}</span>
-			<div class="user-avatar">
-				{#if me.profile?.picture}
-					<img src={me.profile.picture} alt="Avatar" class="avatar-img" />
-				{:else}
-					<div class="avatar-fallback">
-						{me.profile?.name?.charAt(0) || '?'}
-					</div>
-				{/if}
-			</div>
-
+		<div>
+			<button
+				class="user-menu"
+				onclick={toggleUserMenu}
+				onkeydown={handleKeydown}
+				bind:this={menuButton}
+				aria-haspopup="true"
+				aria-expanded={isMenuOpen}
+				aria-label="User menu"
+			>
+				<span class="username">{me.profile?.name || 'User'}</span>
+				<div class="user-avatar">
+					{#if me.profile?.picture}
+						<img src={me.profile.picture} alt="Avatar" class="avatar-img" />
+					{:else}
+						<div class="avatar-fallback">
+							{me.profile?.name?.charAt(0) || '?'}
+						</div>
+					{/if}
+				</div>
+			</button>
 			{#if isMenuOpen}
 				<div class="dropdown-menu" role="menu" aria-labelledby="user-menu-button">
 					<button class="menu-item" onclick={goToProfilePage} role="menuitem" tabindex="0">
@@ -146,7 +118,7 @@
 					</button>
 				</div>
 			{/if}
-		</button>
+		</div>
 	{:else}
 		<button class="login-btn" onclick={openPopup} tabindex="0" aria-label="Login">
 			<svg class="lock-icon" viewBox="0 0 24 24">

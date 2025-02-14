@@ -1,9 +1,6 @@
 <script lang="ts">
-	// <<<<<<< HEAD
-	import {page} from '$app/state';
 	import '@src/style/app.css';
 	import '@src/style/tailwind.css';
-	import LogInComponent from '../components/login/LogInComponent.svelte';
 	import Communities from '@src/components/Communities.svelte';
 	import {onMount} from 'svelte';
 	import {communities} from '@src/stores/community.svelte';
@@ -11,46 +8,43 @@
 	import {Nip01UserMetaDataEvent} from 'iz-nostrlib/dist/org/nostr/nip01/Nip01UserMetaData';
 	import {profiles} from '@src/stores/profile.svelte';
 	import PrimaryNav from '@src/components/PrimaryNav.svelte';
+	import {setContext} from '@welshman/lib';
+	import {getDefaultAppContext, getDefaultNetContext} from '@welshman/app';
+	import {Log} from '@src/services/Logger';
 
-	console.log(import.meta.resolve('./org/nostr/ses/Subscription'));
+	const layout = Log.child({component: '+layout.svelte'});
+
+	layout.info(import.meta.resolve('./org/nostr/ses/Subscription'));
 
 	let {children} = $props();
-	let isSidebarExpanded: boolean = $state(true);
+	let isExpanded: boolean = $state(true);
 
+	$effect(() => {
+		document.documentElement.style.setProperty('--sidebar-width', isExpanded ? '80px' : '0px');
+	});
 	// let profileSession: SynchronisedSession
 
 	onMount(() => {
+		setContext({
+			net: getDefaultNetContext(),
+			app: getDefaultAppContext()
+		});
+
 		communities.forEach((community: Community) => {
 			community.connect();
-			// =======
-			// 	let {children} = $props();
-			// 	import '@src/style/app.css';
-			// 	import '@src/style/tailwind.css';
-			// 	console.log(import.meta.resolve('./org/nostr/ses/Subscription'));
-			// 	import PrimaryNav from '@src/components/PrimaryNav.svelte';
-			// 	import Communities from '@src/components/Communities.svelte';
-			// 	import {EventType, NostrClient, type SynchronisedSession} from 'iz-nostrlib';
-			// 	import {onMount} from 'svelte';
-			// 	import {normalizeRelayUrl, type TrustedEvent} from '@welshman/util';
-			// 	import {Nip01UserMetaDataEvent, Nip01UserMetaDataEventBuilder} from '$lib/org/nostr/nip01/Nip01UserMetaData';
-			// 	import {me, profiles, profileSession} from '../stores/profile.svelte';
-			//
-			// 	// let profileSession: SynchronisedSession
-			// 	let isSidebarExpanded: boolean = $state(true);
-			// 	onMount(() => {
+
 			// 		const url = 'wss://relay.stream.labs.h3.se';
 			// 		const relays = [normalizeRelayUrl(url)];
-			// >>>>>>> b7c33811845ad36026ad3752d084dec6419b526c
 
 			community.notifications.on(NotificationEventType.TORRENT, (event) => {
-				console.log('updating', event);
+				layout.info('update torrent event', event);
 			});
 
 			community.notifications.on(NotificationEventType.PROFILE, (event) => {
 				if (event instanceof Nip01UserMetaDataEvent) {
 					if (event.event === undefined) throw new Error('event event is null');
 
-					console.log('profile', event.event.pubkey, event.profile);
+					layout.info('profile', event.event.pubkey, event.profile);
 					profiles.set(event.event.pubkey, event.profile);
 					return;
 				}
@@ -89,8 +83,21 @@
 	});
 </script>
 
-<main style="margin-left: {isSidebarExpanded ? '80px' : '0'}">
-	<Communities bind:isExpanded={isSidebarExpanded} />
+<main>
+	<div class="left-sidebar {isExpanded ? 'expanded' : ''}">
+		<Communities isExpanded />
+		<button class="sidebar-toggle" onclick={() => (isExpanded = !isExpanded)}>
+			{#if isExpanded}
+				<svg width="24" height="24" viewBox="0 0 24 24">
+					<path d="M15 18l-6-6 6-6" stroke="currentColor" fill="none" />
+				</svg>
+			{:else}
+				<svg width="24" height="24" viewBox="0 0 24 24">
+					<path d="M9 18l6-6-6-6" stroke="currentColor" fill="none" />
+				</svg>
+			{/if}
+		</button>
+	</div>
 	<div class="content-area">
 		<PrimaryNav />
 		<div class="main-content">
@@ -101,19 +108,65 @@
 
 <style>
 	main {
-		transition: margin-left 0.3s ease;
 		min-height: 100vh;
 	}
 
 	.content-area {
-		max-width: 1200px;
-		margin: 0 auto;
-		padding: 1rem;
+		flex: 1;
+		margin-left: calc(-1 * var(--sidebar-width));
+		transition: margin-left 0.3s ease;
 	}
 
+	.sidebar-toggle {
+		position: absolute;
+		right: -40px;
+		top: 20px;
+		width: 32px;
+		height: 32px;
+		z-index: 1000;
+		background: var(--bg-1);
+		border: 2px solid var(--border-color);
+		border-radius: 8px;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition: all 0.3s ease;
+		box-shadow: 0 2px 8px rgba(80, 80, 80, 0.1);
+		transform: translateX(50%);
+	}
+
+	.sidebar-toggle:hover {
+		background: var(--bg-2);
+	}
+
+	.left-sidebar {
+		position: fixed;
+		top: 0;
+		left: 0;
+		height: 100%;
+		width: var(--sidebar-width);
+		transform: translateX(calc(-1 * var(--sidebar-width)));
+		transition: transform 0.3s ease;
+	}
+
+	.left-sidebar.expanded {
+		width: 80px;
+		transform: translateX(0);
+	}
+
+	.left-sidebar.expanded ~ .content-area {
+		margin-left: var(--sidebar-width);
+	}
 	@media (max-width: 768px) {
 		main {
 			margin-left: 0 !important;
+		}
+		.sidebar-toggle {
+			right: -36px;
+			bottom: 16px;
+			width: 28px;
+			height: 28px;
 		}
 	}
 </style>

@@ -3,12 +3,13 @@
 	import {goto} from '$app/navigation';
 	import imdbApi from '$lib/api/ImdbApi';
 
-	let search = 'Big Buck Bunny';
-	// let search = 'Game of Thrones'
+	//let search = 'Big Buck Bunny';
+	let search = 'House of the Dragon';
 
+	//TODO do a refactoring and if nothing is found in the search, display this
 	function onSearch(): void {
 		imdbApi.searchTitle(search).then((result) => {
-			console.log(result);
+			// console.log(result);
 			searchResult.items = [
 				{id: '1', title: result.Title, description: result.Plot, assets: [], seasons: [], imdbResult: result}
 			];

@@ -18,8 +18,6 @@ export function logIn(data: SignerData) {
 		communities.forEach((community) => {
 			const ci = community.createCommunityIdentity(wsession);
 		});
-
-		// We should load the private community links
 	});
 }
 
