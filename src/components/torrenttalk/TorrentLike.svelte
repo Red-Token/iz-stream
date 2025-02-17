@@ -1,12 +1,11 @@
 <script lang="ts">
 	import {onMount} from 'svelte';
-	import {type TrustedEvent} from '@welshman/util';
-	import {EventType, Publisher, Subscription, SynchronisedSession} from 'iz-nostrlib';
+	import {Publisher, Subscription, SynchronisedSession} from 'iz-nostrlib';
 	import {s} from '../../stores/assetStore.svelte';
 	import {SvelteMap} from 'svelte/reactivity';
 	import {Nip25ReactionsEvent} from 'iz-nostrlib/dist/org/nostr/nip25/Nip25Reactions';
 	import {createRefETags} from 'iz-nostrlib/dist/org/nostr/util/scraps';
-	import {communities} from '@src/stores/community.svelte';
+	// import {communities} from '@src/stores/community.svelte';
 
 	let session: SynchronisedSession;
 	let sub: Subscription;
@@ -25,7 +24,7 @@
 	const publishers: Publisher[] = [];
 
 	onMount(async () => {
-		communities.forEach((community) => {
+		// communities.forEach((community) => {
 			// const session = new SynchronisedSession(community.relays);
 			//
 			// for (const relay of community.relays) {
@@ -57,7 +56,7 @@
 			// 	const p = new Publisher(session, ci);
 			// 	publishers.push(p);
 			// }
-		});
+		// });
 	});
 
 	function like() {

@@ -1,14 +1,15 @@
 import {SvelteMap} from 'svelte/reactivity';
-import {Nip01UserMetaDataEvent, UserType} from 'iz-nostrlib/src/org/nostr/nip01/Nip01UserMetaData';
-import {Nip65RelayListMetadataEvent} from 'iz-nostrlib/src/org/nostr/nip65/Nip65RelayListMetadata';
-import {GlobalNostrContext} from 'iz-nostrlib/src/org/nostr/communities/GlobalNostrContext';
+import {Nip01UserMetaDataEvent, UserType} from 'iz-nostrlib/dist/org/nostr/nip01/Nip01UserMetaData';
+import {Nip65RelayListMetadataEvent} from 'iz-nostrlib/dist/org/nostr/nip65/Nip65RelayListMetadata';
+import {GlobalNostrContext} from 'iz-nostrlib/dist/org/nostr/communities/GlobalNostrContext';
 import {normalizeRelayUrl} from '@welshman/util';
 import {setContext} from '@welshman/lib';
 import {getDefaultAppContext, getDefaultNetContext} from '@welshman/app';
-import {NostrUserProfileMetaData} from 'iz-nostrlib/src/org/nostr/nip01/NostrUserProfileMetaData';
+import {NostrUserProfileMetaData} from 'iz-nostrlib/dist/org/nostr/nip01/NostrUserProfileMetaData';
 import {Nip02FollowListEvent} from 'iz-nostrlib';
-import {DynamicPublisher} from 'iz-nostrlib/src/org/nostr/ses/DynamicPublisher';
-import {Identifier, Identity} from 'iz-nostrlib/src/org/nostr/communities/Identity';
+import {DynamicPublisher} from 'iz-nostrlib/dist/org/nostr/ses/DynamicPublisher';
+import {Identifier, Identity} from 'iz-nostrlib/dist/org/nostr/communities/Identity';
+import type {Followee} from 'iz-nostrlib/dist/org/nostr/nip02/Nip02FollowListEvent';
 
 // REBUILD THE WORLDS HERE
 
@@ -20,18 +21,32 @@ setContext({
 	app: getDefaultAppContext()
 });
 
-export const profiles = $state(new SvelteMap<string, NostrProfile>());
+class GlobalRunes {
+	profiles = $state(new SvelteMap<string, NostrProfile>());
+	communities: SvelteMap<string, NostrProfile> = $derived.by(() => {
+		const communityMap = new SvelteMap<string, NostrProfile>();
+		this.profiles.forEach((profile, key) => {
+			if (profile.nip01Event.type === UserType.COMMUNITY) communityMap.set(key, profile);
+		});
+		return communityMap;
+	});
+}
 
-const defaultNip01 = new Nip01UserMetaDataEvent(new NostrUserProfileMetaData('Who am I', 'I dont know', ''));
-const defaultNip02 = new Nip02FollowListEvent([]);
-const defaultNip65 = new Nip65RelayListMetadataEvent(relays.map((relay) => [relay]));
+export const globalRunes = new GlobalRunes();
+
+// export const profiles = $state(new SvelteMap<string, NostrProfile>());
+
+export const defaultNip01 = new Nip01UserMetaDataEvent(new NostrUserProfileMetaData('Who am I', 'I dont know', ''));
+export const defaultNip02 = new Nip02FollowListEvent([]);
+export const defaultNip65 = new Nip65RelayListMetadataEvent(relays.map((relay) => [relay]));
 
 export class NostrProfile {
 	constructor(
 		public nip01Event: Nip01UserMetaDataEvent = defaultNip01,
 		public nip02Event: Nip02FollowListEvent = defaultNip02,
 		public nip65Event: Nip65RelayListMetadataEvent = defaultNip65
-	) {}
+	) {
+	}
 }
 
 export const globalNostrContext = new GlobalNostrContext(relays);
@@ -40,27 +55,27 @@ globalNostrContext.profileService.nip01Map.addListener((keys) => {
 	console.log('keys', keys);
 
 	for (let key of keys) {
-		const profile = profiles.get(key) ?? new NostrProfile();
+		const profile = globalRunes.profiles.get(key) ?? new NostrProfile();
 		profile.nip01Event = globalNostrContext.profileService.nip01Map.value.get(key) ?? defaultNip01;
-		profiles.set(key, profile);
+		globalRunes.profiles.set(key, profile);
 	}
 });
 
 globalNostrContext.profileService.nip02Map.addListener((keys) => {
 	console.log('keys z', keys);
 	for (let key of keys) {
-		const profile = profiles.get(key) ?? new NostrProfile();
+		const profile = globalRunes.profiles.get(key) ?? new NostrProfile();
 		profile.nip02Event = globalNostrContext.profileService.nip02Map.value.get(key) ?? defaultNip02;
-		profiles.set(key, profile);
+		globalRunes.profiles.set(key, profile);
 	}
 });
 
 globalNostrContext.profileService.nip65Map.addListener((keys) => {
 	console.log('keys too:', keys);
 	for (let key of keys) {
-		const profile = profiles.get(key) ?? new NostrProfile();
+		const profile = globalRunes.profiles.get(key) ?? new NostrProfile();
 		profile.nip65Event = globalNostrContext.profileService.nip65Map.value.get(key) ?? defaultNip65;
-		profiles.set(key, profile);
+		globalRunes.profiles.set(key, profile);
 	}
 });
 
@@ -74,7 +89,7 @@ globalNostrContext.identities.addListener((keys) => {
 			globalNostrContext.profileService.nip65Map.value.get(key) ?? defaultNip65
 		);
 
-		profiles.set(key, npr);
+		globalRunes.profiles.set(key, npr);
 	}
 });
 
@@ -95,12 +110,14 @@ class Me {
 		this.identifier !== undefined ? new Identity(globalNostrContext, this.identifier) : undefined
 	);
 	pubkey: string = $derived(this.identifier?.pubkey ?? '');
-	profile = $derived(profiles.get(this.pubkey));
+	profile = $derived(globalRunes.profiles.get(this.pubkey));
 	communities = $derived.by(() => {
 		console.log('Updating CL');
-		const list = profiles.get(this.pubkey)?.nip02Event?.list ?? [];
-		const fl = list.filter((f) => profiles.get(f.pubkey)?.nip01Event?.type === UserType.COMMUNITY);
-		return fl;
+		const list = globalRunes.profiles.get(this.pubkey)?.nip02Event?.list ?? [];
+		const fl = list.filter((f) => globalRunes.profiles.get(f.pubkey)?.nip01Event?.type === UserType.COMMUNITY);
+		return fl
+			.reduce((map, element) => map.set(element.pubkey, element), new Map<string, Followee>())
+			.values().toArray();
 	});
 	publisher = $derived.by(() => {
 		console.log('PUb TRIGGERED!');

@@ -1,24 +1,21 @@
-import {normalizeRelayUrl} from '@welshman/util';
 import {type SignerData} from 'iz-nostrlib';
-import {globalNostrContext, me} from '@src/stores/profile.svelte';
-import {asyncCreateWelshmanSession, Identifier, Identity} from 'iz-nostrlib/src/org/nostr/communities/Identity';
-import {CommunityNostrContext} from 'iz-nostrlib/src/org/nostr/communities/CommunityNostrContext';
-import {UserType} from 'iz-nostrlib/src/org/nostr/nip01/Nip01UserMetaData';
+import {me} from '@src/stores/profile.svelte';
+import {asyncCreateWelshmanSession, Identifier} from 'iz-nostrlib/src/org/nostr/communities/Identity';
 
-const url = 'wss://relay.stream.labs.h3.se';
-const relays = [normalizeRelayUrl(url)];
+// const url = 'wss://relay.stream.labs.h3.se';
+// const relays = [normalizeRelayUrl(url)];
 
-export const communities: CommunityNostrContext[] = $state([
-	// new CommunityNostrContext('iz-stream', relays, 'https://img.freepik.com/free-psd/close-up-delicious-apple_23-2151868338.jpg')
-]);
+// export const communities: CommunityNostrContext[] = $state([
+// 	// new CommunityNostrContext('iz-stream', relays, 'https://img.freepik.com/free-psd/close-up-delicious-apple_23-2151868338.jpg')
+// ]);
 
 export function logIn(data: SignerData) {
 	asyncCreateWelshmanSession(data).then(async (wsession) => {
-		const identifier = new Identifier(wsession);
-		me.identity = new Identity(globalNostrContext, identifier);
-		me.pubkey = wsession.pubkey;
-		const identity = new Identifier(wsession);
-		globalNostrContext.identities.set(wsession.pubkey, new Identity(globalNostrContext, identity));
+		me.identifier = new Identifier(wsession);
+		// me.identity = new Identity(globalNostrContext, identifier);
+		// me.pubkey = wsession.pubkey;
+		// const identity = new Identifier(wsession);
+		// globalNostrContext.identities.set(wsession.pubkey, new Identity(globalNostrContext, identity));
 
 		// globalNostrContext.profileService.nip02Map.addListener((keys) => {
 		// 	if (!keys.includes(identity.pubkey))
@@ -43,5 +40,6 @@ export function logIn(data: SignerData) {
 }
 
 export function logOut() {
-	me.pubkey = '';
+	// me.pubkey = '';
+	me.identifier = undefined;
 }

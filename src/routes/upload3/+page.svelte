@@ -1,10 +1,6 @@
 <script lang="ts">
 	import {onMount} from 'svelte';
 	import {wt} from '@src/stores/wtZool.svelte';
-	import {EventType, NostrCommunityServiceClient} from 'iz-nostrlib';
-	import {communities} from '@src/stores/community.svelte';
-	import type {TrustedEvent} from '@welshman/util';
-	import {Nip9999SeederTorrentTransformationRequestEvent} from 'iz-nostrlib/dist/org/nostr/seederbot/Nip9999SeederControllEvents.js';
 
 	onMount(() => {});
 

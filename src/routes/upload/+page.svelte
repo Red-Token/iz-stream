@@ -2,7 +2,7 @@
 	import {onMount} from 'svelte';
 	import {wt} from '@src/stores/wtZool.svelte';
 	import {EventType, Nip9999SeederTorrentTransformationResponseEvent, NostrCommunityServiceClient} from 'iz-nostrlib';
-	import {communities} from '@src/stores/community.svelte';
+	// import {communities} from '@src/stores/community.svelte';
 	import type {TrustedEvent} from '@welshman/util';
 	import {Nip9999SeederTorrentTransformationRequestEvent} from 'iz-nostrlib/dist/org/nostr/seederbot/Nip9999SeederControllEvents.js';
 	import {safeFindSingleTagValue} from 'iz-nostrlib/dist/org/nostr/AbstractNipEvent';
@@ -23,52 +23,53 @@
 		console.log(file);
 		console.log('submit!');
 
-		const community = communities.at(0);
+		// const community = communities.at(0);
+		const community = undefined
 
 		if (community === undefined) throw new Error('Community does not exist!');
 
-		const ci = community.identities.values().toArray()[0];
-
-		if (ci === undefined) throw new Error('CI does not exist!');
-
-		const ncs = new NostrCommunityServiceClient(community, ci);
-
-		ncs.session.eventStream.emitter.on(EventType.DISCOVERED, (event: TrustedEvent) => {
-			console.log(event);
-
-			if (event.kind === Nip9999SeederTorrentTransformationResponseEvent.KIND) {
-				const resp = Nip9999SeederTorrentTransformationResponseEvent.build(event);
-
-				if (resp.state.state === 'seeding' && resp.event !== undefined) {
-					state.infoHash = safeFindSingleTagValue(resp.event, 'x');
-					wt.remove(torrent.infoHash);
-				}
-
-				state.resp = resp;
-			}
-		});
-
-		const torrent = wt.seed(file, options);
-
-		torrent.on('infoHash', () => {
-			console.log('infoHash:' + torrent.infoHash);
-			console.log('magnetURI:' + torrent.magnetURI);
-
-			const req = new Nip9999SeederTorrentTransformationRequestEvent('NN1', torrent.infoHash, {transform: 'cool'});
-			ncs.publisher.publish(Nip9999SeederTorrentTransformationRequestEvent.KIND, req.createTemplate());
-		});
-
-		torrent.on('upload', (bytes: any) => {
-			console.log(bytes);
-		});
-
-		torrent.on('error', (err: any) => {
-			console.log(err);
-		});
-
-		torrent.on('wire', (wire: any) => {
-			console.log(wire);
-		});
+		// const ci = community.identities.values().toArray()[0];
+		//
+		// if (ci === undefined) throw new Error('CI does not exist!');
+		//
+		// const ncs = new NostrCommunityServiceClient(community, ci);
+		//
+		// ncs.session.eventStream.emitter.on(EventType.DISCOVERED, (event: TrustedEvent) => {
+		// 	console.log(event);
+		//
+		// 	if (event.kind === Nip9999SeederTorrentTransformationResponseEvent.KIND) {
+		// 		const resp = Nip9999SeederTorrentTransformationResponseEvent.build(event);
+		//
+		// 		if (resp.state.state === 'seeding' && resp.event !== undefined) {
+		// 			state.infoHash = safeFindSingleTagValue(resp.event, 'x');
+		// 			wt.remove(torrent.infoHash);
+		// 		}
+		//
+		// 		state.resp = resp;
+		// 	}
+		// });
+		//
+		// const torrent = wt.seed(file, options);
+		//
+		// torrent.on('infoHash', () => {
+		// 	console.log('infoHash:' + torrent.infoHash);
+		// 	console.log('magnetURI:' + torrent.magnetURI);
+		//
+		// 	const req = new Nip9999SeederTorrentTransformationRequestEvent('NN1', torrent.infoHash, {transform: 'cool'});
+		// 	ncs.publisher.publish(Nip9999SeederTorrentTransformationRequestEvent.KIND, req.createTemplate());
+		// });
+		//
+		// torrent.on('upload', (bytes: any) => {
+		// 	console.log(bytes);
+		// });
+		//
+		// torrent.on('error', (err: any) => {
+		// 	console.log(err);
+		// });
+		//
+		// torrent.on('wire', (wire: any) => {
+		// 	console.log(wire);
+		// });
 	}
 
 	function handleChange(event: any) {

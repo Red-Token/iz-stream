@@ -3,7 +3,6 @@
 	import Seasons from './Seasons.svelte';
 	import Episodes from './Episodes.svelte';
 	import {type Episode, type SearchResultItem, Season} from '@src/stores/searchResult.svelte';
-	import {goto} from '$app/navigation';
 	import imdbApi from '$lib/api/ImdbApi';
 
 	let {item}: {item: SearchResultItem} = $props();
