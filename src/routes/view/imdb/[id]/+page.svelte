@@ -17,7 +17,7 @@
 		maxWebConns: 500
 	};
 
-	let candidates: Nip35TorrentEvent[] = $state([])
+	let candidates: Nip35TorrentEvent[] = $state([]);
 
 	function download(event: Nip35TorrentEvent) {
 		const torrent = wt.add(event.x, options);
@@ -63,7 +63,7 @@
 
 	enum RelayType {
 		READ = 'read',
-		WRITE = 'write',
+		WRITE = 'write'
 	}
 
 	class Relay {
@@ -92,9 +92,14 @@
 
 	let searchRelays = $derived.by(() => {
 		const zc = globalRunes.communities.values().toArray();
-		const sss: Relay[] = zc.filter(community => community.nip01Event.capabilities.find((e) => e[0] === 'nip35')).map(community => {
-			return community.nip65Event.relays.map(relay => new Relay(relay)).filter((relay) => relay.type.has(RelayType.READ));
-		}).flat()
+		const sss: Relay[] = zc
+			.filter((community) => community.nip01Event.capabilities.find((e) => e[0] === 'nip35'))
+			.map((community) => {
+				return community.nip65Event.relays
+					.map((relay) => new Relay(relay))
+					.filter((relay) => relay.type.has(RelayType.READ));
+			})
+			.flat()
 			.reduce((map: Map<string, Relay>, current: Relay) => map.set(current.address, current), new Map<string, Relay>())
 			.values()
 			.toArray();
@@ -121,12 +126,12 @@
 		const ra = new ReactiveArray(searchRelays.map((relay) => relay.address));
 		const dss = new DynamicSynchronisedSession(ra);
 
-		s.assets = []
+		s.assets = [];
 
 		dss.eventStream.emitter.on(EventType.DISCOVERED, (event) => {
 			console.log('discovered', event);
 			const te = Nip35TorrentEvent.buildFromEvent(event);
-			s.assets.push(te)
+			s.assets.push(te);
 
 			if (s.playing === undefined) {
 				s.playing = te;
@@ -171,58 +176,58 @@
 </div>
 
 <style>
-    .video-page {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 2rem;
-        min-height: 100vh;
-        background-color: var(--bg-1);
-    }
+	.video-page {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		padding: 2rem;
+		min-height: 100vh;
+		background-color: var(--bg-1);
+	}
 
-    .video-container {
-        width: 100%;
-        max-width: 1200px;
-        background: var(--bg-2);
-        border: 1px solid var(--border-color);
-        border-radius: 16px;
-        box-shadow: 0 4px 12px var(--shadow-color);
-        padding: 1.5rem;
-        position: relative;
-    }
+	.video-container {
+		width: 100%;
+		max-width: 1200px;
+		background: var(--bg-2);
+		border: 1px solid var(--border-color);
+		border-radius: 16px;
+		box-shadow: 0 4px 12px var(--shadow-color);
+		padding: 1.5rem;
+		position: relative;
+	}
 
-    #video-player {
-        width: 100%;
-        height: auto;
-        border-radius: 8px;
-        outline: none;
-    }
+	#video-player {
+		width: 100%;
+		height: auto;
+		border-radius: 8px;
+		outline: none;
+	}
 
-    .torrent-title {
-        font-size: 1.5rem;
-        font-weight: 600;
-        color: var(--fg-1);
-        margin-top: 1.5rem;
-        text-align: center;
-    }
+	.torrent-title {
+		font-size: 1.5rem;
+		font-weight: 600;
+		color: var(--fg-1);
+		margin-top: 1.5rem;
+		text-align: center;
+	}
 
-    @media (max-width: 768px) {
-        .video-container {
-            padding: 1rem;
-        }
+	@media (max-width: 768px) {
+		.video-container {
+			padding: 1rem;
+		}
 
-        .torrent-title {
-            font-size: 1.3rem;
-        }
-    }
+		.torrent-title {
+			font-size: 1.3rem;
+		}
+	}
 
-    @media (max-width: 480px) {
-        .video-container {
-            padding: 0.5rem;
-        }
+	@media (max-width: 480px) {
+		.video-container {
+			padding: 0.5rem;
+		}
 
-        .torrent-title {
-            font-size: 1.1rem;
-        }
-    }
+		.torrent-title {
+			font-size: 1.1rem;
+		}
+	}
 </style>

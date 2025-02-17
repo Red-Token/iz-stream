@@ -37,11 +37,12 @@
 
 		if (me.profile === undefined || me.publisher === undefined) return;
 
-		const followees = me.profile.nip02Event.list.reduce(
-			(map: Map<string, Followee>, element) => map.set(element.pubkey, element), new Map<string, Followee>)
-			.values().toArray()
+		const followees = me.profile.nip02Event.list
+			.reduce((map: Map<string, Followee>, element) => map.set(element.pubkey, element), new Map<string, Followee>())
+			.values()
+			.toArray();
 
-		followees.push(new Followee(pubkey))
+		followees.push(new Followee(pubkey));
 
 		me.publisher.publish(new Nip02FollowListEvent(followees));
 	}
@@ -72,7 +73,6 @@
 		});
 	}
 </script>
-
 
 <div>
 	Hello My Community

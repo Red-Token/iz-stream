@@ -20,7 +20,7 @@
 		console.log(currentEpisode.data.imdbID);
 	};
 	function view(): any {
-		const imdbID = currentEpisode.data.imdbID
+		const imdbID = currentEpisode.data.imdbID;
 		goto('/view/imdb/' + imdbID);
 	}
 </script>
@@ -35,7 +35,11 @@
 			{:else}
 				<p>Turn on the episode to watch</p>
 			{/if}
-			<button onclick={() => {view()}}>VIEW</button>
+			<button
+				onclick={() => {
+					view();
+				}}>VIEW</button
+			>
 		</div>
 	{/key}
 	<div class="episodes-sidebar">

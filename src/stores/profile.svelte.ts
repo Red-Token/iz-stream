@@ -45,8 +45,7 @@ export class NostrProfile {
 		public nip01Event: Nip01UserMetaDataEvent = defaultNip01,
 		public nip02Event: Nip02FollowListEvent = defaultNip02,
 		public nip65Event: Nip65RelayListMetadataEvent = defaultNip65
-	) {
-	}
+	) {}
 }
 
 export const globalNostrContext = new GlobalNostrContext(relays);
@@ -117,7 +116,8 @@ class Me {
 		const fl = list.filter((f) => globalRunes.profiles.get(f.pubkey)?.nip01Event?.type === UserType.COMMUNITY);
 		return fl
 			.reduce((map, element) => map.set(element.pubkey, element), new Map<string, Followee>())
-			.values().toArray();
+			.values()
+			.toArray();
 	});
 	publisher = $derived.by(() => {
 		console.log('PUb TRIGGERED!');

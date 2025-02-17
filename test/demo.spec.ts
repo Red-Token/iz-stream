@@ -35,7 +35,7 @@ describe('sum test', () => {
 		const bci = new Identity(bfcc, bobIdentifier);
 
 		const bp = new DynamicPublisher(bfts, bci);
-		bp.publish(new Nip35TorrentEvent('MyTitle', '12343455', 'MyDescription', [], [], ['imdbid:'] ));
+		bp.publish(new Nip35TorrentEvent('MyTitle', '12343455', 'MyDescription', [], [], ['imdbid:']));
 
 		//
 		//

@@ -25,37 +25,37 @@
 
 	onMount(async () => {
 		// communities.forEach((community) => {
-			// const session = new SynchronisedSession(community.relays);
-			//
-			// for (const relay of community.relays) {
-			// 	const sub = new Subscription(
-			// 		session,
-			// 		[
-			// 			{
-			// 				kinds: [Nip25ReactionsEvent.KIND],
-			// 				'#e': s?.playing?.event?.id
-			// 			}
-			// 		],
-			// 		[relay]
-			// 	);
-			// }
-			//
-			// session.eventStream.emitter.on(EventType.DISCOVERED, (event: TrustedEvent) => {
-			// 	if (event.kind === Nip25ReactionsEvent.KIND) {
-			// 		const re = new Nip25ReactionsEventBuilder(event).build();
-			//
-			// 		if (re.event === undefined) throw new Error('How did this happen');
-			//
-			// 		reactions.set(re.event.pubkey, re);
-			// 	} else {
-			// 		console.log('Unknown event ', event);
-			// 	}
-			// });
-			//
-			// for (const ci of community.identities.values()) {
-			// 	const p = new Publisher(session, ci);
-			// 	publishers.push(p);
-			// }
+		// const session = new SynchronisedSession(community.relays);
+		//
+		// for (const relay of community.relays) {
+		// 	const sub = new Subscription(
+		// 		session,
+		// 		[
+		// 			{
+		// 				kinds: [Nip25ReactionsEvent.KIND],
+		// 				'#e': s?.playing?.event?.id
+		// 			}
+		// 		],
+		// 		[relay]
+		// 	);
+		// }
+		//
+		// session.eventStream.emitter.on(EventType.DISCOVERED, (event: TrustedEvent) => {
+		// 	if (event.kind === Nip25ReactionsEvent.KIND) {
+		// 		const re = new Nip25ReactionsEventBuilder(event).build();
+		//
+		// 		if (re.event === undefined) throw new Error('How did this happen');
+		//
+		// 		reactions.set(re.event.pubkey, re);
+		// 	} else {
+		// 		console.log('Unknown event ', event);
+		// 	}
+		// });
+		//
+		// for (const ci of community.identities.values()) {
+		// 	const p = new Publisher(session, ci);
+		// 	publishers.push(p);
+		// }
 		// });
 	});
 

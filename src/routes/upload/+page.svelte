@@ -24,7 +24,7 @@
 		console.log('submit!');
 
 		// const community = communities.at(0);
-		const community = undefined
+		const community = undefined;
 
 		if (community === undefined) throw new Error('Community does not exist!');
 

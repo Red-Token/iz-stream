@@ -9,8 +9,7 @@
 	// let profile: NostrProfileMetaData =
 	// 	profiles.get(ci.pubkey) !== undefined ? profiles.get(ci.pubkey) : new NostrProfileMetaData();
 
-
-	let profile = $derived(me.profile?.nip01Event.profile ?? defaultNip01.profile)
+	let profile = $derived(me.profile?.nip01Event.profile ?? defaultNip01.profile);
 
 	type imageLoad = 'picture' | 'banner';
 	let urlInputs = {
