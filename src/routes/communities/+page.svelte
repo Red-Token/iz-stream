@@ -8,14 +8,6 @@
 	import {Nip02FollowListEvent, SignerType} from 'iz-nostrlib';
 	import {DynamicPublisher} from 'iz-nostrlib/dist/org/nostr/ses/DynamicPublisher';
 	import {Nip65RelayListMetadataEvent} from 'iz-nostrlib/dist/org/nostr/nip65/Nip65RelayListMetadata';
-
-	// let communities = $derived.by(() => {
-	// 	const fg = profiles.values();
-	// 	return fg.filter((profile) => {
-	// 		return profile.nip01Event.type === UserType.COMMUNITY;
-	// 	});
-	// });
-
 	import {normalizeURL} from 'nostr-tools/utils';
 	import {Followee} from 'iz-nostrlib/dist/org/nostr/nip02/Nip02FollowListEvent';
 	import {globalRunes} from '@src/stores/profile.svelte.js';

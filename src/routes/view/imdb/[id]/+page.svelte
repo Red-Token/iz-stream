@@ -109,18 +109,6 @@
 
 	onMount(async () => {
 		// //TODO MAKE A GLOBAL SEARCH
-		// const relays = new Set(zcommunities.filter(community => community.nip65Event.relays.map(relay => new Relay(relay))));
-		//
-		// const y = globalRunes.profiles
-		//
-		//
-		// const x = globalRunes.communities
-		//
-		// const z = zcommunities
-		//
-		// console.log(z.length)
-		// console.log(x.length)
-
 		console.log(searchRelays);
 
 		const ra = new ReactiveArray(searchRelays.map((relay) => relay.address));

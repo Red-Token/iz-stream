@@ -102,7 +102,6 @@
 			console.log('magnetURI:' + torrent.magnetURI);
 
 			// TODO: This has to be made dynamic and you should select a bot
-
 			const botNSec: string = 'nsec1p5p9ax0uftre04ewgxntkca4jurj2zlhjed46nwr22xs652vgtss84jeep';
 			const decoded = nip19.decode(botNSec);
 			if (decoded.type !== 'nsec') throw Error('ssfsdfsfsdfsdfsddffsdfsdfsdsfdsfdfsdsfdsfd');

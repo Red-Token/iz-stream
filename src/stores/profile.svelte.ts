@@ -12,7 +12,6 @@ import {Identifier, Identity} from 'iz-nostrlib/dist/org/nostr/communities/Ident
 import type {Followee} from 'iz-nostrlib/dist/org/nostr/nip02/Nip02FollowListEvent';
 
 // REBUILD THE WORLDS HERE
-
 const url = 'wss://relay.lxc';
 const relays = [normalizeRelayUrl(url)];
 
