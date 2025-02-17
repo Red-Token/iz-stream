@@ -3,8 +3,8 @@
 	import {goto} from '$app/navigation';
 	import imdbApi from '$lib/api/ImdbApi';
 
-	let search = 'Big Buck Bunny';
-	// let search = 'Game of Thrones';
+	//let search = 'Big Buck Bunny';
+	let search = 'Game of Thrones';
 	// let search = 'House of the Dragon';
 
 	//TODO do a refactoring and if nothing is found in the search, display this

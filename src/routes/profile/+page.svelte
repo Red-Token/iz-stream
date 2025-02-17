@@ -38,14 +38,14 @@
 	};
 
 	function handleRemoveImage(type: imageLoad) {
-		// profile[type] = '';
+		profile[type] = '';
 		urlInputs[type] = false;
 		tempUrls[type] = '';
 	}
 
 	function onUpdate() {
 		console.log(me.profile);
-		// const et = new Nip01UserMetaDataEvent(me.profile.nip01Event);
+		//const et = new Nip01UserMetaDataEvent(profile.nip01Event);
 		// publisher.publish(Nip01UserMetaDataEvent.KIND, et.createTemplate());
 	}
 
@@ -56,7 +56,7 @@
 
 	const saveUrl = (type: imageLoad) => {
 		if (isValidUrl(tempUrls[type])) {
-			// profile[type] = tempUrls[type];
+			profile[type] = tempUrls[type];
 			urlInputs[type] = false;
 		}
 	};

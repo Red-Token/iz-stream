@@ -16,7 +16,8 @@
 
 	const abortController = new AbortController();
 
-	export const SIGNER_RELAYS = ['wss://relay.stream.labs.h3.se/'];
+	// export const SIGNER_RELAYS = ['wss://relay.stream.labs.h3.se/'];
+	export const SIGNER_RELAYS = ['wss://relay.lxc/'];
 
 	export const PLATFORM_URL = window.location.origin;
 
