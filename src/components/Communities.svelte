@@ -1,13 +1,16 @@
 <script lang="ts">
 	import {onMount} from 'svelte';
-	import {communities} from '@src/stores/community.svelte';
+	import {me, NostrProfile} from '@src/stores/profile.svelte';
+	import {globalRunes} from '@src/stores/profile.svelte.js';
+	// import {communities} from '@src/stores/community.svelte';
 	import {goto} from '$app/navigation';
 	import {Log} from '@src/services/Logger';
 
 	let {isExpanded} = $props();
-	let communitiesList = communities;
 
-	//Log.warn('Communities.svelte', communitiesList[0].image);
+	let communities: NostrProfile[] = $derived.by(() => {
+		return me.communities.map((c) => globalRunes.profiles.get(c.pubkey)).filter((value) => value !== undefined);
+	});
 
 	// const communities = [
 	// 	{id: 1, name: 'Welshman', avatar: '🎨', online: true},
@@ -27,18 +30,22 @@ onmouseleave={isExpanded ? undefined : () => temporaryExpand(false)} -->
 	<nav class="sidebar" aria-label="Communities">
 		<div class="communities-list" style="">
 			{#each communities as community}
-				<a href="/communities/{community.name}" class="community-item" title={community.name}>
+				<a
+					href="/communities/{community.nip01Event.profile.name}"
+					class="community-item"
+					title={community.nip01Event.profile.name}
+				>
 					<div class="avatar-container">
 						<div class="avatar {true && 'online'}">
-							{#if community.image}
-								<img class="avatar" src={community.image} alt="" />
+							{#if community.nip01Event.profile.picture}
+								<img class="avatar" src={community.nip01Event.profile.picture} alt="" />
 							{:else}
-								{community.name.slice(0, 2)}
+								{community.nip01Event.profile.name.slice(0, 2)}
 							{/if}
 						</div>
 					</div>
 					<span class="community-name">
-						{community.name}
+						{community.nip01Event.profile.name}
 					</span>
 				</a>
 			{/each}

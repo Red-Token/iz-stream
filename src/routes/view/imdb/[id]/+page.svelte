@@ -1,18 +1,23 @@
 <script lang="ts">
 	import {page} from '$app/state';
-	import {EventType, Subscription, SynchronisedSession} from 'iz-nostrlib';
-	import {type TrustedEvent} from '@welshman/util';
 	import {onMount} from 'svelte';
 	import {wt} from '@src/stores/wtZool.svelte';
 	import TorrentLike from '@src/components/torrenttalk/TorrentLike.svelte';
 	import {s} from '@src/stores/assetStore.svelte';
 	import {Nip35TorrentEvent} from 'iz-nostrlib/dist/org/nostr/nip35/Nip35TorrentEvent';
-	import {communities} from '@src/stores/community.svelte';
+	import {globalRunes} from '@src/stores/profile.svelte.js';
+	import {DynamicSynchronisedSession} from 'iz-nostrlib/dist/org/nostr/ses/DynamicSynchronisedSession';
+	import {ReactiveArray} from 'iz-nostrlib/dist/org/nostr/util/ReactiveArray';
+	import {DynamicSubscription} from 'iz-nostrlib/dist/org/nostr/ses/DynamicSubscription';
+	import {EventType} from 'iz-nostrlib';
+	import VideoPlayer from '@src/components/VideoPlayer.svelte';
 
 	let options = {
 		announce: ['wss://tracker.webtorrent.dev'],
 		maxWebConns: 500
 	};
+
+	let candidates: Nip35TorrentEvent[] = $state([]);
 
 	function download(event: Nip35TorrentEvent) {
 		const torrent = wt.add(event.x, options);
@@ -56,40 +61,103 @@
 		});
 	}
 
-	onMount(async () => {
-		//TODO MAKE A GLOBAL SEARCH
+	enum RelayType {
+		READ = 'read',
+		WRITE = 'write'
+	}
 
-		communities.forEach((communitie) => {
-			// const session: SynchronisedSession = new SynchronisedSession(communitie.relays);
-			//
-			// communitie.relays.forEach((relay) => {
-			// 	const sub = new Subscription(session, [{kinds: [Nip35TorrentEvent.KIND], '#i': [page.params.id]}], [relay]);
-			// });
-			//
-			// session.eventStream.emitter.on(EventType.DISCOVERED, (event: TrustedEvent) => {
-			// 	const out = new Nip35TorrentEventBuilder(event).build();
-			// 	out.event = event;
-			// 	s.assets.push(out);
-			//
-			// 	console.log(s.assets.length);
-			//
-			// 	if (s.playing === undefined) {
-			// 		s.playing = out;
-			// 		download(s.playing);
-			// 	}
-			// });
+	class Relay {
+		// TODO: make  this more clever
+		static getType(type: string | undefined): Set<RelayType> {
+			switch (type) {
+				case RelayType.READ:
+					return new Set<RelayType>([RelayType.READ]);
+				case RelayType.WRITE:
+					return new Set<RelayType>([RelayType.WRITE]);
+			}
+
+			return new Set<RelayType>([RelayType.READ, RelayType.WRITE]);
+		}
+
+		public address: string;
+		public type: Set<RelayType>;
+		public options: string[];
+
+		constructor(params: string[]) {
+			this.address = params[0];
+			this.type = Relay.getType(params[1]);
+			this.options = params.splice(2);
+		}
+	}
+
+	let searchRelays = $derived.by(() => {
+		const zc = globalRunes.communities.values().toArray();
+		const sss: Relay[] = zc
+			.filter((community) => community.nip01Event.capabilities.find((e) => e[0] === 'nip35'))
+			.map((community) => {
+				return community.nip65Event.relays
+					.map((relay) => new Relay(relay))
+					.filter((relay) => relay.type.has(RelayType.READ));
+			})
+			.flat()
+			.reduce((map: Map<string, Relay>, current: Relay) => map.set(current.address, current), new Map<string, Relay>())
+			.values()
+			.toArray();
+
+		return sss;
+	});
+
+	onMount(async () => {
+		// //TODO MAKE A GLOBAL SEARCH
+		console.log(searchRelays);
+
+		const ra = new ReactiveArray(searchRelays.map((relay) => relay.address));
+		const dss = new DynamicSynchronisedSession(ra);
+
+		s.assets = [];
+
+		dss.eventStream.emitter.on(EventType.DISCOVERED, (event) => {
+			console.log('discovered', event);
+			const te = Nip35TorrentEvent.buildFromEvent(event);
+			s.assets.push(te);
+
+			if (s.playing === undefined) {
+				s.playing = te;
+				// download(s.playing);
+			}
 		});
+
+		const id = page.params.id;
+		const ds = new DynamicSubscription(dss, [{kinds: [Nip35TorrentEvent.KIND], '#i': [`imdb:${id}`]}]);
+
+		// communities.forEach((communitie) => {
+		// const session: SynchronisedSession = new SynchronisedSession(communitie.relays);
+		//
+		// communitie.relays.forEach((relay) => {
+		// 	const sub = new Subscription(session, [{kinds: [Nip35TorrentEvent.KIND], '#i': [page.params.id]}], [relay]);
+		// });
+		//
+		// session.eventStream.emitter.on(EventType.DISCOVERED, (event: TrustedEvent) => {
+		// 	const out = new Nip35TorrentEventBuilder(event).build();
+		// 	out.event = event;
+		// 	s.assets.push(out);
+		//
+		// 	console.log(s.assets.length);
+		//
+		// 	if (s.playing === undefined) {
+		// 		s.playing = out;
+		// 		download(s.playing);
+		// 	}
+		// });
+		// });
 	});
 </script>
 
 <div class="video-page">
 	<div class="torrent-title">{page.params.id}</div>
 	<div class="video-container">
-		<video id="video-player" controls>
-			<track kind="captions" />
-		</video>
-
 		{#if s.playing !== undefined}
+			<VideoPlayer infoHash={s.playing.x} />
 			<TorrentLike></TorrentLike>
 		{/if}
 	</div>

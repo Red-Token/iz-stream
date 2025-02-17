@@ -1,23 +1,16 @@
 <script lang="ts">
-	import {globalNostrContext, me, profiles} from '@src/stores/profile.svelte';
-	import {Nip01UserMetaDataEvent, UserType} from 'iz-nostrlib/src/org/nostr/nip01/Nip01UserMetaData';
-	import {NostrUserProfileMetaData} from 'iz-nostrlib/src/org/nostr/nip01/NostrUserProfileMetaData';
+	import {globalNostrContext, me} from '@src/stores/profile.svelte';
+	import {Nip01UserMetaDataEvent, UserType} from 'iz-nostrlib/dist/org/nostr/nip01/Nip01UserMetaData';
+	import {NostrUserProfileMetaData} from 'iz-nostrlib/dist/org/nostr/nip01/NostrUserProfileMetaData';
 	import {generateSecretKey, getPublicKey} from 'nostr-tools/pure';
 	import {nip19} from 'nostr-tools';
-	import {asyncCreateWelshmanSession, Identifier, Identity} from 'iz-nostrlib/src/org/nostr/communities/Identity';
+	import {asyncCreateWelshmanSession, Identifier, Identity} from 'iz-nostrlib/dist/org/nostr/communities/Identity';
 	import {Nip02FollowListEvent, SignerType} from 'iz-nostrlib';
-	import {DynamicPublisher} from 'iz-nostrlib/src/org/nostr/ses/DynamicPublisher';
-	import {Nip65RelayListMetadataEvent} from 'iz-nostrlib/src/org/nostr/nip65/Nip65RelayListMetadata';
-
-	let communities = $derived.by(() => {
-		const fg = profiles.values();
-		return fg.filter((profile) => {
-			return profile.nip01Event.type === UserType.COMMUNITY;
-		});
-	});
-
+	import {DynamicPublisher} from 'iz-nostrlib/dist/org/nostr/ses/DynamicPublisher';
+	import {Nip65RelayListMetadataEvent} from 'iz-nostrlib/dist/org/nostr/nip65/Nip65RelayListMetadata';
 	import {normalizeURL} from 'nostr-tools/utils';
 	import {Followee} from 'iz-nostrlib/dist/org/nostr/nip02/Nip02FollowListEvent';
+	import {globalRunes} from '@src/stores/profile.svelte.js';
 
 	let cred = $state({nsec: ''});
 	let pubkey = $derived.by(() => {
@@ -36,7 +29,14 @@
 
 		if (me.profile === undefined || me.publisher === undefined) return;
 
-		me.publisher.publish(new Nip02FollowListEvent([...me.profile.nip02Event.list, new Followee(pubkey)]));
+		const followees = me.profile.nip02Event.list
+			.reduce((map: Map<string, Followee>, element) => map.set(element.pubkey, element), new Map<string, Followee>())
+			.values()
+			.toArray();
+
+		followees.push(new Followee(pubkey));
+
+		me.publisher.publish(new Nip02FollowListEvent(followees));
 	}
 
 	function generate(): void {
@@ -66,14 +66,24 @@
 	}
 </script>
 
-Hello Community
+<div>
+	Hello My Community
+	{#each me.communities as community}
+		{community}
+		{globalRunes.profiles.get(community.pubkey)?.nip01Event.profile.name ?? 'Unnamed Community'}
+	{/each}
+</div>
 
-{#each communities as community}
-	<div>
-		${community.nip01Event.profile.name}
-	</div>
-	<button onclick={() => join(community.nip01Event.pubkey)}>JOIN</button>
-{/each}
+Hello ALL Community
+<div>
+	{#each globalRunes.communities.values() as community}
+		<div>
+			${community.nip01Event.profile.name}
+		</div>
+		<button onclick={() => join(community.nip01Event.pubkey)}>JOIN</button>
+	{/each}
+</div>
+
 <div>
 	<div>
 		<div>

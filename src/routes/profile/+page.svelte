@@ -1,16 +1,15 @@
 <script lang="ts">
 	import {onMount} from 'svelte';
-	import {type Publisher} from 'iz-nostrlib';
-	import {NostrProfileMetaData} from 'iz-nostrlib/dist/org/nostr/nip01/NostrProfileMetaData';
-	import {communities} from '@src/stores/community.svelte';
-	import {profiles} from '@src/stores/profile.svelte';
-	import {Nip01UserMetaDataEvent} from 'iz-nostrlib/dist/org/nostr/nip01/Nip01UserMetaData';
+	import {defaultNip01, me} from '@src/stores/profile.svelte';
 
 	// TODO We need to fix this.
-	const ci = communities[0].identities.values().toArray()[0];
+	// const ci = communities[0].identities.values().toArray()[0];
 
-	let publisher: Publisher = ci.profilePublisher;
-	let profile = profiles.get(ci.pubkey) !== undefined ? profiles.get(ci.pubkey) : new NostrProfileMetaData();
+	// let publisher: Publisher = ci.profilePublisher;
+	// let profile: NostrProfileMetaData =
+	// 	profiles.get(ci.pubkey) !== undefined ? profiles.get(ci.pubkey) : new NostrProfileMetaData();
+
+	let profile = $derived(me.profile?.nip01Event.profile ?? defaultNip01.profile);
 
 	type imageLoad = 'picture' | 'banner';
 	let urlInputs = {
@@ -39,15 +38,15 @@
 	};
 
 	function handleRemoveImage(type: imageLoad) {
-		profile![type] = '';
+		// profile[type] = '';
 		urlInputs[type] = false;
 		tempUrls[type] = '';
 	}
 
 	function onUpdate() {
-		console.log(profile);
-		const et = new Nip01UserMetaDataEvent(profile!);
-		publisher.publish(Nip01UserMetaDataEvent.KIND, et.createTemplate());
+		console.log(me.profile);
+		// const et = new Nip01UserMetaDataEvent(me.profile.nip01Event);
+		// publisher.publish(Nip01UserMetaDataEvent.KIND, et.createTemplate());
 	}
 
 	const toggleSource = (type: imageLoad) => {
@@ -57,7 +56,7 @@
 
 	const saveUrl = (type: imageLoad) => {
 		if (isValidUrl(tempUrls[type])) {
-			profile![type] = tempUrls[type];
+			// profile[type] = tempUrls[type];
 			urlInputs[type] = false;
 		}
 	};

@@ -15,7 +15,8 @@ const config = {
 			fallback: 'index.html' // may differ from host to host
 		}),
 		alias: {
-			'@src': 'src'
+			'@src': 'src',
+			'@test': 'test'
 		}
 	}
 };

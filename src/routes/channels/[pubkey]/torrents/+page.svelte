@@ -5,37 +5,32 @@
 	import {EventType, Subscription, SynchronisedSession} from 'iz-nostrlib';
 	import {type TrustedEvent} from '@welshman/util';
 	import {goto} from '$app/navigation';
-	import {profiles} from '../../../../stores/profile.svelte';
 	import {Nip35TorrentEvent} from 'iz-nostrlib/dist/org/nostr/nip35/Nip35TorrentEvent';
-	import {communities} from '@src/stores/community.svelte';
-	import {Followee, Nip02FollowListEvent} from 'iz-nostrlib/dist/org/nostr/nip02/Nip02FollowListEvent';
 	import {NostrUserProfileMetaData} from 'iz-nostrlib/dist/org/nostr/nip01/NostrUserProfileMetaData';
-	import {CommunityIdentity, type Identity} from 'iz-nostrlib/dist/org/nostr/communities/CommunityNostrContext';
+	import {globalNostrContext, globalRunes} from '@src/stores/profile.svelte';
+	import {DynamicSynchronisedSession} from 'iz-nostrlib/dist/org/nostr/ses/DynamicSynchronisedSession';
+	import {CommunityNostrContext} from 'iz-nostrlib/dist/org/nostr/communities/CommunityNostrContext';
+	import {DynamicSubscription} from 'iz-nostrlib/dist/org/nostr/ses/DynamicSubscription';
 
 	let events: Nip35TorrentEvent[] = $state([]);
 
 	// TODO mage a get or default
 	let channelOwner: NostrUserProfileMetaData = $derived.by(() => {
-		const profile = profiles.get(page.params.pubkey);
+		const profile = globalRunes.profiles.get(page.params.pubkey);
 		return profile?.nip01Event?.profile ?? new NostrUserProfileMetaData();
 	});
 
 	onMount(async () => {
-		communities.forEach((community) => {
-			const session = new SynchronisedSession(community.relays.value);
+		globalRunes.communities.forEach((community, key) => {
+			const cnc = new CommunityNostrContext(key, globalNostrContext);
 
-			for (const relay of community.relays.value) {
-				const sub = new Subscription(
-					session,
-					[
-						{
-							kinds: [Nip35TorrentEvent.KIND]
-							// authors: [page.params.pubkey]
-						}
-					],
-					[relay]
-				);
-			}
+			const session = new DynamicSynchronisedSession(cnc.relays);
+			const sub = new DynamicSubscription(session, [
+				{
+					kinds: [Nip35TorrentEvent.KIND]
+					// authors: [page.params.pubkey]
+				}
+			]);
 
 			session.eventStream.emitter.on(EventType.DISCOVERED, (event: TrustedEvent) => {
 				if (event.kind === Nip35TorrentEvent.KIND) {
