@@ -1,6 +1,6 @@
 <script lang="ts">
-	import {profiles} from '@src/stores/profile.svelte.js';
 	import {goto} from '$app/navigation';
+	import {globalRunes} from '@src/stores/profile.svelte.js';
 
 	function gotoPage(key: string) {
 		goto(`/channels/${key}/torrents`);
@@ -9,40 +9,55 @@
 </script>
 
 <div class="profiles-container">
-	{#each profiles.keys() as key, i}
+	{#each globalRunes.profiles.keys() as key, i}
 		<article class="profile-card" style="animation-delay: {i * 0.1}s">
 			<div class="banner-container">
-				{#if profiles.get(key)?.banner}
-					<img class="profile-banner" src={profiles.get(key)?.banner} alt="Banner" loading="lazy" />
+				{#if globalRunes.profiles.get(key)?.nip01Event.profile.banner}
+					<img
+						class="profile-banner"
+						src={globalRunes.profiles.get(key)?.nip01Event.profile.banner}
+						alt="Banner"
+						loading="lazy"
+					/>
 				{:else}
 					<div class="banner-placeholder"></div>
 				{/if}
 
-				{#if profiles.get(key)?.picture}
-					<img class="profile-picture" src={profiles.get(key)?.picture} alt="Avatar" loading="lazy" />
+				{#if globalRunes.profiles.get(key)?.nip01Event.profile.picture}
+					<img
+						class="profile-picture"
+						src={globalRunes.profiles.get(key)?.nip01Event.profile.picture}
+						alt="Avatar"
+						loading="lazy"
+					/>
 				{:else}
 					<div class="avatar-placeholder">
-						{profiles.get(key)?.display_name?.charAt(0) || '?'}
+						{globalRunes.profiles.get(key)?.nip01Event.profile.display_name?.charAt(0) || '?'}
 					</div>
 				{/if}
 			</div>
 
 			<div class="profile-content">
 				<div class="profile-header">
-					<h1 class="display-name">{profiles.get(key)?.display_name || 'Anonymous'}</h1>
-					<h2 class="username">@{profiles.get(key)?.name || 'unknown'}</h2>
+					<h1 class="display-name">{globalRunes.profiles.get(key)?.nip01Event.profile.display_name || 'Anonymous'}</h1>
+					<h2 class="username">@{globalRunes.profiles.get(key)?.nip01Event.profile.name || 'unknown'}</h2>
 					<div class="profile-key" title={key}>
 						Key: {key.slice(0, 8)}...{key.slice(-8)}
 					</div>
 				</div>
 
-				{#if profiles.get(key)?.about}
-					<p class="about">{profiles.get(key)?.about}</p>
+				{#if globalRunes.profiles.get(key)?.nip01Event.profile.about}
+					<p class="about">{globalRunes.profiles.get(key)?.nip01Event.profile.about}</p>
 				{/if}
 
 				<div class="profile-actions">
-					{#if profiles.get(key)?.website}
-						<a href={profiles.get(key)?.website} class="website-link" target="_blank" rel="noopener noreferrer">
+					{#if globalRunes.profiles.get(key)?.nip01Event.profile.website}
+						<a
+							href={globalRunes.profiles.get(key)?.nip01Event.profile.website}
+							class="website-link"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
 							<svg class="link-icon" viewBox="0 0 24 24">
 								<!-- TODO Move all svgs to a separate library. -->
 								<path
