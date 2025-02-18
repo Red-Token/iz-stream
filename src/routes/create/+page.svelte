@@ -168,7 +168,7 @@
 							option.pubkey}</option
 					>
 				{/each}
-			</select> <input type="text" bind:value={state.imdbId} placeholder="IMDB ID" class="form-input" />
+			</select>
 			<input type="text" bind:value={state.title} placeholder="Movie title" class="form-input" />
 			<input type="text" bind:value={state.imdbId} placeholder="IMDB ID" class="form-input" />
 			<label class="upload-label">
