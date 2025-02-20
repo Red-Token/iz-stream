@@ -14,8 +14,8 @@
 		"lint": "prettier --check . && eslint .",
 		"test:unit": "vitest",
 		"test": "npm run test:unit -- --run",
-		"docker": "npm run build && sudo docker build --no-cache -t iz-stream . ",
-		"docker:run": "sudo docker run -d -p 80:80  iz-stream"
+		"docker": "npm run build && sudo docker compose build --no-cache",
+		"docker:run": "sudo docker compose up -d"
 	},
 	"devDependencies": {
 		"@eslint/compat": "^1.2.5",
