@@ -1,0 +1,7 @@
+services:
+  iz-stream:
+    build: .
+    image: ivnjey/iz-stream:latest
+    ports:
+      - '4133:80'
+    restart: unless-stopped
