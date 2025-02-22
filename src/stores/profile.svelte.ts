@@ -1,15 +1,17 @@
 import {SvelteMap} from 'svelte/reactivity';
-import {Nip01UserMetaDataEvent, UserType} from 'iz-nostrlib/dist/org/nostr/nip01/Nip01UserMetaData';
-import {Nip65RelayListMetadataEvent} from 'iz-nostrlib/dist/org/nostr/nip65/Nip65RelayListMetadata';
-import {GlobalNostrContext} from 'iz-nostrlib/dist/org/nostr/communities/GlobalNostrContext';
+import {
+	Nip01UserMetaDataEvent,
+	NostrUserProfileMetaData,
+	UserType,
+	Nip65RelayListMetadataEvent,
+	Nip02FollowListEvent,
+	Followee
+} from 'iz-nostrlib/nips';
+import {GlobalNostrContext, Identifier, Identity} from 'iz-nostrlib/communities';
+import {DynamicPublisher} from 'iz-nostrlib/ses';
 import {normalizeRelayUrl} from '@welshman/util';
 import {setContext} from '@welshman/lib';
 import {getDefaultAppContext, getDefaultNetContext} from '@welshman/app';
-import {NostrUserProfileMetaData} from 'iz-nostrlib/dist/org/nostr/nip01/NostrUserProfileMetaData';
-import {Nip02FollowListEvent} from 'iz-nostrlib';
-import {DynamicPublisher} from 'iz-nostrlib/dist/org/nostr/ses/DynamicPublisher';
-import {Identifier, Identity} from 'iz-nostrlib/dist/org/nostr/communities/Identity';
-import type {Followee} from 'iz-nostrlib/dist/org/nostr/nip02/Nip02FollowListEvent';
 
 // REBUILD THE WORLDS HERE
 const url = 'wss://relay.lxc';

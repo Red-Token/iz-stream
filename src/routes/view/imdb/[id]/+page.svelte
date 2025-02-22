@@ -1,16 +1,15 @@
 <script lang="ts">
 	import {page} from '$app/state';
 	import {onMount} from 'svelte';
+	import {globalRunes} from '@src/stores/profile.svelte';
 	import {wt} from '@src/stores/wtZool.svelte';
-	import TorrentLike from '@src/components/torrenttalk/TorrentLike.svelte';
 	import {s} from '@src/stores/assetStore.svelte';
-	import {Nip35TorrentEvent} from 'iz-nostrlib/dist/org/nostr/nip35/Nip35TorrentEvent';
-	import {globalRunes} from '@src/stores/profile.svelte.js';
-	import {DynamicSynchronisedSession} from 'iz-nostrlib/dist/org/nostr/ses/DynamicSynchronisedSession';
-	import {ReactiveArray} from 'iz-nostrlib/dist/org/nostr/util/ReactiveArray';
-	import {DynamicSubscription} from 'iz-nostrlib/dist/org/nostr/ses/DynamicSubscription';
-	import {EventType} from 'iz-nostrlib';
+	import TorrentLike from '@src/components/torrenttalk/TorrentLike.svelte';
 	import VideoPlayer from '@src/components/VideoPlayer.svelte';
+	import {EventType} from 'iz-nostrlib';
+	import {Nip35TorrentEvent} from 'iz-nostrlib/nips';
+	import {DynamicSynchronisedSession, DynamicSubscription} from 'iz-nostrlib/ses';
+	import {ReactiveArray} from 'iz-nostrlib/util';
 
 	let options = {
 		announce: ['wss://tracker.webtorrent.dev'],

@@ -1,16 +1,20 @@
 <script lang="ts">
 	import {globalNostrContext, me} from '@src/stores/profile.svelte';
-	import {Nip01UserMetaDataEvent, UserType} from 'iz-nostrlib/dist/org/nostr/nip01/Nip01UserMetaData';
-	import {NostrUserProfileMetaData} from 'iz-nostrlib/dist/org/nostr/nip01/NostrUserProfileMetaData';
+	import {SignerType} from 'iz-nostrlib';
+	import {DynamicPublisher} from 'iz-nostrlib/ses';
+	import {asyncCreateWelshmanSession, Identifier, Identity} from 'iz-nostrlib/communities';
+	import {
+		Nip01UserMetaDataEvent,
+		UserType,
+		Nip02FollowListEvent,
+		NostrUserProfileMetaData,
+		Nip65RelayListMetadataEvent,
+		Followee
+	} from 'iz-nostrlib/nips';
 	import {generateSecretKey, getPublicKey} from 'nostr-tools/pure';
 	import {nip19} from 'nostr-tools';
-	import {asyncCreateWelshmanSession, Identifier, Identity} from 'iz-nostrlib/dist/org/nostr/communities/Identity';
-	import {Nip02FollowListEvent, SignerType} from 'iz-nostrlib';
-	import {DynamicPublisher} from 'iz-nostrlib/dist/org/nostr/ses/DynamicPublisher';
-	import {Nip65RelayListMetadataEvent} from 'iz-nostrlib/dist/org/nostr/nip65/Nip65RelayListMetadata';
 	import {normalizeURL} from 'nostr-tools/utils';
-	import {Followee} from 'iz-nostrlib/dist/org/nostr/nip02/Nip02FollowListEvent';
-	import {globalRunes} from '@src/stores/profile.svelte.js';
+	import {globalRunes} from '@src/stores/profile.svelte';
 
 	let cred = $state({nsec: ''});
 	let pubkey = $derived.by(() => {

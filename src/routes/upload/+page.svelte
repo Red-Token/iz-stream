@@ -1,11 +1,15 @@
 <script lang="ts">
 	import {onMount} from 'svelte';
 	import {wt} from '@src/stores/wtZool.svelte';
-	import {EventType, Nip9999SeederTorrentTransformationResponseEvent, NostrCommunityServiceClient} from 'iz-nostrlib';
+	import {EventType} from 'iz-nostrlib';
+	import {
+		Nip9999SeederTorrentTransformationResponseEvent,
+		NostrCommunityServiceClient,
+		Nip9999SeederTorrentTransformationRequestEvent
+	} from 'iz-nostrlib/seederbot';
 	// import {communities} from '@src/stores/community.svelte';
 	import type {TrustedEvent} from '@welshman/util';
-	import {Nip9999SeederTorrentTransformationRequestEvent} from 'iz-nostrlib/dist/org/nostr/seederbot/Nip9999SeederControllEvents.js';
-	import {safeFindSingleTagValue} from 'iz-nostrlib/dist/org/nostr/AbstractNipEvent';
+	import {safeFindSingleTagValue} from 'iz-nostrlib';
 
 	let file: File;
 

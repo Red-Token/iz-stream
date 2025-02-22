@@ -8,6 +8,7 @@
 	import {getDefaultAppContext, getDefaultNetContext} from '@welshman/app';
 	import {normalizeRelayUrl} from '@welshman/util';
 	import {Log} from '@src/services/Logger';
+	import {NostrClient} from 'iz-nostrlib';
 
 	const layout = Log.child({component: '+layout.svelte'});
 
@@ -15,6 +16,8 @@
 
 	let {children} = $props();
 	let isExpanded: boolean = $state(true);
+
+	const nostrClient = new NostrClient();
 
 	$effect(() => {
 		document.documentElement.style.setProperty('--sidebar-width', isExpanded ? '80px' : '0px');

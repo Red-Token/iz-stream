@@ -1,4 +1,4 @@
-import type {Nip35TorrentEvent} from 'iz-nostrlib/dist/org/nostr/nip35/Nip35TorrentEvent';
+import type {Nip35TorrentEvent} from 'iz-nostrlib/nips';
 
 export let s: {
 	assets: Nip35TorrentEvent[];

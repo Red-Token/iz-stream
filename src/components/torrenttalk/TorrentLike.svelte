@@ -3,8 +3,8 @@
 	import {Publisher, Subscription, SynchronisedSession} from 'iz-nostrlib';
 	import {s} from '../../stores/assetStore.svelte';
 	import {SvelteMap} from 'svelte/reactivity';
-	import {Nip25ReactionsEvent} from 'iz-nostrlib/dist/org/nostr/nip25/Nip25Reactions';
-	import {createRefETags} from 'iz-nostrlib/dist/org/nostr/util/scraps';
+	import {Nip25ReactionsEvent} from 'iz-nostrlib/nips';
+	import {createRefETags} from 'iz-nostrlib/util';
 	// import {communities} from '@src/stores/community.svelte';
 
 	let session: SynchronisedSession;

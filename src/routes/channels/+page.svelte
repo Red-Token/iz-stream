@@ -1,6 +1,6 @@
 <script lang="ts">
 	import {goto} from '$app/navigation';
-	import {globalRunes} from '@src/stores/profile.svelte.js';
+	import {globalRunes} from '@src/stores/profile.svelte';
 
 	function gotoPage(key: string) {
 		goto(`/channels/${key}/torrents`);

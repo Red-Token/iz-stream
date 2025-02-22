@@ -1,24 +1,19 @@
 <script lang="ts">
 	import {
-		EventType,
 		Nip9999SeederTorrentTransformationResponseEvent,
 		Nip9999SeederTorrentTransformationResponseEventHandler,
-		NostrCommunityServiceClient,
-		Publisher,
-		SynchronisedSession
-	} from 'iz-nostrlib';
+		Nip9999SeederTorrentTransformationRequestEvent,
+		NostrCommunityServiceClient
+	} from 'iz-nostrlib/seederbot';
+	import {EventType, Publisher, SynchronisedSession, safeFindSingleTagValue} from 'iz-nostrlib';
 	import {onMount} from 'svelte';
-	import {Nip35TorrentEvent} from 'iz-nostrlib/dist/org/nostr/nip35/Nip35TorrentEvent';
+	import {Nip35TorrentEvent} from 'iz-nostrlib/nips';
 	import type {TrustedEvent} from '@welshman/util';
-	import {safeFindSingleTagValue} from 'iz-nostrlib/dist/org/nostr/AbstractNipEvent';
 	import {wt} from '@src/stores/wtZool.svelte';
-	import {Nip9999SeederTorrentTransformationRequestEvent} from 'iz-nostrlib/dist/org/nostr/seederbot/Nip9999SeederControllEvents';
 	import {goto} from '$app/navigation';
-	import {globalNostrContext, globalRunes, me} from '@src/stores/profile.svelte.js';
-	import {DynamicSynchronisedSession} from 'iz-nostrlib/dist/org/nostr/ses/DynamicSynchronisedSession';
-	import {CommunityNostrContext} from 'iz-nostrlib/dist/org/nostr/communities/CommunityNostrContext';
-	import {DynamicPublisher} from 'iz-nostrlib/dist/org/nostr/ses/DynamicPublisher';
-	import {StaticEventsProcessor} from 'iz-nostrlib/dist/org/nostr/ses/StaticEventsProcessor';
+	import {globalNostrContext, globalRunes, me} from '@src/stores/profile.svelte';
+	import {DynamicSynchronisedSession, StaticEventsProcessor, DynamicPublisher} from 'iz-nostrlib/ses';
+	import {CommunityNostrContext} from 'iz-nostrlib/communities';
 	import {nip19} from 'nostr-tools';
 	import {getPublicKey} from 'nostr-tools/pure';
 
