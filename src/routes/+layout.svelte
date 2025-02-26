@@ -19,18 +19,15 @@
 	// let profileSession: SynchronisedSession
 
 	onMount(() => {
-		setContext({
-			net: getDefaultNetContext(),
-			app: getDefaultAppContext()
-		});
-
+		// setContext({
+		// 	net: getDefaultNetContext(),
+		// 	app: getDefaultAppContext()
+		// });
 		// // load the master relays
 		// globalState.relays = [];
-
 		// const url = 'wss://relay.stream.labs.h3.se';
-		const url = 'wss://relay.lxc';
-		const relays = [normalizeRelayUrl(url)];
-
+		// const url = 'wss://relay.lxc';
+		// const relays = [normalizeRelayUrl(url)];
 		// const globalCommunity = new GlobalNostrContext(relays);
 		//
 		// globalCommunity.profileService.nip01Map.addListener((keys: string[]) => {
@@ -48,9 +45,7 @@
 		// 		profile.nip65Event = globalCommunity.profileService.nip65Map.value.get(key)
 		// 	}
 		// });
-
 		// const globalCommunity = new CommunityNostrContext('globalNostrCommunity', relays, '');
-
 		// globalCommunity.notifications.on(NotificationEventType.PROFILE, (event) => {
 		// 	if (event instanceof Nip01UserMetaDataEvent) {
 		// 		if (event.event === undefined) throw new Error('event event is null');
@@ -63,7 +58,6 @@
 		//
 		// 	throw new Error('Unknown event');
 		// });
-
 		// communities.forEach((community: CommunityNostrContext) => {
 		// 	community.connect();
 		//

@@ -11,8 +11,9 @@
 	import {normalizeURL} from 'nostr-tools/utils';
 	import {Followee} from 'iz-nostrlib/dist/org/nostr/nip02/Nip02FollowListEvent';
 	import {globalRunes} from '@src/stores/profile.svelte.js';
+	import {defaultCommunityRelay} from '@src/config/config';
 
-	let cred = $state({nsec: ''});
+	let cred = $state({nsec: 'nsec16lc2cn2gzgf3vcv20lwkqquprqujpkq9pj0wcxmnw8scxh6j0yrqlc9ae0'});
 	let pubkey = $derived.by(() => {
 		if (!cred.nsec.startsWith('nsec')) return 'Incorrect credentials';
 
@@ -20,8 +21,8 @@
 	});
 
 	let profile = $state({
-		data: new NostrUserProfileMetaData('Big Fish', 'About me', 'fish.jpg'),
-		relay: 'wss://relay.lxc'
+		data: new NostrUserProfileMetaData('Big Fish', 'About me', 'https://pre-alfa.iz-stream.com/users/big-fish.jpg'),
+		relay: defaultCommunityRelay
 	});
 
 	function join(pubkey: string): void {
@@ -60,6 +61,7 @@
 			const relays: string[][] = parseRelayText(profile.relay);
 			const publisher = new DynamicPublisher(globalNostrContext.profileService, identity);
 
+			// TODO FIX THIS FFS! Where are my capabilities
 			publisher.publish(new Nip01UserMetaDataEvent(profile.data, UserType.COMMUNITY));
 			publisher.publish(new Nip65RelayListMetadataEvent([[profile.relay]]));
 		});
@@ -69,7 +71,10 @@
 <div>
 	Hello My Community
 	{#each me.communities as community}
-		{community}
+		<div>
+			{community}
+			{community.pubkey}
+		</div>
 		{globalRunes.profiles.get(community.pubkey)?.nip01Event.profile.name ?? 'Unnamed Community'}
 	{/each}
 </div>

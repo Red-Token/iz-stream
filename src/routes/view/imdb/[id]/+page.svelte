@@ -90,10 +90,20 @@
 		}
 	}
 
+	console.log(globalRunes.communities.size);
+
+	let zc = $derived(globalRunes.communities.values().toArray());
+
+	console.log(zc.length);
+
+	zc.forEach((c) => {
+		const cap = c.nip01Event.capabilities;
+		console.log(cap);
+	});
+
 	let searchRelays = $derived.by(() => {
-		const zc = globalRunes.communities.values().toArray();
 		const sss: Relay[] = zc
-			.filter((community) => community.nip01Event.capabilities.find((e) => e[0] === 'nip35'))
+			// .filter((community) => community.nip01Event.capabilities.find((e) => e[0] === 'nip35'))
 			.map((community) => {
 				return community.nip65Event.relays
 					.map((relay) => new Relay(relay))

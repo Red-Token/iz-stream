@@ -1,4 +1,10 @@
 <script lang="ts">
-	import VideoPlayer from '@src/components/VideoPlayer.svelte';
-	// <VideoPlayer infoHash="5bcb88dd5f1f2ec8940964987b6b0c2357f6a9f9" />
+	import {globalNostrContext} from '@src/stores/profile.svelte';
 </script>
+
+Running these relays:
+{#each globalNostrContext.relays.value as relay}
+	<div>
+		{relay}
+	</div>
+{/each}

@@ -10,15 +10,18 @@ import {Nip02FollowListEvent} from 'iz-nostrlib';
 import {DynamicPublisher} from 'iz-nostrlib/dist/org/nostr/ses/DynamicPublisher';
 import {Identifier, Identity} from 'iz-nostrlib/dist/org/nostr/communities/Identity';
 import type {Followee} from 'iz-nostrlib/dist/org/nostr/nip02/Nip02FollowListEvent';
+import {applicationRelay} from '@src/config/config';
 
 // REBUILD THE WORLDS HERE
-const url = 'wss://relay.lxc';
-const relays = [normalizeRelayUrl(url)];
+// TODO: FIX THIS
+const relays = [normalizeRelayUrl(applicationRelay)];
 
 setContext({
 	net: getDefaultNetContext(),
 	app: getDefaultAppContext()
 });
+
+export const globalNostrContext = new GlobalNostrContext(relays);
 
 class GlobalRunes {
 	profiles = $state(new SvelteMap<string, NostrProfile>());
@@ -47,10 +50,8 @@ export class NostrProfile {
 	) {}
 }
 
-export const globalNostrContext = new GlobalNostrContext(relays);
-
 globalNostrContext.profileService.nip01Map.addListener((keys) => {
-	console.log('keys', keys);
+	console.log('nip01', keys);
 
 	for (let key of keys) {
 		const profile = globalRunes.profiles.get(key) ?? new NostrProfile();
@@ -60,7 +61,7 @@ globalNostrContext.profileService.nip01Map.addListener((keys) => {
 });
 
 globalNostrContext.profileService.nip02Map.addListener((keys) => {
-	console.log('keys z', keys);
+	console.log('nip02', keys);
 	for (let key of keys) {
 		const profile = globalRunes.profiles.get(key) ?? new NostrProfile();
 		profile.nip02Event = globalNostrContext.profileService.nip02Map.value.get(key) ?? defaultNip02;
@@ -69,7 +70,7 @@ globalNostrContext.profileService.nip02Map.addListener((keys) => {
 });
 
 globalNostrContext.profileService.nip65Map.addListener((keys) => {
-	console.log('keys too:', keys);
+	console.log('nip65:', keys);
 	for (let key of keys) {
 		const profile = globalRunes.profiles.get(key) ?? new NostrProfile();
 		profile.nip65Event = globalNostrContext.profileService.nip65Map.value.get(key) ?? defaultNip65;

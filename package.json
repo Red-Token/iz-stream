@@ -58,7 +58,7 @@
 		"@welshman/signer": "0.0.14",
 		"@welshman/store": "0.0.12",
 		"@welshman/util": "0.0.45",
-		"iz-nostrlib": "^0.1.15-snapshot.5",
+		"iz-nostrlib": "^0.1.16-0",
 		"leaflet": "^1.9.4",
 		"ngeohash": "^0.6.3",
 		"nostr-tools": "^2.10.4",
