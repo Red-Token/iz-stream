@@ -14,7 +14,7 @@ import {setContext} from '@welshman/lib';
 import {getDefaultAppContext, getDefaultNetContext} from '@welshman/app';
 
 // REBUILD THE WORLDS HERE
-const url = 'wss://relay.lxc';
+const url = 'wss://relay.pre-alfa.iz-stream.com/';
 const relays = [normalizeRelayUrl(url)];
 
 setContext({
@@ -54,7 +54,7 @@ export const globalNostrContext = new GlobalNostrContext(relays);
 globalNostrContext.profileService.nip01Map.addListener((keys) => {
 	console.log('keys', keys);
 
-	for (let key of keys) {
+	for (const key of keys) {
 		const profile = globalRunes.profiles.get(key) ?? new NostrProfile();
 		profile.nip01Event = globalNostrContext.profileService.nip01Map.value.get(key) ?? defaultNip01;
 		globalRunes.profiles.set(key, profile);
@@ -63,7 +63,7 @@ globalNostrContext.profileService.nip01Map.addListener((keys) => {
 
 globalNostrContext.profileService.nip02Map.addListener((keys) => {
 	console.log('keys z', keys);
-	for (let key of keys) {
+	for (const key of keys) {
 		const profile = globalRunes.profiles.get(key) ?? new NostrProfile();
 		profile.nip02Event = globalNostrContext.profileService.nip02Map.value.get(key) ?? defaultNip02;
 		globalRunes.profiles.set(key, profile);
@@ -72,7 +72,7 @@ globalNostrContext.profileService.nip02Map.addListener((keys) => {
 
 globalNostrContext.profileService.nip65Map.addListener((keys) => {
 	console.log('keys too:', keys);
-	for (let key of keys) {
+	for (const key of keys) {
 		const profile = globalRunes.profiles.get(key) ?? new NostrProfile();
 		profile.nip65Event = globalNostrContext.profileService.nip65Map.value.get(key) ?? defaultNip65;
 		globalRunes.profiles.set(key, profile);

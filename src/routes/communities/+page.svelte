@@ -3,14 +3,9 @@
 	import {SignerType} from 'iz-nostrlib';
 	import {DynamicPublisher} from 'iz-nostrlib/ses';
 	import {asyncCreateWelshmanSession, Identifier, Identity} from 'iz-nostrlib/communities';
-	import {
-		Nip01UserMetaDataEvent,
-		UserType,
-		Nip02FollowListEvent,
-		NostrUserProfileMetaData,
-		Nip65RelayListMetadataEvent,
-		Followee
-	} from 'iz-nostrlib/nips';
+	import {Nip01UserMetaDataEvent, UserType, NostrUserProfileMetaData} from 'iz-nostrlib/nip01';
+	import {Nip02FollowListEvent, Followee} from 'iz-nostrlib/nip02';
+	import {Nip65RelayListMetadataEvent} from 'iz-nostrlib/nip65';
 	import {generateSecretKey, getPublicKey} from 'nostr-tools/pure';
 	import {nip19} from 'nostr-tools';
 	import {normalizeURL} from 'nostr-tools/utils';
@@ -25,7 +20,7 @@
 
 	let profile = $state({
 		data: new NostrUserProfileMetaData('Big Fish', 'About me', 'fish.jpg'),
-		relay: 'wss://relay.lxc'
+		relay: 'wss://relay.pre-alfa.iz-stream.com/'
 	});
 
 	function join(pubkey: string): void {

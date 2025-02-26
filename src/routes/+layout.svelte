@@ -34,7 +34,7 @@
 		// globalState.relays = [];
 
 		// const url = 'wss://relay.stream.labs.h3.se';
-		const url = 'wss://relay.lxc';
+		const url = 'wss://relay.pre-alfa.iz-stream.com/';
 		const relays = [normalizeRelayUrl(url)];
 
 		// const globalCommunity = new GlobalNostrContext(relays);
