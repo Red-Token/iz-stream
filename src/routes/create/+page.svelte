@@ -8,7 +8,7 @@
 	import {EventType, Publisher, SynchronisedSession, safeFindSingleTagValue} from 'iz-nostrlib';
 	import {onMount} from 'svelte';
 	import {Nip35TorrentEvent} from 'iz-nostrlib/nips';
-	import type {TrustedEvent} from '@welshman/util';
+	import type {TrustedEvent} from '@red-token/welshman/util';
 	import {wt} from '@src/stores/wtZool.svelte';
 	import {goto} from '$app/navigation';
 	import {globalNostrContext, globalRunes, me} from '@src/stores/profile.svelte';

@@ -4,7 +4,6 @@
 	import {globalRunes} from '@src/stores/profile.svelte';
 	// import {communities} from '@src/stores/community.svelte';
 	import {goto} from '$app/navigation';
-	import {Log} from '@src/services/Logger';
 
 	let {isExpanded} = $props();
 

@@ -1,5 +1,5 @@
 import {describe, expect, it} from 'vitest';
-import {normalizeRelayUrl} from '@welshman/util';
+import {normalizeRelayUrl} from '@red-token/welshman/util';
 import {type SignerData, SignerType} from 'iz-nostrlib';
 import {asyncCreateWelshmanSession, Identifier, Identity} from 'iz-nostrlib/src/org/nostr/communities/Identity';
 import {GlobalNostrContext} from 'iz-nostrlib/src/org/nostr/communities/GlobalNostrContext';
@@ -7,7 +7,7 @@ import {globalNostrContext} from '../src/stores/profile.svelte';
 import {CommunityNostrContext} from 'iz-nostrlib/src/org/nostr/communities/CommunityNostrContext';
 import {DynamicSynchronisedSession} from 'iz-nostrlib/src/org/nostr/ses/DynamicSynchronisedSession';
 import {DynamicPublisher} from 'iz-nostrlib/src/org/nostr/ses/DynamicPublisher';
-import {publish} from '@welshman/net';
+import {publish} from '@red-token/welshman/net';
 import {Nip35TorrentEvent} from 'iz-nostrlib/dist/org/nostr/nip35/Nip35TorrentEvent';
 import {getPublicKey} from 'nostr-tools/lib/types/pure';
 

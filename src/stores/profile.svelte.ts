@@ -9,9 +9,9 @@ import {
 } from 'iz-nostrlib/nips';
 import {GlobalNostrContext, Identifier, Identity} from 'iz-nostrlib/communities';
 import {DynamicPublisher} from 'iz-nostrlib/ses';
-import {normalizeRelayUrl} from '@welshman/util';
-import {setContext} from '@welshman/lib';
-import {getDefaultAppContext, getDefaultNetContext} from '@welshman/app';
+import {normalizeRelayUrl} from '@red-token/welshman/util';
+import {setContext} from '@red-token/welshman/lib';
+import {getDefaultAppContext, getDefaultNetContext} from '@red-token/welshman/app';
 
 // REBUILD THE WORLDS HERE
 const url = 'wss://relay.pre-alfa.iz-stream.com/';

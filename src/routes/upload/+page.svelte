@@ -8,7 +8,7 @@
 		Nip9999SeederTorrentTransformationRequestEvent
 	} from 'iz-nostrlib/seederbot';
 	// import {communities} from '@src/stores/community.svelte';
-	import type {TrustedEvent} from '@welshman/util';
+	import type {TrustedEvent} from '@red-token/welshman/util';
 	import {safeFindSingleTagValue} from 'iz-nostrlib';
 
 	let file: File;

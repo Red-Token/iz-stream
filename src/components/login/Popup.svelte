@@ -1,6 +1,6 @@
 <script lang="ts">
 	import {type SignerData, SignerType} from 'iz-nostrlib';
-	import {getNip07, type Nip07, Nip59} from '@welshman/signer';
+	import {getNip07, type Nip07, Nip59} from '@red-token/welshman/signer';
 	import {QRCode} from '@red-token/iz-svelte-library';
 	import LogInBunker from './test/LogInBunker.svelte';
 	import {onMount} from 'svelte';

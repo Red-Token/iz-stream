@@ -1,7 +1,7 @@
 <script lang="ts">
 	import {onDestroy} from 'svelte';
-	import {Nip46Broker, type Nip46BrokerParams} from '@welshman/signer';
-	import {addSession, nip46Perms} from '@welshman/app';
+	import {Nip46Broker, type Nip46BrokerParams} from '@red-token/welshman/signer';
+	import {addSession, nip46Perms} from '@red-token/welshman/app';
 	// import { slideAndFade } from '@lib/transition';
 	// import { loadUserData, loginWithNip46 } from '@app/commands';
 	// import { clearModals } from '@app/modal';

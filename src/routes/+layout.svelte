@@ -4,15 +4,12 @@
 	import Communities from '@src/components/Communities.svelte';
 	import {onMount} from 'svelte';
 	import PrimaryNav from '@src/components/PrimaryNav.svelte';
-	import {setContext} from '@welshman/lib';
-	import {getDefaultAppContext, getDefaultNetContext} from '@welshman/app';
-	import {normalizeRelayUrl} from '@welshman/util';
-	import {Log} from '@src/services/Logger';
+	import {setContext} from '@red-token/welshman/lib';
+	import {getDefaultAppContext, getDefaultNetContext} from '@red-token/welshman/app';
+	import {normalizeRelayUrl} from '@red-token/welshman/util';
 	import {NostrClient} from 'iz-nostrlib';
 
-	const layout = Log.child({component: '+layout.svelte'});
-
-	layout.info(import.meta.resolve('./org/nostr/ses/Subscription'));
+	console.log(import.meta.resolve('./org/nostr/ses/Subscription'));
 
 	let {children} = $props();
 	let isExpanded: boolean = $state(true);

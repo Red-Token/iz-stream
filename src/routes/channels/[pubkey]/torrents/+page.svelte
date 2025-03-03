@@ -2,7 +2,7 @@
 	import {page} from '$app/state';
 	import {onMount} from 'svelte';
 	import {EventType, Subscription, SynchronisedSession} from 'iz-nostrlib';
-	import {type TrustedEvent} from '@welshman/util';
+	import {type TrustedEvent} from '@red-token/welshman/util';
 	import {goto} from '$app/navigation';
 	import {Nip35TorrentEvent, NostrUserProfileMetaData} from 'iz-nostrlib/nips';
 	import {globalNostrContext, globalRunes} from '@src/stores/profile.svelte';
