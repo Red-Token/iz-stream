@@ -1,4 +1,6 @@
+//@ts-ignore //TODO something needs to be done about this.
 import SimplePeer from 'simple-peer/simplepeer.min.js';
+//@ts-ignore
 import WebTorrent from 'webtorrent/dist/webtorrent.min.js';
 
 const rtcConfig = {

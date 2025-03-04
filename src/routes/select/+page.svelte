@@ -1,6 +1,6 @@
 <script lang="ts">
 	import {searchResult} from '@src/stores/searchResult.svelte';
-	import SeriesComponent from '@src/components/temp/Series.svelte';
+	import SeriesComponent from '@src/components/Series.svelte';
 	import MovieComponent from '@src/components/MovieComponent.svelte';
 </script>
 
