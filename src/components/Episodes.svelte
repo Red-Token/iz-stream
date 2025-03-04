@@ -46,7 +46,7 @@
 		<h2>All episodes</h2>
 		<div class="episodes-list">
 			{#each episodes as episode, id}
-				<div class="episode-item" onclick={() => selectEpisode(id)}>
+				<div class="episode-item" role="button" tabindex="0" onkeydown={() => {}} onclick={() => selectEpisode(id)}>
 					<img src={episode.data.Poster} alt={episode.data.Title} />
 					<div>
 						<p class="episode-title">{episode.data.Title}</p>

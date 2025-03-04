@@ -3,18 +3,18 @@
 	import {me, NostrProfile} from '@src/stores/profile.svelte';
 	import {globalRunes} from '@src/stores/profile.svelte.js';
 	// import {communities} from '@src/stores/community.svelte';
+	import {goto} from '$app/navigation';
+	import {Log} from '@src/services/Logger';
 
 	let {isExpanded} = $props();
 
-	let communities: NostrProfile[] = $derived.by(() => {
-		return me.communities.map((c) => globalRunes.profiles.get(c.pubkey)).filter((value) => value !== undefined);
-	});
+	let communities: NostrProfile[] = $derived(
+		me.communities.map((c) => globalRunes.profiles.get(c.pubkey)).filter((value) => value !== undefined)
+	);
 
-	// const communities = [
-	// 	{id: 1, name: 'Welshman', avatar: '🎨', online: true},
-	// 	{id: 2, name: 'Nostr', avatar: '💻', online: false},
-	// 	{id: 3, name: 'Red-Token', avatar: '🎮', online: true}
-	// ];
+	const add = () => {
+		console.log('add');
+	};
 
 	onMount(() => {
 		const savedState = localStorage.getItem('sidebar-state');
@@ -35,7 +35,11 @@ onmouseleave={isExpanded ? undefined : () => temporaryExpand(false)} -->
 				>
 					<div class="avatar-container">
 						<div class="avatar {true && 'online'}">
-							{community.nip01Event.profile.name.slice(0, 2)}
+							{#if community.nip01Event.profile.picture}
+								<img class="avatar" src={community.nip01Event.profile.picture} alt="" />
+							{:else}
+								{community.nip01Event.profile.name.slice(0, 2)}
+							{/if}
 						</div>
 					</div>
 					<span class="community-name">
@@ -43,7 +47,19 @@ onmouseleave={isExpanded ? undefined : () => temporaryExpand(false)} -->
 					</span>
 				</a>
 			{/each}
-			<button>ADD</button>
+			<div class="community-item">
+				<div class="avatar-conteiner">
+					<div class="avatar">
+						<button class="button-add" aria-label="add-community" onclick={add}>
+							<svg width="48" height="48" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+								<circle class="button-add" cx="24" cy="24" r="22" />
+								<line x1="24" y1="16" x2="24" y2="32" stroke="white" stroke-width="3" stroke-linecap="round" />
+								<line x1="16" y1="24" x2="32" y2="24" stroke="white" stroke-width="3" stroke-linecap="round" />
+							</svg>
+						</button>
+					</div>
+				</div>
+			</div>
 		</div>
 	</nav>
 </div>
@@ -72,7 +88,11 @@ onmouseleave={isExpanded ? undefined : () => temporaryExpand(false)} -->
 		flex-direction: column;
 		align-items: center;
 	}
-
+	.button-add {
+		fill: var(--bg-3);
+		border: 1px;
+		border-radius: var(--border-radius);
+	}
 	.communities-list {
 		display: flex;
 		flex-direction: column;

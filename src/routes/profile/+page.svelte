@@ -35,21 +35,21 @@
 
 	//TODO This function not working. it needs to be fixed to
 	// uploadold an image to 'https://image.nostr.build/{key}' or find a way to set base64 in the profile.picture .
-	const handleAddImage = (event, type: imageLoad) => {
-		const file = event.target?.files[0];
+	const handleAddImage = (event: any, type: imageLoad) => {
+		const file: File = event?.target?.files[0];
 		if (file) {
 			const reader = new FileReader();
 			reader.onload = (e) => {
-				//profile[type] = e.target?.result;
+				if (profile) profile[type] = e.target!.result; //TODO fix it
 			};
 			reader.readAsDataURL(file);
 		}
 	};
 
 	function handleRemoveImage(type: imageLoad) {
+		urlInputs[type] = false;
 		tempUrls[type] = '';
 		profile[type] = '';
-		// urlInputs[type] = false;
 	}
 
 	function onUpdate() {
@@ -57,6 +57,7 @@
 		const userData = new NostrUserProfileMetaData();
 		Object.assign(userData, profile);
 		me.publisher?.publish(new Nip01UserMetaDataEvent(userData));
+		console.log(me.profile);
 	}
 
 	const toggleSource = (type: imageLoad) => {
@@ -76,100 +77,101 @@
 		return pattern.test(url);
 	};
 </script>
+{#if profile}
+	<div class="profile-edit">
+		<div class="image-previews">
+			<div class="image-preview avatar-section">
+				{#if profile.picture}
+					<img src={profile.picture} alt="profile" class="preview-img avatar" />
+					<button onclick={() => handleRemoveImage('picture')} class="delete-btn">×</button>
+				{/if}
 
-ss ${profile.picture}
-${profile.name}
-zzz
+				<div class="source-switcher">
+					<button class:active={!urlInputs.picture} onclick={() => toggleSource('picture')}>Upload</button>
+					<button class:active={urlInputs.picture} onclick={() => toggleSource('picture')}>URL</button>
+				</div>
 
-<div class="profile-edit">
-	<div class="image-previews">
-		<div class="image-preview avatar-section">
-			{#if profile.picture}
-				<img src={profile.picture} alt="profile" class="preview-img avatar" />
-				<button onclick={() => handleRemoveImage('picture')} class="delete-btn">×</button>
-			{/if}
-
-			<div class="source-switcher">
-				<button class:active={!urlInputs.picture} onclick={() => toggleSource('picture')}>Upload</button>
-				<button class:active={urlInputs.picture} onclick={() => toggleSource('picture')}>URL</button>
+				{#if !urlInputs.picture}
+					<label class="upload-label">
+						<input type="file" accept="image/*" onchange={(e) => handleAddImage(e, 'picture')} class="file-input" />
+						{profile.picture ? 'Change Avatar' : 'Select Avatar'}
+					</label>
+				{:else}
+					<div class="url-input">
+						<input type="url" bind:value={tempUrls.picture} placeholder="Enter avatar URL" class="url-field" />
+						<button onclick={() => saveUrl('picture')} disabled={!isValidUrl(tempUrls.picture)} class="url-button">
+							Save
+						</button>
+					</div>
+				{/if}
 			</div>
 
-			{#if !urlInputs.picture}
-				<label class="upload-label">
-					<input type="file" accept="image/*" onchange={(e) => handleAddImage(e, 'picture')} class="file-input" />
-					{profile.picture ? 'Change Avatar' : 'Select Avatar'}
-				</label>
-			{:else}
-				<div class="url-input">
-					<input type="url" bind:value={tempUrls.picture} placeholder="Enter avatar URL" class="url-field" />
-					<button onclick={() => saveUrl('picture')} disabled={!isValidUrl(tempUrls.picture)} class="url-button">
-						Save
-					</button>
+			<div class="image-preview banner-section">
+				{#if profile.banner}
+					<img src={profile.banner} alt="banner" class="preview-img banner" />
+					<button onclick={() => handleRemoveImage('banner')} class="delete-btn">×</button>
+				{/if}
+
+				<div class="source-switcher">
+					<button class:active={!urlInputs.banner} onclick={() => toggleSource('banner')}>Upload</button>
+					<button class:active={urlInputs.banner} onclick={() => toggleSource('banner')}>URL</button>
 				</div>
-			{/if}
+
+				{#if !urlInputs.banner}
+					<label class="upload-label">
+						<input type="file" accept="image/*" onchange={(e) => handleAddImage(e, 'banner')} class="file-input" />
+						{profile.banner ? 'Change Banner' : 'Select Banner'}
+					</label>
+				{:else}
+					<div class="url-input">
+						<input type="url" bind:value={tempUrls.banner} placeholder="Enter banner URL" class="url-field" />
+						<button onclick={() => saveUrl('banner')} disabled={!isValidUrl(tempUrls.banner)} class="url-button">
+							Save
+						</button>
+					</div>
+				{/if}
+			</div>
 		</div>
 
-		<div class="image-preview banner-section">
-			{#if profile.banner}
-				<img src={profile.banner} alt="banner" class="preview-img banner" />
-				<button onclick={() => handleRemoveImage('banner')} class="delete-btn">×</button>
-			{/if}
-
-			<div class="source-switcher">
-				<button class:active={!urlInputs.banner} onclick={() => toggleSource('banner')}>Upload</button>
-				<button class:active={urlInputs.banner} onclick={() => toggleSource('banner')}>URL</button>
+		<div class="form-fields">
+			<div class="form-row">
+				<!-- svelte-ignore a11y_label_has_associated_control -->
+				<label>Name:</label>
+				<input type="text" bind:value={profile.name} class="form-input" />
 			</div>
 
-			{#if !urlInputs.banner}
-				<label class="upload-label">
-					<input type="file" accept="image/*" onchange={(e) => handleAddImage(e, 'banner')} class="file-input" />
-					{profile.banner ? 'Change Banner' : 'Select Banner'}
+			<div class="form-row">
+				<!-- svelte-ignore a11y_label_has_associated_control -->
+				<label>Display Name:</label>
+				<input type="text" bind:value={profile.display_name} class="form-input" />
+			</div>
+
+			<div class="form-row">
+				<!-- svelte-ignore a11y_label_has_associated_control -->
+				<label>About:</label>
+				<textarea bind:value={profile.about} class="form-input textarea"></textarea>
+			</div>
+
+			<div class="form-row">
+				<!-- svelte-ignore a11y_label_has_associated_control -->
+				<label>Website:</label>
+				<input type="url" bind:value={profile.website} class="form-input" />
+				{#if profile.website}
+					<a href={profile.website} class="website-link" target="_blank">Visit Website</a>
+				{/if}
+			</div>
+
+			<div class="form-row">
+				<label class="checkbox-label">
+					<input type="checkbox" bind:checked={profile.bot} class="checkbox" />
+					Bot Account
 				</label>
-			{:else}
-				<div class="url-input">
-					<input type="url" bind:value={tempUrls.banner} placeholder="Enter banner URL" class="url-field" />
-					<button onclick={() => saveUrl('banner')} disabled={!isValidUrl(tempUrls.banner)} class="url-button">
-						Save
-					</button>
-				</div>
-			{/if}
+			</div>
+
+			<button onclick={onUpdate} class="update-btn"> Update Profile </button>
 		</div>
 	</div>
-
-	<div class="form-fields">
-		<div class="form-row">
-			<label>Name:</label>
-			<input type="text" bind:value={profile.name} class="form-input" />
-		</div>
-
-		<div class="form-row">
-			<label>Display Name:</label>
-			<input type="text" bind:value={profile.display_name} class="form-input" />
-		</div>
-
-		<div class="form-row">
-			<label>About:</label>
-			<textarea bind:value={profile.about} class="form-input textarea"></textarea>
-		</div>
-
-		<div class="form-row">
-			<label>Website:</label>
-			<input type="url" bind:value={profile.website} class="form-input" />
-			{#if profile.website}
-				<a href={profile.website} class="website-link" target="_blank">Visit Website</a>
-			{/if}
-		</div>
-
-		<div class="form-row">
-			<label class="checkbox-label">
-				<input type="checkbox" bind:checked={profile.bot} class="checkbox" />
-				Bot Account
-			</label>
-		</div>
-
-		<button onclick={onUpdate} class="update-btn"> Update Profile</button>
-	</div>
-</div>
+{/if}
 
 <style>
 	.profile-edit {

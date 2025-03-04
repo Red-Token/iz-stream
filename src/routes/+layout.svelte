@@ -4,8 +4,11 @@
 	import Communities from '@src/components/Communities.svelte';
 	import {onMount} from 'svelte';
 	import PrimaryNav from '@src/components/PrimaryNav.svelte';
+	import {Log} from '@src/services/Logger';
 
-	console.log(import.meta.resolve('./org/nostr/ses/Subscription'));
+	const layout = Log.child({component: '+layout.svelte'});
+
+	layout.info(import.meta.resolve('./org/nostr/ses/Subscription'));
 
 	let {children} = $props();
 	let isExpanded: boolean = $state(true);
@@ -47,7 +50,7 @@
 		// 	if (event instanceof Nip01UserMetaDataEvent) {
 		// 		if (event.event === undefined) throw new Error('event event is null');
 		//
-		// 		console.log('profile', event.event.pubkey, event.profile);
+		// 		layout.info('profile', event.event.pubkey, event.profile);
 		// 		profiles.set(event.event.pubkey, event.profile);
 		//
 		// 		return;
@@ -62,14 +65,14 @@
 		// 	// 		const relays = [normalizeRelayUrl(url)];
 		//
 		// 	community.notifications.on(NotificationEventType.TORRENT, (event) => {
-		// 		console.log('updating', event);
+		// 		layout.info('update torrent event', event);
 		// 	});
 		//
 		// 	community.notifications.on(NotificationEventType.PROFILE, (event) => {
 		// 		if (event instanceof Nip01UserMetaDataEvent) {
 		// 			if (event.event === undefined) throw new Error('event event is null');
 		//
-		// 			console.log('profile', event.event.pubkey, event.profile);
+		// 			layout.info('profile', event.event.pubkey, event.profile);
 		// 			profiles.set(event.event.pubkey, event.profile);
 		// 			return;
 		// 		}
@@ -132,68 +135,68 @@
 </main>
 
 <style>
-	main {
-		min-height: 100vh;
-	}
+    main {
+        min-height: 100vh;
+    }
 
-	.content-area {
-		flex: 1;
-		margin-left: calc(-1 * var(--sidebar-width));
-		transition: margin-left 0.3s ease;
-	}
+    .content-area {
+        flex: 1;
+        margin-left: calc(-1 * var(--sidebar-width));
+        transition: margin-left 0.3s ease;
+    }
 
-	.sidebar-toggle {
-		position: absolute;
-		right: -40px;
-		top: 20px;
-		width: 32px;
-		height: 32px;
-		z-index: 1000;
-		background: var(--bg-1);
-		border: 2px solid var(--border-color);
-		border-radius: 8px;
-		cursor: pointer;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		transition: all 0.3s ease;
-		box-shadow: 0 2px 8px rgba(80, 80, 80, 0.1);
-		transform: translateX(50%);
-	}
+    .sidebar-toggle {
+        position: absolute;
+        right: -40px;
+        top: 20px;
+        width: 32px;
+        height: 32px;
+        z-index: 1000;
+        background: var(--bg-1);
+        border: 2px solid var(--border-color);
+        border-radius: 8px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(80, 80, 80, 0.1);
+        transform: translateX(50%);
+    }
 
-	.sidebar-toggle:hover {
-		background: var(--bg-2);
-	}
+    .sidebar-toggle:hover {
+        background: var(--bg-2);
+    }
 
-	.left-sidebar {
-		position: fixed;
-		top: 0;
-		left: 0;
-		height: 100%;
-		width: var(--sidebar-width);
-		transform: translateX(calc(-1 * var(--sidebar-width)));
-		transition: transform 0.3s ease;
-	}
+    .left-sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: var(--sidebar-width);
+        transform: translateX(calc(-1 * var(--sidebar-width)));
+        transition: transform 0.3s ease;
+    }
 
-	.left-sidebar.expanded {
-		width: 80px;
-		transform: translateX(0);
-	}
+    .left-sidebar.expanded {
+        width: 80px;
+        transform: translateX(0);
+    }
 
-	.left-sidebar.expanded ~ .content-area {
-		margin-left: var(--sidebar-width);
-	}
+    .left-sidebar.expanded ~ .content-area {
+        margin-left: var(--sidebar-width);
+    }
 
-	@media (max-width: 768px) {
-		main {
-			margin-left: 0 !important;
-		}
+    @media (max-width: 768px) {
+        main {
+            margin-left: 0 !important;
+        }
 
-		.sidebar-toggle {
-			right: -36px;
-			bottom: 16px;
-			width: 28px;
-			height: 28px;
-		}
-	}
+        .sidebar-toggle {
+            right: -36px;
+            bottom: 16px;
+            width: 28px;
+            height: 28px;
+        }
+    }
 </style>
