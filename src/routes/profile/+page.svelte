@@ -1,6 +1,8 @@
 <script lang="ts">
 	import {onMount} from 'svelte';
 	import {defaultNip01, me} from '@src/stores/profile.svelte';
+	import {Nip01UserMetaDataEvent} from 'iz-nostrlib/dist/org/nostr/nip01/Nip01UserMetaData';
+	import {NostrUserProfileMetaData} from 'iz-nostrlib/dist/org/nostr/nip01/NostrUserProfileMetaData';
 
 	// TODO We need to fix this.
 	// const ci = communities[0].identities.values().toArray()[0];
@@ -9,18 +11,25 @@
 	// let profile: NostrProfileMetaData =
 	// 	profiles.get(ci.pubkey) !== undefined ? profiles.get(ci.pubkey) : new NostrProfileMetaData();
 
-	let profile = $derived(me.profile?.nip01Event.profile ?? defaultNip01.profile);
+	// const x = JSON.stringify(me.profile?.nip01Event.profile ?? defaultNip01.profile);
+	// const y = JSON.parse(x);
+
+	function classToObject<T>(cls: T): any {
+		return JSON.parse(JSON.stringify(cls));
+	}
+
+	let profile = $state(classToObject(me.profile?.nip01Event.profile ?? defaultNip01.profile));
 
 	type imageLoad = 'picture' | 'banner';
 	let urlInputs = {
-		picture: false,
-		banner: false
+		picture: true,
+		banner: true
 	};
 
-	let tempUrls = {
-		picture: '',
-		banner: ''
-	};
+	let tempUrls = $state({
+		picture: profile.picture,
+		banner: profile.banner
+	});
 
 	onMount(async () => {});
 
@@ -38,15 +47,17 @@
 	};
 
 	function handleRemoveImage(type: imageLoad) {
-		profile[type] = '';
 		urlInputs[type] = false;
 		tempUrls[type] = '';
+		profile[type] = '';
 	}
 
 	function onUpdate() {
+		// To send stuff we need to convert it back to a class
+		const userData = new NostrUserProfileMetaData();
+		Object.assign(userData, profile);
+		me.publisher?.publish(new Nip01UserMetaDataEvent(userData));
 		console.log(me.profile);
-		//const et = new Nip01UserMetaDataEvent(profile.nip01Event);
-		// publisher.publish(Nip01UserMetaDataEvent.KIND, et.createTemplate());
 	}
 
 	const toggleSource = (type: imageLoad) => {
@@ -228,7 +239,8 @@
 	}
 
 	.source-switcher {
-		display: flex;
+		display: none;
+		/*display: flex;*/
 		gap: 0.5rem;
 		margin: 1rem 0;
 		justify-content: center;

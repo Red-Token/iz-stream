@@ -19,8 +19,8 @@
 
 	const state = $state({
 		community: undefined,
-		title: 'NN1',
-		imdbId: '',
+		title: 'Big Buck Bunny',
+		imdbId: 'tt1254207',
 		infoHash: '',
 		file: null,
 		resp: {state: {state: null, msg: 'Not started the request', progress: 0}}
@@ -70,9 +70,22 @@
 			[]
 		);
 
-		publishers.forEach((publisher) => {
-			const x = publisher.publish(Nip35TorrentEvent.KIND, te.opts);
-		});
+		console.log(state.community);
+
+		if (state.community === undefined || me.identity === undefined)
+			throw new Error('Community not found or identiy invalid');
+
+		//TODO: this is a hack we just force the main identity on things here and create on demand
+		const cnc = new CommunityNostrContext(state.community, globalNostrContext);
+		const session = new DynamicSynchronisedSession(cnc.relays);
+		const dp = new DynamicPublisher(session, me.identity);
+		dp.publish(te);
+
+		//
+		//
+		// publishers.forEach((publisher) => {
+		// 	const x = publisher.publish(Nip35TorrentEvent.KIND, te.opts);
+		// });
 
 		goto(`/view/infoHash/${state.infoHash}`).then((r) => {
 			console.log(r);
@@ -97,13 +110,14 @@
 			console.log('magnetURI:' + torrent.magnetURI);
 
 			// TODO: This has to be made dynamic and you should select a bot
-			const botNSec: string = 'nsec1p5p9ax0uftre04ewgxntkca4jurj2zlhjed46nwr22xs652vgtss84jeep';
-			const decoded = nip19.decode(botNSec);
-			if (decoded.type !== 'nsec') throw Error('ssfsdfsfsdfsdfsddffsdfsdfsdsfdsfdfsdsfdsfd');
-			const botSeckey = decoded.data;
+			// const botNSec: string = 'nsec1p5p9ax0uftre04ewgxntkca4jurj2zlhjed46nwr22xs652vgtss84jeep';
+			// const decoded = nip19.decode(botNSec);
+			// if (decoded.type !== 'nsec') throw Error('ssfsdfsfsdfsdfsddffsdfsdfsdsfdsfdfsdsfdsfd');
+			// const botSeckey = decoded.data;
 
 			// const botPubkey = 'b670e0e20fb6b7e96b0349139c03150d692a7403c986099a1aadf467daa67909';
-			const botPubkey = getPublicKey(botSeckey);
+			// const botPubkey = getPublicKey(botSeckey);
+			const botPubkey = 'b1e997f11f8d454eae2b2c1d52948e800df4e7103412d78984827eea2be138b2';
 
 			const req = new Nip9999SeederTorrentTransformationRequestEvent(botPubkey, state.title, torrent.infoHash, {
 				transform: 'cool'

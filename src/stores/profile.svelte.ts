@@ -12,15 +12,18 @@ import {DynamicPublisher} from 'iz-nostrlib/ses';
 import {normalizeRelayUrl} from '@red-token/welshman/util';
 import {setContext} from '@red-token/welshman/lib';
 import {getDefaultAppContext, getDefaultNetContext} from '@red-token/welshman/app';
+import {applicationRelay} from '@src/config/config';
 
 // REBUILD THE WORLDS HERE
-const url = 'wss://relay.pre-alfa.iz-stream.com/';
-const relays = [normalizeRelayUrl(url)];
+// TODO: FIX THIS
+const relays = [normalizeRelayUrl(applicationRelay)];
 
 setContext({
 	net: getDefaultNetContext(),
 	app: getDefaultAppContext()
 });
+
+export const globalNostrContext = new GlobalNostrContext(relays);
 
 class GlobalRunes {
 	profiles = $state(new SvelteMap<string, NostrProfile>());
@@ -30,6 +33,14 @@ class GlobalRunes {
 			if (profile.nip01Event.type === UserType.COMMUNITY) communityMap.set(key, profile);
 		});
 		return communityMap;
+	});
+	users: SvelteMap<string, NostrProfile> = $derived.by(() => {
+		const userMap = new SvelteMap<string, NostrProfile>();
+		this.profiles.forEach((profile, key) => {
+			if (profile.nip01Event.type === undefined || profile.nip01Event.type === UserType.INDIVIDUAL)
+				userMap.set(key, profile);
+		});
+		return userMap;
 	});
 }
 
@@ -49,10 +60,8 @@ export class NostrProfile {
 	) {}
 }
 
-export const globalNostrContext = new GlobalNostrContext(relays);
-
 globalNostrContext.profileService.nip01Map.addListener((keys) => {
-	console.log('keys', keys);
+	console.log('nip01', keys);
 
 	for (const key of keys) {
 		const profile = globalRunes.profiles.get(key) ?? new NostrProfile();
@@ -62,7 +71,7 @@ globalNostrContext.profileService.nip01Map.addListener((keys) => {
 });
 
 globalNostrContext.profileService.nip02Map.addListener((keys) => {
-	console.log('keys z', keys);
+	console.log('nip02', keys);
 	for (const key of keys) {
 		const profile = globalRunes.profiles.get(key) ?? new NostrProfile();
 		profile.nip02Event = globalNostrContext.profileService.nip02Map.value.get(key) ?? defaultNip02;
@@ -71,7 +80,7 @@ globalNostrContext.profileService.nip02Map.addListener((keys) => {
 });
 
 globalNostrContext.profileService.nip65Map.addListener((keys) => {
-	console.log('keys too:', keys);
+	console.log('nip65:', keys);
 	for (const key of keys) {
 		const profile = globalRunes.profiles.get(key) ?? new NostrProfile();
 		profile.nip65Event = globalNostrContext.profileService.nip65Map.value.get(key) ?? defaultNip65;
