@@ -2,10 +2,11 @@
 	import {onMount, onDestroy} from 'svelte';
 	import videojs from 'video.js';
 	import {wt} from '@src/stores/wtZool.svelte';
+	import type {Torrent, TorrentFile} from 'webtorrent';
 
 	type PlayerOptions = typeof videojs.options;
 
-	let {infoHash} = $props();
+	const {infoHash} = $props();
 	let videoElement: HTMLVideoElement | null = null;
 
 	let player: any = null;
@@ -14,6 +15,39 @@
 		announce: ['wss://tracker.webtorrent.dev'],
 		maxWebConns: 500
 	};
+
+	function loadTorrent(torrent: Torrent) {
+		torrent.files.forEach((file: any) => {
+			console.log(file.name);
+			console.log(file.streamURL);
+		});
+
+		let playFile = torrent.files.find((file: TorrentFile) => {
+			return file.name.endsWith('.mpd');
+		});
+
+		// Add support of MP4
+		if (!playFile) {
+			playFile = torrent.files.find((file: TorrentFile) => {
+				return file.name.endsWith('.mp4');
+			});
+		}
+
+		if (playFile === undefined || playFile === null) {
+			throw new Error(`Torrent player not found.`);
+		}
+
+		if (videoElement) {
+			player.src([
+				{
+					src: playFile.streamURL,
+					// type: playFile.type
+				}
+			]);
+			player.load();
+			player.play();
+		}
+	}
 
 	onMount(() => {
 		if (videoElement) {
@@ -29,37 +63,23 @@
 			player = videojs(videoElement, videoOptions);
 		}
 
-		const torrent = wt.add(infoHash, options);
+		// TODO rewrite this with await
+		new Promise<Torrent>((resolve, reject) => {
+			wt.get(infoHash).then((torrent: Torrent) => {
+				if (torrent == null)
+					torrent = wt.add(infoHash, options);
 
-		torrent.on('ready', () => {
-			// Add support for MPEG
+				if (torrent.ready)
+					resolve(torrent);
 
-			torrent.files.forEach((file: any) => {
-				console.log(file.name);
-				console.log(file.streamURL);
-			});
-
-			let playFile = torrent.files.find((file: File) => {
-				return file.name.endsWith('.mpd');
-			});
-
-			// Add support of MP4
-			if (!playFile) {
-				playFile = torrent.files.find((file: File) => {
-					return file.name.endsWith('.mp4');
+				torrent.on('ready', () => {
+					resolve(torrent);
 				});
-			}
 
-			if (videoElement) {
-				player.src([
-					{
-						src: playFile.streamURL,
-						type: playFile.type
-					}
-				]);
-				player.load();
-				player.play();
-			}
+				torrent.on('error', reject);
+			});
+		}).then(torrent => {
+			loadTorrent(torrent);
 		});
 
 		// torrent.on('warning', (err) => {
@@ -95,15 +115,16 @@
 </div>
 
 <style>
-	.video-container {
-		padding-top: 2rem;
-		display: flex;
-		justify-content: center;
-		max-width: 1200px;
-		height: auto;
-		margin: 0 auto;
-	}
-	.video-js {
-		width: 100%;
-	}
+    .video-container {
+        padding-top: 2rem;
+        display: flex;
+        justify-content: center;
+        max-width: 1200px;
+        height: auto;
+        margin: 0 auto;
+    }
+
+    .video-js {
+        width: 100%;
+    }
 </style>

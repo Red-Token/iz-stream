@@ -32,6 +32,13 @@ class GlobalRunes {
 		});
 		return communityMap;
 	});
+	users: SvelteMap<string, NostrProfile> = $derived.by(() => {
+		const userMap = new SvelteMap<string, NostrProfile>();
+		this.profiles.forEach((profile, key) => {
+			if (profile.nip01Event.type === undefined || profile.nip01Event.type === UserType.INDIVIDUAL) userMap.set(key, profile);
+		});
+		return userMap;
+	});
 }
 
 export const globalRunes = new GlobalRunes();
@@ -47,7 +54,8 @@ export class NostrProfile {
 		public nip01Event: Nip01UserMetaDataEvent = defaultNip01,
 		public nip02Event: Nip02FollowListEvent = defaultNip02,
 		public nip65Event: Nip65RelayListMetadataEvent = defaultNip65
-	) {}
+	) {
+	}
 }
 
 globalNostrContext.profileService.nip01Map.addListener((keys) => {

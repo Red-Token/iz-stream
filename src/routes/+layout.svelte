@@ -4,9 +4,6 @@
 	import Communities from '@src/components/Communities.svelte';
 	import {onMount} from 'svelte';
 	import PrimaryNav from '@src/components/PrimaryNav.svelte';
-	import {setContext} from '@welshman/lib';
-	import {getDefaultAppContext, getDefaultNetContext} from '@welshman/app';
-	import {normalizeRelayUrl} from '@welshman/util';
 
 	console.log(import.meta.resolve('./org/nostr/ses/Subscription'));
 
