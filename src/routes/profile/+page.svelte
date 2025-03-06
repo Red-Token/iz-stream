@@ -1,8 +1,8 @@
 <script lang="ts">
 	import {onMount} from 'svelte';
 	import {defaultNip01, me} from '@src/stores/profile.svelte';
-	import {Nip01UserMetaDataEvent} from 'iz-nostrlib/dist/org/nostr/nip01/Nip01UserMetaData';
-	import {NostrUserProfileMetaData} from 'iz-nostrlib/dist/org/nostr/nip01/NostrUserProfileMetaData';
+	import {Nip01UserMetaDataEvent} from 'iz-nostrlib/nips';
+	import {NostrUserProfileMetaData} from 'iz-nostrlib/nips';
 
 	// TODO We need to fix this.
 	// const ci = communities[0].identities.values().toArray()[0];

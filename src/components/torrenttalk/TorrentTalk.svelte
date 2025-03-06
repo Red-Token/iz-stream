@@ -1,7 +1,6 @@
 <script lang="ts">
 	import {me} from '../../stores/profile.svelte';
 	import {onMount} from 'svelte';
-	import {normalizeRelayUrl, type TrustedEvent} from '@welshman/util';
 	import {EventType, NostrClient, type Publisher} from 'iz-nostrlib';
 	// import {
 	//     Nip35TorrentEvent,

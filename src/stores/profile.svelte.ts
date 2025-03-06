@@ -1,16 +1,11 @@
 import {SvelteMap} from 'svelte/reactivity';
-import {Nip01UserMetaDataEvent, UserType} from 'iz-nostrlib/dist/org/nostr/nip01/Nip01UserMetaData';
-import {Nip65RelayListMetadataEvent} from 'iz-nostrlib/dist/org/nostr/nip65/Nip65RelayListMetadata';
-import {GlobalNostrContext} from 'iz-nostrlib/dist/org/nostr/communities/GlobalNostrContext';
-import {normalizeRelayUrl} from '@welshman/util';
-import {setContext} from '@welshman/lib';
-import {getDefaultAppContext, getDefaultNetContext} from '@welshman/app';
-import {NostrUserProfileMetaData} from 'iz-nostrlib/dist/org/nostr/nip01/NostrUserProfileMetaData';
-import {Nip02FollowListEvent} from 'iz-nostrlib';
-import {DynamicPublisher} from 'iz-nostrlib/dist/org/nostr/ses/DynamicPublisher';
-import {Identifier, Identity} from 'iz-nostrlib/dist/org/nostr/communities/Identity';
-import type {Followee} from 'iz-nostrlib/dist/org/nostr/nip02/Nip02FollowListEvent';
 import {applicationRelay} from '@src/config/config';
+import {normalizeRelayUrl} from '@red-token/welshman/util';
+import {setContext} from '@red-token/welshman/lib';
+import {getDefaultAppContext, getDefaultNetContext} from '@red-token/welshman/app';
+import { GlobalNostrContext, Identifier, Identity } from 'iz-nostrlib/communities';
+import {Followee, Nip01UserMetaDataEvent, Nip02FollowListEvent, Nip65RelayListMetadataEvent, NostrUserProfileMetaData, UserType } from 'iz-nostrlib/nips';
+import { DynamicPublisher } from 'iz-nostrlib/ses';
 
 // REBUILD THE WORLDS HERE
 // TODO: FIX THIS

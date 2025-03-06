@@ -1,4 +1,4 @@
-import type {TrustedEvent} from '@welshman/util';
+import type {TrustedEvent} from '@red-token/welshman/util';
 
 export class AbstractNipMiniMiniEvent {
 	constructor(public event?: TrustedEvent) {}

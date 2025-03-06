@@ -14,6 +14,7 @@
 			{#if me.pubkey !== ''}
 				<a href="/create" aria-current={page.url.pathname === '/create'}>Create</a>
 			{/if}
+			<a href="/searchbot" aria-current={page.url.pathname === '/searchbot'}>SearchBot</a>
 		</div>
 		<div class="login-btn">
 			<LogInComponent></LogInComponent>

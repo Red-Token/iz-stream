@@ -2,15 +2,14 @@
 	import {page} from '$app/state';
 
 	import {onMount} from 'svelte';
-	import {EventType, Subscription, SynchronisedSession} from 'iz-nostrlib';
-	import {type TrustedEvent} from '@welshman/util';
+	import {EventType} from 'iz-nostrlib';
 	import {goto} from '$app/navigation';
-	import {Nip35TorrentEvent} from 'iz-nostrlib/dist/org/nostr/nip35/Nip35TorrentEvent';
-	import {NostrUserProfileMetaData} from 'iz-nostrlib/dist/org/nostr/nip01/NostrUserProfileMetaData';
+	import {Nip35TorrentEvent} from 'iz-nostrlib/nip35';
+	import {NostrUserProfileMetaData} from 'iz-nostrlib/nip01';
 	import {globalNostrContext, globalRunes} from '@src/stores/profile.svelte';
-	import {DynamicSynchronisedSession} from 'iz-nostrlib/dist/org/nostr/ses/DynamicSynchronisedSession';
-	import {CommunityNostrContext} from 'iz-nostrlib/dist/org/nostr/communities/CommunityNostrContext';
-	import {DynamicSubscription} from 'iz-nostrlib/dist/org/nostr/ses/DynamicSubscription';
+	import {DynamicSubscription, DynamicSynchronisedSession} from 'iz-nostrlib/ses';
+	import {CommunityNostrContext} from 'iz-nostrlib/communities';
+	import type {TrustedEvent} from '@red-token/welshman/util';
 
 	let events: Nip35TorrentEvent[] = $state([]);
 

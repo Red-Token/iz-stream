@@ -4,13 +4,13 @@
 	import {wt} from '@src/stores/wtZool.svelte';
 	import TorrentLike from '@src/components/torrenttalk/TorrentLike.svelte';
 	import {s} from '@src/stores/assetStore.svelte';
-	import {Nip35TorrentEvent} from 'iz-nostrlib/dist/org/nostr/nip35/Nip35TorrentEvent';
 	import {globalRunes} from '@src/stores/profile.svelte.js';
-	import {DynamicSynchronisedSession} from 'iz-nostrlib/dist/org/nostr/ses/DynamicSynchronisedSession';
-	import {ReactiveArray} from 'iz-nostrlib/dist/org/nostr/util/ReactiveArray';
-	import {DynamicSubscription} from 'iz-nostrlib/dist/org/nostr/ses/DynamicSubscription';
 	import {EventType} from 'iz-nostrlib';
 	import VideoPlayer from '@src/components/VideoPlayer.svelte';
+	import {ReactiveArray} from 'iz-nostrlib/util';
+	import {Nip35TorrentEvent} from 'iz-nostrlib/nips';
+	import {DynamicSynchronisedSession} from 'iz-nostrlib/ses';
+	import {DynamicSubscription} from 'iz-nostrlib/ses';
 
 	let options = {
 		announce: ['wss://tracker.webtorrent.dev'],
@@ -174,58 +174,58 @@
 </div>
 
 <style>
-	.video-page {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		padding: 2rem;
-		min-height: 100vh;
-		background-color: var(--bg-1);
-	}
+    .video-page {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 2rem;
+        min-height: 100vh;
+        background-color: var(--bg-1);
+    }
 
-	.video-container {
-		width: 100%;
-		max-width: 1200px;
-		background: var(--bg-2);
-		border: 1px solid var(--border-color);
-		border-radius: 16px;
-		box-shadow: 0 4px 12px var(--shadow-color);
-		padding: 1.5rem;
-		position: relative;
-	}
+    .video-container {
+        width: 100%;
+        max-width: 1200px;
+        background: var(--bg-2);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        box-shadow: 0 4px 12px var(--shadow-color);
+        padding: 1.5rem;
+        position: relative;
+    }
 
-	#video-player {
-		width: 100%;
-		height: auto;
-		border-radius: 8px;
-		outline: none;
-	}
+    #video-player {
+        width: 100%;
+        height: auto;
+        border-radius: 8px;
+        outline: none;
+    }
 
-	.torrent-title {
-		font-size: 1.5rem;
-		font-weight: 600;
-		color: var(--fg-1);
-		margin-top: 1.5rem;
-		text-align: center;
-	}
+    .torrent-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--fg-1);
+        margin-top: 1.5rem;
+        text-align: center;
+    }
 
-	@media (max-width: 768px) {
-		.video-container {
-			padding: 1rem;
-		}
+    @media (max-width: 768px) {
+        .video-container {
+            padding: 1rem;
+        }
 
-		.torrent-title {
-			font-size: 1.3rem;
-		}
-	}
+        .torrent-title {
+            font-size: 1.3rem;
+        }
+    }
 
-	@media (max-width: 480px) {
-		.video-container {
-			padding: 0.5rem;
-		}
+    @media (max-width: 480px) {
+        .video-container {
+            padding: 0.5rem;
+        }
 
-		.torrent-title {
-			font-size: 1.1rem;
-		}
-	}
+        .torrent-title {
+            font-size: 1.1rem;
+        }
+    }
 </style>

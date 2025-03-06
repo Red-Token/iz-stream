@@ -1,6 +1,4 @@
 <script lang="ts">
-	import {onMount} from 'svelte';
-	import imdbApi from '$lib/api/ImdbApi';
 	import type {Episode} from '@src/stores/searchResult.svelte';
 	import {goto} from '$app/navigation';
 

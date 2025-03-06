@@ -10,6 +10,7 @@
 
 <div class="profiles-container">
 	{#each globalRunes.users.keys() as key, i}
+
 		<article class="profile-card" style="animation-delay: {i * 0.1}s">
 			<div class="banner-container">
 				{#if globalRunes.profiles.get(key)?.nip01Event.profile.banner}
