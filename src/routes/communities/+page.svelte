@@ -17,6 +17,8 @@
 	} from 'iz-nostrlib/nips';
 	import {DynamicPublisher} from 'iz-nostrlib/ses';
 	import {asyncCreateWelshmanSession, Identifier, Identity} from 'iz-nostrlib/communities';
+	import {COMMUNITY} from '@red-token/welshman/util';
+	import {SvelteSet} from 'svelte/reactivity';
 
 	let cred = $state({nsec: 'nsec16lc2cn2gzgf3vcv20lwkqquprqujpkq9pj0wcxmnw8scxh6j0yrqlc9ae0'});
 	let pubkey = $derived.by(() => {
@@ -29,6 +31,7 @@
 		data: new NostrUserProfileMetaData('Big Fish', 'About me', 'https://pre-alfa.iz-stream.com/users/big-fish.jpg'),
 		relay: defaultCommunityRelay
 	});
+
 
 	function join(pubkey: string): void {
 		console.log(pubkey);
@@ -86,8 +89,29 @@
 </div>
 
 Hello ALL Community
+
+<div>
+	{#each globalRunes.ctest as key, i}
+		<div>{i}:{key}</div>
+	{/each}
+</div>
+
+<div>
+	{#each globalRunes.ctest.values().filter((key) => globalRunes.profiles.get(key)?.nip01Event.type === UserType.COMMUNITY) as key, i}
+		<div>{i}:{key}</div>
+	{/each}
+</div>
+TEST2
+<div>
+	{#each globalRunes.profiles.keys().filter((key) => globalRunes.profiles.get(key)?.nip01Event.type === UserType.COMMUNITY) as key, i}
+		<div>{i}:{key}</div>
+	{/each}
+</div>
+
+
+
 <div class="profiles-container">
-	{#each globalRunes.communities.values() as community, i}
+	{#each globalRunes.profiles.values().filter((val) => val.nip01Event.type === UserType.COMMUNITY) as community, i}
 		<div>
 			${community.nip01Event.profile.name}
 			<Profile key={community.nip01Event.pubkey} i={i}></Profile>

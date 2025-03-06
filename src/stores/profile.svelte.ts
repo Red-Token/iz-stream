@@ -1,4 +1,4 @@
-import {SvelteMap} from 'svelte/reactivity';
+import {SvelteMap, SvelteSet} from 'svelte/reactivity';
 import {applicationRelay} from '@src/config/config';
 import {normalizeRelayUrl} from '@red-token/welshman/util';
 import {setContext} from '@red-token/welshman/lib';
@@ -19,6 +19,7 @@ setContext({
 export const globalNostrContext = new GlobalNostrContext(relays);
 
 class GlobalRunes {
+	ctest = $state(new SvelteSet<string>())
 	profiles = $state(new SvelteMap<string, NostrProfile>());
 	communities: SvelteMap<string, NostrProfile> = $derived.by(() => {
 		const communityMap = new SvelteMap<string, NostrProfile>();
@@ -57,8 +58,12 @@ globalNostrContext.profileService.nip01Map.addListener((keys) => {
 	console.log('nip01', keys);
 
 	for (let key of keys) {
+		globalRunes.ctest.add(key)
+		console.log("SET SF" + key)
+
 		const profile = globalRunes.profiles.get(key) ?? new NostrProfile();
 		profile.nip01Event = globalNostrContext.profileService.nip01Map.value.get(key) ?? defaultNip01;
+		console.log("SET STUFF" + key)
 		globalRunes.profiles.set(key, profile);
 	}
 });
