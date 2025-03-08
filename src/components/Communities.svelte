@@ -3,9 +3,8 @@
 	import {me, NostrProfile} from '@src/stores/profile.svelte';
 	import {globalRunes} from '@src/stores/profile.svelte';
 	// import {communities} from '@src/stores/community.svelte';
-	import {goto} from '$app/navigation';
 
-	let {isExpanded} = $props();
+	//let {isExpanded} = $props();
 
 	let communities: NostrProfile[] = $derived(
 		me.communities.map((c) => globalRunes.profiles.get(c.pubkey)).filter((value) => value !== undefined)
@@ -17,7 +16,7 @@
 
 	onMount(() => {
 		const savedState = localStorage.getItem('sidebar-state');
-		isExpanded = savedState ? JSON.parse(savedState) : true;
+		//isExpanded = savedState ? JSON.parse(savedState) : true;
 	});
 </script>
 
@@ -33,7 +32,8 @@ onmouseleave={isExpanded ? undefined : () => temporaryExpand(false)} -->
 					title={community.nip01Event.profile.name}
 				>
 					<div class="avatar-container">
-						<div class="avatar {true && 'online'}">
+						<!-- <div class="avatar {true && 'online'}"> -->
+						<div class="avatar {'online'}">
 							{#if community.nip01Event.profile.picture}
 								<img class="avatar" src={community.nip01Event.profile.picture} alt="" />
 							{:else}

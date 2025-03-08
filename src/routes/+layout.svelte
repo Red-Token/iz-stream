@@ -117,7 +117,7 @@
 
 <main>
 	<div class="left-sidebar {isExpanded ? 'expanded' : ''}">
-		<Communities isExpanded />
+		<Communities />
 		<button class="sidebar-toggle" onclick={() => (isExpanded = !isExpanded)}>
 			{#if isExpanded}
 				<svg width="24" height="24" viewBox="0 0 24 24">
