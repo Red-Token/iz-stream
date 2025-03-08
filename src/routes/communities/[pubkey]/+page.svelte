@@ -1,14 +1,18 @@
 <script lang="ts">
 	import {page} from '$app/state';
 	import {NostrUserProfileMetaData} from 'iz-nostrlib/nip01';
-	import {globalRunes, me} from '@src/stores/profile.svelte';
+	import {defaultNip01, defaultNip02, globalRunes, me} from '@src/stores/profile.svelte';
 	import {Followee, Nip02FollowListEvent} from 'iz-nostrlib/nips';
 	import {onMount} from 'svelte';
 
 	const defaultProfile = new NostrUserProfileMetaData();
 
 	let joinable: boolean = $derived.by(() => {
-		return me.communities.find(f => f.pubkey === page.params.pubkey) === undefined;
+
+		console.log(me.pubkey);
+
+		return (globalRunes.nip02Events.get(me.pubkey) ?? defaultNip02).list.find((f) => f.pubkey === page.params.pubkey) === undefined;
+		// return communities.find(f => f.pubkey === page.params.pubkey) === undefined;
 	});
 
 	let channelOwner: NostrUserProfileMetaData = $derived.by(() => {
@@ -25,7 +29,6 @@
 		} else {
 			leave(page.params.pubkey);
 		}
-
 	}
 
 	onMount(() => {
@@ -55,9 +58,12 @@
 			.toArray();
 
 		const folloy = followees.filter((f) => f.pubkey !== page.params.pubkey);
+		const xx = new Nip02FollowListEvent(folloy);
+
+		console.log(xx.opts)
 
 		console.log('TE');
-		me.publisher.publish(new Nip02FollowListEvent(followees));
+		me.publisher.publish(xx);
 	}
 
 	function join(pubkey: string): void {

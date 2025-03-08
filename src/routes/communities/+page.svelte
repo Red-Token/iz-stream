@@ -51,20 +51,20 @@
 
 </script>
 
-<div>
-	Hello My Community
-	{#each me.communities as community, i}
-		<div>
-			{community}
-			{community.pubkey}
-			{i}
+<!--<div>-->
+<!--	Hello My Community-->
+<!--	{#each me.communities as community, i}-->
+<!--		<div>-->
+<!--			{community}-->
+<!--			{community.pubkey}-->
+<!--			{i}-->
 
-		</div>
-		{globalRunes.profiles.get(community.pubkey)?.nip01Event.profile.name ?? 'Unnamed Community'}
-	{/each}
-</div>
+<!--		</div>-->
+<!--		{globalRunes.profiles.get(community.pubkey)?.nip01Event.profile.name ?? 'Unnamed Community'}-->
+<!--	{/each}-->
+<!--</div>-->
 
-Hello ALL Community
+<!--Hello ALL Community-->
 
 <!--<div>-->
 <!--	{#each globalRunes.ctest as key, i}-->
@@ -90,7 +90,7 @@ Hello ALL Community
 <!--	{/each}-->
 <!--</div>-->
 
-TEST5
+<!--TEST5-->
 <div class="profiles-container">
 	{#each globalRunes.nip01Events.values().filter((val) => val.type === UserType.COMMUNITY) as val, i}
 		<Profile2 nip01Event={val} i={i}>
