@@ -19,22 +19,26 @@ setContext({
 export const globalNostrContext = new GlobalNostrContext(relays);
 
 class GlobalRunes {
+	nip01Events = $state(new SvelteMap<string, Nip01UserMetaDataEvent>())
+	nip02Events = $state(new SvelteMap<string, Nip02FollowListEvent>())
+	nip65Events = $state(new SvelteMap<string, Nip65RelayListMetadataEvent>())
+
 	ctest = $state(new SvelteSet<string>())
 	profiles = $state(new SvelteMap<string, NostrProfile>());
-	communities: SvelteMap<string, NostrProfile> = $derived.by(() => {
-		const communityMap = new SvelteMap<string, NostrProfile>();
-		this.profiles.forEach((profile, key) => {
-			if (profile.nip01Event.type === UserType.COMMUNITY) communityMap.set(key, profile);
-		});
-		return communityMap;
-	});
-	users: SvelteMap<string, NostrProfile> = $derived.by(() => {
-		const userMap = new SvelteMap<string, NostrProfile>();
-		this.profiles.forEach((profile, key) => {
-			if (profile.nip01Event.type === undefined || profile.nip01Event.type === UserType.INDIVIDUAL) userMap.set(key, profile);
-		});
-		return userMap;
-	});
+	// communities: SvelteMap<string, NostrProfile> = $derived.by(() => {
+	// 	const communityMap = new SvelteMap<string, NostrProfile>();
+	// 	this.profiles.forEach((profile, key) => {
+	// 		if (profile.nip01Event.type === UserType.COMMUNITY) communityMap.set(key, profile);
+	// 	});
+	// 	return communityMap;
+	// });
+	// users: SvelteMap<string, NostrProfile> = $derived.by(() => {
+	// 	const userMap = new SvelteMap<string, NostrProfile>();
+	// 	this.profiles.forEach((profile, key) => {
+	// 		if (profile.nip01Event.type === undefined || profile.nip01Event.type === UserType.INDIVIDUAL) userMap.set(key, profile);
+	// 	});
+	// 	return userMap;
+	// });
 }
 
 export const globalRunes = new GlobalRunes();
@@ -58,12 +62,17 @@ globalNostrContext.profileService.nip01Map.addListener((keys) => {
 	console.log('nip01', keys);
 
 	for (let key of keys) {
-		globalRunes.ctest.add(key)
-		console.log("SET SF" + key)
+		// globalRunes.ctest.add(key)
+		// console.log("SET SF" + key)
 
+		// const profile = new NostrProfile();
 		const profile = globalRunes.profiles.get(key) ?? new NostrProfile();
-		profile.nip01Event = globalNostrContext.profileService.nip01Map.value.get(key) ?? defaultNip01;
-		console.log("SET STUFF" + key)
+		const prof = globalNostrContext.profileService.nip01Map.value.get(key) ?? defaultNip01;
+		globalRunes.nip01Events.set(key, prof);
+
+		profile.nip01Event = prof;
+		// console.log("SET STUFF" + key)
+		// globalRunes.profiles.set(key, profile);
 		globalRunes.profiles.set(key, profile);
 	}
 });
@@ -72,7 +81,9 @@ globalNostrContext.profileService.nip02Map.addListener((keys) => {
 	console.log('nip02', keys);
 	for (let key of keys) {
 		const profile = globalRunes.profiles.get(key) ?? new NostrProfile();
-		profile.nip02Event = globalNostrContext.profileService.nip02Map.value.get(key) ?? defaultNip02;
+		const event = globalNostrContext.profileService.nip02Map.value.get(key) ?? defaultNip02;
+		globalRunes.nip02Events.set(key, event);
+		profile.nip02Event = event;
 		globalRunes.profiles.set(key, profile);
 	}
 });
@@ -81,7 +92,9 @@ globalNostrContext.profileService.nip65Map.addListener((keys) => {
 	console.log('nip65:', keys);
 	for (let key of keys) {
 		const profile = globalRunes.profiles.get(key) ?? new NostrProfile();
-		profile.nip65Event = globalNostrContext.profileService.nip65Map.value.get(key) ?? defaultNip65;
+		const event = globalNostrContext.profileService.nip65Map.value.get(key) ?? defaultNip65;
+		globalRunes.nip65Events.set(key, event);
+		profile.nip65Event = event;
 		globalRunes.profiles.set(key, profile);
 	}
 });

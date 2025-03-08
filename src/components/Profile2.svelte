@@ -1,28 +1,86 @@
 <script lang="ts">
-	import {goto} from '$app/navigation';
-	import {globalRunes} from '@src/stores/profile.svelte.js';
-	import {UserType} from 'iz-nostrlib/nips';
-	import Profile2 from '@src/components/Profile2.svelte';
+	import { type Snippet } from 'svelte';
 
-	function gotoPage(key: string) {
-		goto(`/channels/${key}/torrents`);
+	const {children, nip01Event, i} = $props();
+
+	// let nip01Event : Nip01UserMetaDataEvent = globalRunes.profiles.get(key)?.nip01Event ?? defaultNip01;
+
+	function gotoPage() {
+		console.log(nip01Event.pubkey);
 	}
 
-	//TODO add limit the number of items loaded or paginate them to avoid overload due to an excessive number of elements.
 </script>
 
-<div class="profiles-container">
-	{#each globalRunes.nip01Events.values().filter((val) => val.type === UserType.INDIVIDUAL) as val, i}
-		<Profile2 nip01Event={val} i={i}>
-			<button class="show-movies-btn" onclick={() => gotoPage(val.pubkey)}>
-				Show movies2
-				<svg class="arrow-icon" viewBox="0 0 24 24">
-					<path d="M6.4 18 5 16.6 14.6 7H6V5h12v12h-2V8.4Z" />
-				</svg>
-			</button>
-		</Profile2>
-	{/each}
-</div>
+<article class="profile-card" style="animation-delay: {i * 0.1}s">
+	<div class="banner-container">
+		{#if nip01Event.profile.banner}
+			<img
+				class="profile-banner"
+				src={nip01Event.profile.banner}
+				alt="Banner"
+				loading="lazy"
+			/>
+		{:else}
+			<div class="banner-placeholder"></div>
+		{/if}
+
+		{#if nip01Event.profile.picture}
+			<img
+				class="profile-picture"
+				src={nip01Event.profile.picture}
+				alt="Avatar"
+				loading="lazy"
+			/>
+		{:else}
+			<div class="avatar-placeholder">
+				{nip01Event.profile.display_name?.charAt(0) || '?'}
+			</div>
+		{/if}
+	</div>
+
+	<div class="profile-content">
+		<div class="profile-header">
+			<h1 class="display-name">{nip01Event.profile.display_name || 'Anonymous'}</h1>
+			<h2 class="username">@{nip01Event.profile.name || 'unknown'}</h2>
+<!--			<div class="profile-key" title={nip01Event.key}>-->
+<!--&lt;!&ndash;				Key: {nip01Event.key.slice(0, 8)}...{nip01Event.key.slice(-8)}&ndash;&gt;-->
+<!--			</div>-->
+		</div>
+
+		{#if nip01Event.profile.about}
+			<p class="about">{nip01Event.profile.about}</p>
+		{/if}
+
+		<div class="profile-actions">
+			{#if nip01Event.profile.website}
+				<a
+					href={nip01Event.profile.website}
+					class="website-link"
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					<svg class="link-icon" viewBox="0 0 24 24">
+						<!-- TODO Move all svgs to a separate library. -->
+						<path
+							d="M11 17H7Q4.925 17 3.463 15.537T2 12Q2 9.925 3.463 8.462T7 7H11V9H7Q5.75 9 4.875 9.875T4 12Q4 13.25 4.875 14.125T7 15H11V17ZM8 13V11H16V13H8ZM13 17V15H17Q18.25 15 19.125 14.125T20 12Q20 10.75 19.125 9.875T17 9H13V7H17Q19.075 7 20.538 8.462T22 12Q22 14.075 20.538 15.537T17 17H13Z"
+						/>
+					</svg>
+					Website
+				</a>
+			{/if}
+
+			{@render children?.()}
+
+<!--			<button class="show-movies-btn" onclick={() => gotoPage()}>-->
+<!--				Show movies-->
+<!--				<svg class="arrow-icon" viewBox="0 0 24 24">-->
+<!--					<path d="M6.4 18 5 16.6 14.6 7H6V5h12v12h-2V8.4Z" />-->
+<!--				</svg>-->
+<!--			</button>-->
+		</div>
+	</div>
+</article>
+
 
 <style>
     @keyframes cardAppear {

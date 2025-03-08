@@ -29,7 +29,7 @@ onmouseleave={isExpanded ? undefined : () => temporaryExpand(false)} -->
 		<div class="communities-list" style="">
 			{#each communities as community}
 				<a
-					href="/communities/{community.nip01Event.profile.name}"
+					href="/communities/{community.nip01Event.pubkey}"
 					class="community-item"
 					title={community.nip01Event.profile.name}
 				>
