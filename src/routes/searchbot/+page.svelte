@@ -1,10 +1,9 @@
 <script lang="ts">
-	let search = $state('hello bot')
+	let search = $state('hello bot');
 
 	function onSearch(): void {
-		console.log(search)
+		console.log(search);
 	}
-
 </script>
 
 HELLO BOT!

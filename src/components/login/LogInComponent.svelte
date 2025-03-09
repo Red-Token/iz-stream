@@ -135,8 +135,6 @@
 						Create Community
 					</button>
 
-
-
 					<button class="menu-item logout" onclick={logOut} role="menuitem" tabindex="0">
 						<svg class="menu-icon lock-icon" viewBox="0 0 24 24">
 							<path

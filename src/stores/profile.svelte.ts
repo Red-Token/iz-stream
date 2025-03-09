@@ -159,7 +159,7 @@ class Me {
 		// 	.reduce((map, element) => map.set(element.pubkey, element), new Map<string, Followee>())
 		// 	.values()
 		// 	.toArray();
-		return fl
+		return fl;
 	});
 	publisher = $derived.by(() => {
 		console.log('PUb TRIGGERED!');

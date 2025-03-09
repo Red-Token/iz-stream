@@ -4,5 +4,6 @@
 </script>
 
 <VideoPlayer infoHash={page.params.infoHash} />
+
 <style>
 </style>

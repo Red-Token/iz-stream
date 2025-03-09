@@ -9,13 +9,13 @@
 		<div class="nav-links">
 			<a href="/search" aria-current={page.url.pathname === '/search'}>Search</a>
 			<a href="/channels" data-sveltekit-preload-data aria-current={page.url.pathname === '/channels'}>Channels</a>
-<!--			<a href="/communities" aria-current={page.url.pathname === '/communities'}>Communities</a>-->
-<!--			<a href="/torrents" aria-current={page.url.pathname === '/torrents'}>Torrents</a>-->
+			<!--			<a href="/communities" aria-current={page.url.pathname === '/communities'}>Communities</a>-->
+			<!--			<a href="/torrents" aria-current={page.url.pathname === '/torrents'}>Torrents</a>-->
 			<!--{#if me.pubkey !== ''}-->
 			<!--	<a href="/create" aria-current={page.url.pathname === '/create'}>Create</a>-->
 			<!--	<a href="/create2" aria-current={page.url.pathname === '/create2'}>Create2</a>-->
 			<!--{/if}-->
-<!--			<a href="/searchbot" aria-current={page.url.pathname === '/searchbot'}>SearchBot</a>-->
+			<!--			<a href="/searchbot" aria-current={page.url.pathname === '/searchbot'}>SearchBot</a>-->
 		</div>
 		<div class="login-btn">
 			<LogInComponent></LogInComponent>
