@@ -2,7 +2,7 @@
 
 	import {asyncCreateWelshmanSession, Identifier, Identity} from 'iz-nostrlib/communities';
 	import {SignerType} from 'iz-nostrlib';
-	import {globalNostrContext} from '@src/stores/profile.svelte';
+	import {globalNostrContext} from '@src/stores/profile.svelte.js';
 	import {DynamicPublisher} from 'iz-nostrlib/ses';
 	import {
 		Nip01UserMetaDataEvent,
@@ -48,11 +48,20 @@
 			const publisher = new DynamicPublisher(globalNostrContext.profileService, identity);
 
 			// TODO FIX THIS FFS! Where are my capabilities
-			publisher.publish(new Nip01UserMetaDataEvent(profile.data, UserType.COMMUNITY));
+			publisher.publish(new Nip01UserMetaDataEvent(profile.data, UserType.COMMUNITY, options.filter((o) => o.selected).map((o) => [o.name])));
 			publisher.publish(new Nip65RelayListMetadataEvent([[profile.relay]]));
 		});
 	}
 
+	class Options {
+		constructor(public name: string, public description: string, public selected: boolean = false) {
+		}
+	}
+
+	const options: Options[] = $state([
+		new Options('nip35', 'Nip35', true),
+		new Options('nip69', 'Nip69', false)
+	]);
 
 </script>
 
@@ -81,6 +90,13 @@
 	<div>
 		<textarea bind:value={profile.relay}>TEST</textarea>
 	</div>
+	{#each options as option}
+		<div>
+			<input name={option.name} type="checkbox" bind:checked={option.selected} class="form-input" />
+			<label for={option.name}>{option.description}</label>
+		</div>
+	{/each}
+
 	<div>
 		<button onclick={create}>CREATE</button>
 	</div>

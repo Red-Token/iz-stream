@@ -2,7 +2,7 @@
 	import {globalRunes} from '@src/stores/profile.svelte';
 
 	const {key, i} = $props();
-	let profile = globalRunes.profiles.get(key);
+	// let profile = globalRunes.profiles.get(key);
 
 	function gotoPage() {
 		console.log(key);

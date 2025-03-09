@@ -11,12 +11,43 @@
 
 	let player: any = null;
 
+	let torrentInfo = $state({
+		infoHash: '',
+		done: false,
+		progress: 0,
+		upload: 0,
+		download: 0
+	});
+
 	const options = {
 		announce: ['wss://tracker.webtorrent.dev'],
 		maxWebConns: 500
 	};
 
+	function update(torrent: Torrent) {
+		torrentInfo.done = torrent.done;
+		torrentInfo.progress = torrent.progress;
+		torrentInfo.download = torrent.downloaded;
+		torrentInfo.upload = torrent.uploaded;
+	}
+
 	function loadTorrent(torrent: Torrent) {
+		torrentInfo.infoHash = torrent.infoHash;
+
+		update(torrent);
+
+		torrent.on('done', () => {
+			update(torrent);
+		});
+
+		torrent.on('download', () => {
+			update(torrent);
+		});
+
+		torrent.on('upload', () => {
+			update(torrent);
+		});
+
 		torrent.files.forEach((file: any) => {
 			console.log(file.name);
 			console.log(file.streamURL);
@@ -40,7 +71,7 @@
 		if (videoElement) {
 			player.src([
 				{
-					src: playFile.streamURL,
+					src: playFile.streamURL
 					// type: playFile.type
 				}
 			]);
@@ -66,13 +97,17 @@
 		// TODO rewrite this with await
 		new Promise<Torrent>((resolve, reject) => {
 			wt.get(infoHash).then((torrent: Torrent) => {
+
 				if (torrent == null)
 					torrent = wt.add(infoHash, options);
+
+				update(torrent);
 
 				if (torrent.ready)
 					resolve(torrent);
 
 				torrent.on('ready', () => {
+					update(torrent);
 					resolve(torrent);
 				});
 
@@ -110,20 +145,39 @@
 	});
 </script>
 
-<div class="video-container">
-	<video controls class="video-js vjs-big-play-centered" bind:this={videoElement}>
-		<track kind="captions" />
-	</video>
+<div class="video-page">
+	<div class="video-container">
+		<video controls class="video-js vjs-big-play-centered" bind:this={videoElement}>
+			<track kind="captions" />
+		</video>
+	</div>
+	<div class="video-container">
+		{torrentInfo.infoHash} {torrentInfo.done} {torrentInfo.progress * 100}% {torrentInfo.upload} {torrentInfo.download}
+	</div>
 </div>
 
 <style>
-    .video-container {
-        padding-top: 2rem;
+    .video-page {
         display: flex;
-        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        padding: 2rem;
+        min-height: 100vh;
+				min-width: 100vw;
+        background-color: var(--bg-1);
+				gap: 1rem;
+    }
+
+    .video-container {
+        width: 100%;
         max-width: 1200px;
-        height: auto;
-        margin: 0 auto;
+        background: var(--bg-2);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        box-shadow: 0 4px 12px var(--shadow-color);
+        padding: 1.5rem;
+        position: relative;
+
     }
 
     .video-js {

@@ -28,9 +28,6 @@
 {#if isOpen}
 	<div class="popup-overlay" onclick={() => closePopup()}>
 		<div class="popup" onclick={(event) => event.stopPropagation()}>
-			<h2>This is a Popup!</h2>
-			<p>Click outside to close or press the button.</p>
-			<LogInBunker {closePopup}></LogInBunker>
 			{#if nip07 !== undefined}
 				<button onclick={() => nip07LogIn()}>LogIn NIP07</button>
 			{/if}

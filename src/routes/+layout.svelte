@@ -5,9 +5,9 @@
 	import {onMount} from 'svelte';
 	import PrimaryNav from '@src/components/PrimaryNav.svelte';
 	import {Log} from '@src/services/Logger';
+	import {me} from '@src/stores/profile.svelte';
 
 	const layout = Log.child({component: '+layout.svelte'});
-
 	layout.info(import.meta.resolve('./org/nostr/ses/Subscription'));
 
 	let {children} = $props();
@@ -112,20 +112,22 @@
 </script>
 
 <main>
-	<div class="left-sidebar {isExpanded ? 'expanded' : ''}">
-		<Communities isExpanded />
-		<button class="sidebar-toggle" onclick={() => (isExpanded = !isExpanded)}>
-			{#if isExpanded}
-				<svg width="24" height="24" viewBox="0 0 24 24">
-					<path d="M15 18l-6-6 6-6" stroke="currentColor" fill="none" />
-				</svg>
-			{:else}
-				<svg width="24" height="24" viewBox="0 0 24 24">
-					<path d="M9 18l6-6-6-6" stroke="currentColor" fill="none" />
-				</svg>
-			{/if}
-		</button>
-	</div>
+	{#if me.pubkey !== ''}
+		<div class="left-sidebar {isExpanded ? 'expanded' : ''}">
+			<Communities isExpanded />
+			<button class="sidebar-toggle" onclick={() => (isExpanded = !isExpanded)}>
+				{#if isExpanded}
+					<svg width="24" height="24" viewBox="0 0 24 24">
+						<path d="M15 18l-6-6 6-6" stroke="currentColor" fill="none" />
+					</svg>
+				{:else}
+					<svg width="24" height="24" viewBox="0 0 24 24">
+						<path d="M9 18l6-6-6-6" stroke="currentColor" fill="none" />
+					</svg>
+				{/if}
+			</button>
+		</div>
+	{/if}
 	<div class="content-area">
 		<PrimaryNav />
 		<div class="main-content">

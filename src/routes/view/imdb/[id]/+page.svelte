@@ -1,65 +1,14 @@
 <script lang="ts">
 	import {page} from '$app/state';
 	import {onMount} from 'svelte';
-	import {wt} from '@src/stores/wtZool.svelte';
 	import TorrentLike from '@src/components/torrenttalk/TorrentLike.svelte';
 	import {s} from '@src/stores/assetStore.svelte';
-	import {globalRunes} from '@src/stores/profile.svelte.js';
+	import {defaultNip65, globalRunes} from '@src/stores/profile.svelte.js';
 	import {EventType} from 'iz-nostrlib';
 	import VideoPlayer from '@src/components/VideoPlayer.svelte';
 	import {ReactiveArray} from 'iz-nostrlib/util';
-	import {Nip35TorrentEvent} from 'iz-nostrlib/nips';
-	import {DynamicSynchronisedSession} from 'iz-nostrlib/ses';
-	import {DynamicSubscription} from 'iz-nostrlib/ses';
-
-	let options = {
-		announce: ['wss://tracker.webtorrent.dev'],
-		maxWebConns: 500
-	};
-
-	let candidates: Nip35TorrentEvent[] = $state([]);
-
-	function download(event: Nip35TorrentEvent) {
-		const torrent = wt.add(event.x, options);
-
-		torrent.on('ready', () => {
-			// Torrents can contain many files. Let's use the .mp4 file
-			const file = torrent.files.find((file) => file.name.endsWith('.mp4'));
-
-			if (file === undefined) throw new Error('ALIENS');
-
-			const player = document.querySelector('video');
-
-			if (player === null) throw new Error('ALIENS2');
-
-			// player.src = file.streamURL
-
-			// file.renderTo(player)
-			file.streamTo(player);
-
-			console.log('Ready to play!');
-		});
-
-		torrent.on('warning', (err) => {
-			console.log(err);
-		});
-		torrent.on('error', (err) => {
-			console.log(err);
-		});
-		torrent.on('wire', (wire) => {
-			console.log(wire);
-			console.log('number of peers' + torrent.numPeers);
-		});
-		torrent.on('download', (bytes) => {
-			console.log(bytes);
-			console.log('received: ' + torrent.received);
-			console.log('downloaded: ' + torrent.downloaded);
-		});
-		torrent.on('upload', (bytes) => {
-			console.log(bytes);
-			console.log('uploaded: ' + torrent.uploaded);
-		});
-	}
+	import {Nip35TorrentEvent, UserType} from 'iz-nostrlib/nips';
+	import {DynamicSubscription, DynamicSynchronisedSession} from 'iz-nostrlib/ses';
 
 	enum RelayType {
 		READ = 'read',
@@ -90,38 +39,35 @@
 		}
 	}
 
-	console.log(globalRunes.communities.size);
-
-	let zc = $derived(globalRunes.communities.values().toArray());
+	let zc = $derived(globalRunes.nip01Events.values().toArray());
 
 	console.log(zc.length);
 
 	zc.forEach((c) => {
-		const cap = c.nip01Event.capabilities;
+		const cap = c.capabilities;
 		console.log(cap);
 	});
 
-	let searchRelays = $derived.by(() => {
-		const sss: Relay[] = zc
-			// .filter((community) => community.nip01Event.capabilities.find((e) => e[0] === 'nip35'))
-			.map((community) => {
-				return community.nip65Event.relays
-					.map((relay) => new Relay(relay))
-					.filter((relay) => relay.type.has(RelayType.READ));
-			})
+	let searchRelays: Relay[] = $derived.by(() => {
+		const sss = zc
+			// .filter(
+				// e => e.type === UserType.COMMUNITY)
+			.filter(e => e.type === UserType.COMMUNITY && e.capabilities.find((e) => e[0] === 'nip35'))
+			.map((c) => (globalRunes.nip65Events.get(c.pubkey) ?? defaultNip65).relays
+				.map((relay) => new Relay(relay))
+				.filter((relay) => relay.type.has(RelayType.READ)))
 			.flat()
-			.reduce((map: Map<string, Relay>, current: Relay) => map.set(current.address, current), new Map<string, Relay>())
+			.reduce((map, val) => map.set(val.address, val), new Map<string, Relay>())
 			.values()
-			.toArray();
-
+			.toArray()
 		return sss;
 	});
 
 	onMount(async () => {
-		// //TODO MAKE A GLOBAL SEARCH
+		// //TODO MAKE THIS A GLOBAL SEARCH PARAM
 		console.log(searchRelays);
 
-		const ra = new ReactiveArray(searchRelays.map((relay) => relay.address));
+		const ra = new ReactiveArray(searchRelays.map(r => r.address));
 		const dss = new DynamicSynchronisedSession(ra);
 
 		s.assets = [];
@@ -164,13 +110,11 @@
 </script>
 
 <div class="video-page">
-	<div class="torrent-title">{page.params.id}</div>
-	<div class="video-container">
+<!--	<div class="torrent-title">{page.params.id}</div>-->
 		{#if s.playing !== undefined}
 			<VideoPlayer infoHash={s.playing.x} />
-			<TorrentLike></TorrentLike>
+<!--			<TorrentLike></TorrentLike>-->
 		{/if}
-	</div>
 </div>
 
 <style>

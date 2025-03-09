@@ -1,7 +1,7 @@
 <script lang="ts">
 	import {page} from '$app/state';
 	import {NostrUserProfileMetaData} from 'iz-nostrlib/nip01';
-	import {defaultNip01, defaultNip02, globalRunes, me} from '@src/stores/profile.svelte';
+	import {defaultNip02, globalRunes, me} from '@src/stores/profile.svelte';
 	import {Followee, Nip02FollowListEvent} from 'iz-nostrlib/nips';
 	import {onMount} from 'svelte';
 
@@ -85,8 +85,6 @@
 
 
 </script>
-{joinable}
-{page.params.pubkey}
 <div class="channel-container">
 	<div class="channel-header">
 		<div class="banner-container">

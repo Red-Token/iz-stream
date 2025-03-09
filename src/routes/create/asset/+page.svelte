@@ -1,6 +1,6 @@
 <script lang="ts">
 	import {onMount} from 'svelte';
-	import {wt} from '@src/stores/wtZool.svelte';
+	import {wt} from '@src/stores/wtZool.svelte.js';
 	import {goto} from '$app/navigation';
 	import {globalNostrContext, globalRunes, me} from '@src/stores/profile.svelte.js';
 	import {EventType, type Publisher, safeFindSingleTagValue} from 'iz-nostrlib';
@@ -23,7 +23,7 @@
 		resp: {state: {state: null, msg: 'Not started the request', progress: 0}}
 	});
 
-	const community = $derived(globalRunes.communities.get(state.community ?? ''));
+	// const community = $derived(globalRunes.communities.get(state.community ?? ''));
 
 	// let title = 'Big Buck Bunny DASH';
 	// let imdbId = 'tt1254207';
@@ -164,7 +164,7 @@
 	<div class="form-card">
 		<div class="input-group">
 			{state.community}
-			{community?.nip01Event.profile.name ?? ''}
+			<!--{community?.nip01Event.profile.name ?? ''}-->
 			<select bind:value={state.community}>
 				<option value="">Select an option</option>
 				{#each me.communities as option}

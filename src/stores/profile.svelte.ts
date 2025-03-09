@@ -3,9 +3,16 @@ import {applicationRelay} from '@src/config/config';
 import {normalizeRelayUrl} from '@red-token/welshman/util';
 import {setContext} from '@red-token/welshman/lib';
 import {getDefaultAppContext, getDefaultNetContext} from '@red-token/welshman/app';
-import { GlobalNostrContext, Identifier, Identity } from 'iz-nostrlib/communities';
-import {Followee, Nip01UserMetaDataEvent, Nip02FollowListEvent, Nip65RelayListMetadataEvent, NostrUserProfileMetaData, UserType } from 'iz-nostrlib/nips';
-import { DynamicPublisher } from 'iz-nostrlib/ses';
+import {GlobalNostrContext, Identifier, Identity} from 'iz-nostrlib/communities';
+import {
+	Followee,
+	Nip01UserMetaDataEvent,
+	Nip02FollowListEvent,
+	Nip65RelayListMetadataEvent,
+	NostrUserProfileMetaData,
+	UserType
+} from 'iz-nostrlib/nips';
+import {DynamicPublisher} from 'iz-nostrlib/ses';
 
 // REBUILD THE WORLDS HERE
 // TODO: FIX THIS
@@ -19,11 +26,11 @@ setContext({
 export const globalNostrContext = new GlobalNostrContext(relays);
 
 class GlobalRunes {
-	nip01Events = $state(new SvelteMap<string, Nip01UserMetaDataEvent>())
-	nip02Events = $state(new SvelteMap<string, Nip02FollowListEvent>())
-	nip65Events = $state(new SvelteMap<string, Nip65RelayListMetadataEvent>())
+	nip01Events = $state(new SvelteMap<string, Nip01UserMetaDataEvent>());
+	nip02Events = $state(new SvelteMap<string, Nip02FollowListEvent>());
+	nip65Events = $state(new SvelteMap<string, Nip65RelayListMetadataEvent>());
 
-	ctest = $state(new SvelteSet<string>())
+	ctest = $state(new SvelteSet<string>());
 	profiles = $state(new SvelteMap<string, NostrProfile>());
 	// communities: SvelteMap<string, NostrProfile> = $derived.by(() => {
 	// 	const communityMap = new SvelteMap<string, NostrProfile>();
@@ -133,12 +140,13 @@ class Me {
 	profile = $derived(globalRunes.profiles.get(this.pubkey));
 	communities = $derived.by(() => {
 		console.log('Updating CL');
-		const list = globalRunes.profiles.get(this.pubkey)?.nip02Event?.list ?? [];
-		const fl = list.filter((f) => globalRunes.profiles.get(f.pubkey)?.nip01Event?.type === UserType.COMMUNITY);
+		const list = globalRunes.nip02Events.get(me.pubkey)?.list ?? [];
+		const fl = list.filter((f) => globalRunes.nip01Events.get(f.pubkey)?.type === UserType.COMMUNITY);
+		// return fl
+		// 	.reduce((map, element) => map.set(element.pubkey, element), new Map<string, Followee>())
+		// 	.values()
+		// 	.toArray();
 		return fl
-			.reduce((map, element) => map.set(element.pubkey, element), new Map<string, Followee>())
-			.values()
-			.toArray();
 	});
 	publisher = $derived.by(() => {
 		console.log('PUb TRIGGERED!');
