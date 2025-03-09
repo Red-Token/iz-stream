@@ -1,7 +1,7 @@
 <script>
-	import LogInComponent from '@src/components/login/LogInComponent.svelte';
+	import {LogInComponent} from '$components';
 	import {page, navigating} from '$app/state';
-	import {me} from '../stores/profile.svelte';
+	import {me} from '@src/stores/profile.svelte';
 </script>
 
 <nav class="primary-nav">

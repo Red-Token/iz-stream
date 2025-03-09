@@ -1,5 +1,5 @@
 <script lang="ts">
-	import {searchResult} from '../../stores/searchResult.svelte';
+	import {searchResult} from '@src/stores/searchResult.svelte';
 	import {goto} from '$app/navigation';
 	import imdbApi from '$lib/api/ImdbApi';
 

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import {onMount} from 'svelte';
-	import type {Episode} from '../stores/searchResult.svelte';
+	import type {Episode} from '@src/stores/searchResult.svelte';
 	import {goto} from '$app/navigation';
 
 	let {item} = $props();

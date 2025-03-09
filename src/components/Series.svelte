@@ -1,7 +1,6 @@
 <script lang="ts">
 	import {onMount} from 'svelte';
-	import Seasons from './Seasons.svelte';
-	import Episodes from './Episodes.svelte';
+	import {Seasons, Episodes} from '$components';
 	import {type Episode, type SearchResultItem, Season} from '@src/stores/searchResult.svelte';
 	import imdbApi from '$lib/api/ImdbApi';
 

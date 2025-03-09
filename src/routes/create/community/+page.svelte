@@ -1,7 +1,7 @@
 <script lang="ts">
 	import {asyncCreateWelshmanSession, Identifier, Identity} from 'iz-nostrlib/communities';
 	import {SignerType} from 'iz-nostrlib';
-	import {globalNostrContext} from '@src/stores/profile.svelte.js';
+	import {globalNostrContext} from '@src/stores/profile.svelte';
 	import {DynamicPublisher} from 'iz-nostrlib/ses';
 	import {
 		Nip01UserMetaDataEvent,

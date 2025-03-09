@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Popup from './Popup.svelte';
-	import {me} from '../../stores/profile.svelte';
+	import {Popup} from '$components';
+	import {me} from '@src/stores/profile.svelte';
 	import {goto} from '$app/navigation';
 	import {logOut} from '@src/stores/community.svelte';
 

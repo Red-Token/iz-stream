@@ -1,7 +1,7 @@
 <script lang="ts">
 	import {onMount} from 'svelte';
 	import {Publisher, Subscription, SynchronisedSession} from 'iz-nostrlib';
-	import {s} from '../../stores/assetStore.svelte';
+	import {s} from '@src/stores/assetStore.svelte';
 	import {SvelteMap} from 'svelte/reactivity';
 	import {Nip25ReactionsEvent} from 'iz-nostrlib/nips';
 	import {createRefETags} from 'iz-nostrlib/util';
