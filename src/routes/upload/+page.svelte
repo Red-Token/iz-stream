@@ -1,18 +1,8 @@
 <script lang="ts">
 	import {onMount} from 'svelte';
-	// import {communities} from '@src/stores/community.svelte';
-
 	let file: File;
-
 	let state = $state({resp: {state: {state: 'not started', msg: 'Not started the request'}}, infoHash: ''});
-
 	onMount(() => {});
-
-	const options = {
-		announce: ['wss://tracker.webtorrent.dev', 'wss://tracker.btorrent.xyz', 'wss://tracker.openwebtorrent.com'],
-		// announce: ['wss://tracker.webtorrent.dev'],
-		maxWebConns: 500
-	};
 
 	function handleSubmit() {
 		console.log(file);

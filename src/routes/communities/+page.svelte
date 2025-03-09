@@ -1,8 +1,19 @@
 <script lang="ts">
 	import {globalNostrContext, me} from '@src/stores/profile.svelte';
+<<<<<<< HEAD
 	import {generateSecretKey, getPublicKey} from 'nostr-tools/pure';
 	import {nip19} from 'nostr-tools';
 	import {SignerType} from 'iz-nostrlib';
+=======
+	import {SignerType} from 'iz-nostrlib';
+	import {DynamicPublisher} from 'iz-nostrlib/ses';
+	import {asyncCreateWelshmanSession, Identifier, Identity} from 'iz-nostrlib/communities';
+	import {Nip01UserMetaDataEvent, UserType, NostrUserProfileMetaData} from 'iz-nostrlib/nip01';
+	import {Nip02FollowListEvent, Followee} from 'iz-nostrlib/nip02';
+	import {Nip65RelayListMetadataEvent} from 'iz-nostrlib/nip65';
+	import {generateSecretKey, getPublicKey} from 'nostr-tools/pure';
+	import {nip19} from 'nostr-tools';
+>>>>>>> origin/dev
 	import {normalizeURL} from 'nostr-tools/utils';
 	import {globalRunes} from '@src/stores/profile.svelte.js';
 	import {defaultCommunityRelay} from '@src/config/config';

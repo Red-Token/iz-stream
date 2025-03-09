@@ -1,14 +1,14 @@
 <script lang="ts">
 	import {page} from '$app/state';
 	import {onMount} from 'svelte';
-	import TorrentLike from '@src/components/torrenttalk/TorrentLike.svelte';
 	import {s} from '@src/stores/assetStore.svelte';
-	import {defaultNip65, globalRunes} from '@src/stores/profile.svelte.js';
+	import {defaultNip65} from '@src/stores/profile.svelte.js';
 	import {EventType} from 'iz-nostrlib';
 	import VideoPlayer from '@src/components/VideoPlayer.svelte';
 	import {ReactiveArray} from 'iz-nostrlib/util';
 	import {Nip35TorrentEvent, UserType} from 'iz-nostrlib/nips';
 	import {DynamicSubscription, DynamicSynchronisedSession} from 'iz-nostrlib/ses';
+	import {globalRunes} from '@src/stores/profile.svelte';
 
 	enum RelayType {
 		READ = 'read',

@@ -1,8 +1,6 @@
 <script lang="ts">
 	import {onMount} from 'svelte';
-	import {wt} from '@src/stores/wtZool.svelte.js';
 	import {goto} from '$app/navigation';
-	import {globalNostrContext, globalRunes, me} from '@src/stores/profile.svelte.js';
 	import {EventType, type Publisher, safeFindSingleTagValue} from 'iz-nostrlib';
 	import {Nip35TorrentEvent} from 'iz-nostrlib/nips';
 	import {CommunityNostrContext} from 'iz-nostrlib/communities';
@@ -13,6 +11,8 @@
 	} from 'iz-nostrlib/seederbot';
 	import {DynamicPublisher, DynamicSynchronisedSession, StaticEventsProcessor} from 'iz-nostrlib/ses';
 	import type {TrustedEvent} from '@red-token/welshman/util';
+	import {wt} from '@src/stores/wtZool.svelte';
+	import {globalNostrContext, globalRunes, me} from '@src/stores/profile.svelte';
 
 	const state = $state({
 		community: undefined,

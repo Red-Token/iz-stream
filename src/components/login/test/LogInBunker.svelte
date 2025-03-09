@@ -1,11 +1,56 @@
 <script lang="ts">
 	import {onDestroy} from 'svelte';
+<<<<<<< HEAD
 	// // import { slideAndFade } from '@lib/transition';
 	// // import { loadUserData, loginWithNip46 } from '@app/commands';
 	// // import { clearModals } from '@app/modal';
 	// // import { setChecked } from '@app/notifications';
 	// // import { pushToast } from '@app/toast';
 	// // import { PLATFORM_LOGO, PLATFORM_NAME, PLATFORM_URL, SIGNER_RELAYS } from '@app/state';
+=======
+	import {Nip46Broker, type Nip46BrokerParams} from '@red-token/welshman/signer';
+	import {addSession, nip46Perms} from '@red-token/welshman/app';
+	// import { slideAndFade } from '@lib/transition';
+	// import { loadUserData, loginWithNip46 } from '@app/commands';
+	// import { clearModals } from '@app/modal';
+	// import { setChecked } from '@app/notifications';
+	// import { pushToast } from '@app/toast';
+	// import { PLATFORM_LOGO, PLATFORM_NAME, PLATFORM_URL, SIGNER_RELAYS } from '@app/state';
+
+	import {QRCode} from '@red-token/iz-svelte-library';
+	import {NostrClient, type SignerData, SignerType} from 'iz-nostrlib';
+	import {me} from '../../../stores/profile.svelte';
+	import {logIn} from '@src/stores/community.svelte';
+
+	const abortController = new AbortController();
+
+	// export const SIGNER_RELAYS = ['wss://relay.stream.labs.h3.se/'];
+	export const SIGNER_RELAYS = ['wss://relay.pre-alfa.iz-stream.com/'];
+
+	export const PLATFORM_URL = window.location.origin;
+
+	export const PLATFORM_LOGO = PLATFORM_URL + '/pwa-192x192.png';
+
+	export const PLATFORM_NAME = import.meta.env.VITE_PLATFORM_NAME;
+
+	const init = Nip46Broker.initiate({
+		perms: nip46Perms,
+		url: PLATFORM_URL,
+		name: PLATFORM_NAME,
+		relays: SIGNER_RELAYS,
+		image: PLATFORM_LOGO,
+		// url: PLATFORM_URL,
+		// name: PLATFORM_NAME,
+		// relays: SIGNER_RELAYS,
+		// image: PLATFORM_LOGO,
+		abortController
+	});
+
+	let {closePopup}: {closePopup: Function} = $props();
+
+	// const onSubmit = async () => {
+	// 	const { pubkey, token, relays } = Nip46Broker.parseBunkerLink(bunker);
+>>>>>>> origin/dev
 	//
 	// import {QRCode} from '@red-token/iz-svelte-library';
 	// import {NostrClient, type SignerData, SignerType} from 'iz-nostrlib';

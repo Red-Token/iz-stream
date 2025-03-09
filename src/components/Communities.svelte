@@ -1,11 +1,11 @@
 <script lang="ts">
 	import {onMount} from 'svelte';
 	import {defaultNip01, defaultNip02, me} from '@src/stores/profile.svelte';
-	import {globalRunes} from '@src/stores/profile.svelte.js';
 	import {goto} from '$app/navigation';
+	import {globalRunes} from '@src/stores/profile.svelte';
 	// import {communities} from '@src/stores/community.svelte';
 
-	let {isExpanded} = $props();
+	//let {isExpanded} = $props();
 
 	let communities = $derived.by(() => {
 		console.log(me.pubkey);
@@ -20,7 +20,7 @@
 
 	onMount(() => {
 		const savedState = localStorage.getItem('sidebar-state');
-		isExpanded = savedState ? JSON.parse(savedState) : true;
+		//isExpanded = savedState ? JSON.parse(savedState) : true;
 	});
 </script>
 
@@ -39,6 +39,7 @@ onmouseleave={isExpanded ? undefined : () => temporaryExpand(false)} -->
 						<div class="avatar {true && 'online'}">
 							{#if community.profile.picture}
 								<img class="avatar" src={community.profile.picture} alt="" />
+
 							{:else}
 								{community.profile.name.slice(0, 2)}
 							{/if}

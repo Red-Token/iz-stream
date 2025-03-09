@@ -1,17 +1,23 @@
 <script lang="ts">
 	import '@src/style/app.css';
 	import '@src/style/tailwind.css';
-	import Communities from '@src/components/Communities.svelte';
 	import {onMount} from 'svelte';
 	import PrimaryNav from '@src/components/PrimaryNav.svelte';
 	import {Log} from '@src/services/Logger';
 	import {me} from '@src/stores/profile.svelte';
+	import {normalizeRelayUrl} from '@red-token/welshman/util';
+	import {NostrClient} from 'iz-nostrlib';
+	import Communities from '@src/components/Communities.svelte';
 
 	const layout = Log.child({component: '+layout.svelte'});
 	layout.info(import.meta.resolve('./org/nostr/ses/Subscription'));
 
+	console.log(import.meta.resolve('./org/nostr/ses/Subscription'));
+
 	let {children} = $props();
 	let isExpanded: boolean = $state(true);
+
+	const nostrClient = new NostrClient();
 
 	$effect(() => {
 		document.documentElement.style.setProperty('--sidebar-width', isExpanded ? '80px' : '0px');
@@ -26,8 +32,9 @@
 		// // load the master relays
 		// globalState.relays = [];
 		// const url = 'wss://relay.stream.labs.h3.se';
-		// const url = 'wss://relay.lxc';
-		// const relays = [normalizeRelayUrl(url)];
+		const url = 'wss://relay.pre-alfa.iz-stream.com/';
+		const relays = [normalizeRelayUrl(url)];
+
 		// const globalCommunity = new GlobalNostrContext(relays);
 		//
 		// globalCommunity.profileService.nip01Map.addListener((keys: string[]) => {

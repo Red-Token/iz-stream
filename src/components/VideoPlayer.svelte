@@ -97,7 +97,6 @@
 		// TODO rewrite this with await
 		new Promise<Torrent>((resolve, reject) => {
 			wt.get(infoHash).then((torrent: Torrent) => {
-
 				if (torrent == null)
 					torrent = wt.add(infoHash, options);
 
@@ -113,7 +112,7 @@
 
 				torrent.on('error', reject);
 			});
-		}).then(torrent => {
+		}).then((torrent) => {
 			loadTorrent(torrent);
 		});
 
@@ -163,9 +162,9 @@
         align-items: center;
         padding: 2rem;
         min-height: 100vh;
-				min-width: 100vw;
+        min-width: 100vw;
         background-color: var(--bg-1);
-				gap: 1rem;
+        gap: 1rem;
     }
 
     .video-container {
@@ -177,7 +176,10 @@
         box-shadow: 0 4px 12px var(--shadow-color);
         padding: 1.5rem;
         position: relative;
-
+        display: flex;
+        justify-content: center;
+        height: auto;
+        margin: 0 auto;
     }
 
     .video-js {

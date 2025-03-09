@@ -1,8 +1,8 @@
 <script lang="ts">
 	import {goto} from '$app/navigation';
-	import {globalRunes} from '@src/stores/profile.svelte.js';
 	import {UserType} from 'iz-nostrlib/nips';
 	import Profile2 from '@src/components/Profile2.svelte';
+	import {globalRunes} from '@src/stores/profile.svelte';
 
 	function gotoPage(key: string) {
 		goto(`/channels/${key}/torrents`);

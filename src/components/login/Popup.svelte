@@ -1,9 +1,8 @@
 <script lang="ts">
 	import {SignerType} from 'iz-nostrlib';
-	import LogInBunker from './test/LogInBunker.svelte';
+	import {getNip07, type Nip07} from '@red-token/welshman/signer';
 	import {onMount} from 'svelte';
 	import {logIn} from '@src/stores/community.svelte';
-	import {getNip07, type Nip07} from '@red-token/welshman/signer';
 
 	let {isOpen = false, closePopup}: {isOpen: boolean; closePopup: Function} = $props();
 
