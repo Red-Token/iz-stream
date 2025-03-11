@@ -1,6 +1,10 @@
 {
 	"name": "iz-stream",
 	"private": false,
+	"author": {
+		"name": "Red-Token",
+		"email": "support@redtoken.ae"
+	},
 	"version": "0.0.2",
 	"main": "electron/main.js",
 	"type": "module",
