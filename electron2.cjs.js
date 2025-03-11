@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron');
+const {app, BrowserWindow} = require('electron');
 
 let mainWindow;
 
@@ -8,8 +8,8 @@ app.whenReady().then(() => {
 		height: 768,
 		webPreferences: {
 			nodeIntegration: false,
-			contextIsolation: true,
-		},
+			contextIsolation: true
+		}
 	});
 
 	// Load the SvelteKit server (must be running)

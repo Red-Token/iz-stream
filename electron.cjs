@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron');
+const {app, BrowserWindow} = require('electron');
 const path = require('path');
 
 let mainWindow;
@@ -9,8 +9,8 @@ app.whenReady().then(() => {
 		height: 600,
 		webPreferences: {
 			nodeIntegration: false,
-			contextIsolation: true,
-		},
+			contextIsolation: true
+		}
 	});
 
 	// Load the built Svelte app
