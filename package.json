@@ -2,7 +2,7 @@
 	"name": "iz-stream",
 	"private": false,
 	"version": "0.0.2",
-	"main": "src/main.js",
+	"main": "electron/main.js",
 	"type": "module",
 	"scripts": {
 		"dev": "vite dev",
@@ -15,10 +15,8 @@
 		"lint": "prettier --check . && eslint . --no-cache",
 		"test:unit": "vitest",
 		"test": "npm run test:unit -- --run",
-		"electron": "electron electron.cjs",
-		"electron2": "electron electron.cjs",
-		"start": "npm run build && npm run electron",
-		"package": "electron-builder"
+		"package": "electron-builder --config electron.builder.json",
+		"start": "npm run build && electron ."
 	},
 	"files": [
 		"build/**/*",
@@ -28,6 +26,8 @@
 	"devDependencies": {
 		"@eslint/compat": "^1.2.5",
 		"@eslint/js": "^9.18.0",
+		"@macfja/svelte-multi-adapter": "^1.0.2",
+		"@sveltejs/adapter-node": "^5.2.12",
 		"@sveltejs/adapter-static": "^3.0.8",
 		"@sveltejs/kit": "^2.0.0",
 		"@sveltejs/vite-plugin-svelte": "^4.0.0",
@@ -45,6 +45,7 @@
 		"eslint-import-resolver-typescript": "^3.8.3",
 		"eslint-plugin-import": "^2.31.0",
 		"eslint-plugin-svelte": "^2.46.1",
+		"express": "^4.21.2",
 		"globals": "^15.14.0",
 		"husky": "^9.1.7",
 		"lint-staged": "^15.4.3",
