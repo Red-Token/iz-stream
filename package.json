@@ -1,7 +1,7 @@
 {
 	"name": "iz-stream",
-	"private": true,
-	"version": "0.0.2-snapshot.0",
+	"private": false,
+	"version": "0.0.2",
 	"type": "module",
 	"scripts": {
 		"dev": "vite dev",
@@ -15,6 +15,11 @@
 		"test:unit": "vitest",
 		"test": "npm run test:unit -- --run"
 	},
+	"files": [
+		"build/**/*",
+		"README.md",
+		"LICENSE"
+	],
 	"devDependencies": {
 		"@eslint/compat": "^1.2.5",
 		"@eslint/js": "^9.18.0",
