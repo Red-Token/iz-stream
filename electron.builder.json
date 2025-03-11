@@ -1,6 +1,6 @@
 {
-	"appId": "com.electron.iz-collaborator",
-	"productName": "Iz-Collaborator",
+	"appId": "com.electron.iz-stream",
+	"productName": "iz-stream",
 
 	"files": ["build/**/*", "electron/**/*"],
 	"directories": {
