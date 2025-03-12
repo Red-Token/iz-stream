@@ -14,6 +14,7 @@ const gotTheLock = app.requestSingleInstanceLock();
 let tray;
 let mainWindow;
 let server;
+let nos2x = undefined;
 
 console.log('App is packaged:', !isDev);
 
@@ -28,43 +29,17 @@ if (!gotTheLock) {
 		}
 	});
 
-	let nos2x = undefined
-
-	function openOptions() {
-		const optionsWindow = new BrowserWindow({
-			width: 400,
-			height: 300,
-			webPreferences: {
-				nodeIntegration: true,
-				contextIsolation: false
-			}
-		});
-
-		const extensionId = nos2x.id;
-		optionsWindow.loadURL(`chrome-extension://${extensionId}/options.html`);
-	}
-
 	app.whenReady().then(async () => {
 		try {
 			server = await startServer();
 
-			session.defaultSession.loadExtension(path.join(__dirname, 'extensions/kpgefcfmnafjgpblomihpgmejjdanjjp/2.4.1_0'))
-				.then((extension) => {
-					console.log('Extension loaded:', extension.name);
-					nos2x = extension;
-					openOptions();
-				})
-				.catch((err) => {
-					console.error('Failed to load extension:', err);
-				});
-
+			nos2x = await session.defaultSession.loadExtension(
+				path.join(__dirname, 'extensions/kpgefcfmnafjgpblomihpgmejjdanjjp/2.4.1_0')
+			);
 
 			createWindow();
 			setupTray();
-
-
-
-			// Остальной код меню...
+			openOptions();
 		} catch (error) {
 			console.error('Server start failed:', error);
 			app.quit();
@@ -96,6 +71,20 @@ if (!gotTheLock) {
 
 //#region Functions
 
+function openOptions() {
+	const optionsWindow = new BrowserWindow({
+		width: 400,
+		height: 300,
+		webPreferences: {
+			nodeIntegration: true,
+			contextIsolation: false
+		}
+	});
+
+	optionsWindow.loadURL(`chrome-extension://${nos2x.id}/options.html`);
+	optionsWindow.focus();
+}
+
 async function createWindow() {
 	mainWindow = new BrowserWindow({
 		title: `iz-stream`,
@@ -109,7 +98,6 @@ async function createWindow() {
 			//preload: path.join(__dirname, "preload.js"),
 		}
 	});
-
 
 	mainWindow.loadURL('http://localhost:3000'); //TODO Should be add try catch mainWindow.loadFile("fallback.html") and replace the address to argument
 
