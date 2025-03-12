@@ -21,7 +21,7 @@ export default [
 			globals: {
 				...globals.browser,
 				...globals.node,
-				...globals.esne
+				...globals.es2024
 			},
 			parser: tsParser,
 			parserOptions: {
@@ -62,17 +62,10 @@ export default [
 	{
 		plugins: {
 			'@typescript-eslint': tsPlugin,
-			import: importPlugin,
 			svelte: sveltePlugin
 		},
 		settings: {
-			'svelte/typescript': () => require('typescript'),
-			'import/resolver': {
-				typescript: {
-					alwaysTryTypes: true,
-					project: './tsconfig.json'
-				}
-			}
+			'svelte/typescript': () => require('typescript')
 		}
 	},
 	{
@@ -93,7 +86,6 @@ export default [
 			...sveltePlugin.configs.recommended.rules,
 			'a11y-click-events-have-key-events': 'off',
 			'a11y-autofocus': 'off',
-			'import/no-unresolved': ['error', {ignore: ['^\\$app/', '^\\$env/', '^virtual:']}],
 			// '@typescript-eslint/no-unsafe-member-access': 'off',
 			// 'no-constant-condition': 'off',
 			// 'svelte/no-unused-class-name' : 'warn',// style
