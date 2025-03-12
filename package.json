@@ -1,6 +1,10 @@
 {
 	"name": "iz-stream",
 	"private": false,
+	"author": {
+		"name": "Rene Malmgren",
+		"email": "rene.malmgren@redtoken.ae"
+	},
 	"version": "0.0.2",
 	"main": "electron/main.js",
 	"type": "module",
@@ -16,7 +20,8 @@
 		"test:unit": "vitest",
 		"test": "npm run test:unit -- --run",
 		"package": "electron-builder --config electron.builder.json",
-		"start": "npm run build && electron ."
+		"start": "npm run build && electron .",
+		"start2": "electron ."
 	},
 	"files": [
 		"build/**/*",
