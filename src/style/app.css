@@ -8,6 +8,9 @@
 	--fg-2: #b3b3b3;
 	--fg-3: #999;
 	--link: #73c1fc;
+	--button-text-color: #1e3d66;
+	--button-main: #141429;
+	--button-tab: #646464;
 	--link-active: #4baffb;
 	--link-hover: #91cefd;
 	--nav-padding: 1.5rem;
@@ -29,7 +32,14 @@
 	--online-indicator: #00c853;
 	--scroll-track: rgba(75, 75, 75, 0.1);
 	--scroll-thumb: rgba(75, 75, 75, 0.3);
-	--scroll-thumb-hover: rgba(75, 75, 75, 0.5);
+	--scroll-thumb-hover: rgba(112, 112, 112, 0.5);
+	--main-scroll-track: rgb(42, 42, 42);
+	--main-scroll-thumb: rgba(68, 68, 68, 0.61);
+	--main-scroll-thumb-hover: rgba(112, 112, 112, 0.322);
+	--primary: #4299e1;
+	--success: #48bb78;
+	--border: #e2e8f0;
+	--shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 :root.light {
@@ -48,9 +58,44 @@
 	--overlay-background: rgba(0, 0, 0, 0.4);
 }
 
+html {
+	scrollbar-width: thin;
+	scrollbar-color: var(--scroll-thumb) var(--scroll-track);
+}
+
+::-webkit-scrollbar {
+	width: 10px;
+	height: 10px;
+}
+
+::-webkit-scrollbar-track {
+	background: var(--scroll-track);
+	border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+	background: linear-gradient(45deg, var(--main-scroll-thumb), var(--main-scroll-thumb-hover));
+	transition: all 0.3s;
+	box-shadow: inset 0 0 5px rgba(59, 59, 59, 0.2);
+	/* background: var(--scroll-thumb); */
+	border-radius: 5px;
+	border: 2px solid transparent;
+	background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: var(--scroll-thumb-hover);
+}
+
+::-webkit-scrollbar-corner {
+	background: transparent;
+}
+
 body {
 	/* padding-left: var(--sidebar-width); */
 	/* margin: 0; */
+	scroll-behavior: smooth;
+	overflow-x: hidden;
 	background-color: var(--bg-1);
 	color: var(--fg-1);
 	font-family: 'Sedan SC', sans-serif;

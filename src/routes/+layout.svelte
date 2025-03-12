@@ -2,17 +2,13 @@
 	import '@src/style/app.css';
 	import '@src/style/tailwind.css';
 	import {onMount} from 'svelte';
-	import PrimaryNav from '@src/components/PrimaryNav.svelte';
+	import {PrimaryNav, Communities} from '$components';
 	import {Log} from '@src/services/Logger';
 	import {me} from '@src/stores/profile.svelte';
 	import {normalizeRelayUrl} from '@red-token/welshman/util';
 	import {NostrClient} from 'iz-nostrlib';
-	import Communities from '@src/components/Communities.svelte';
 
 	const layout = Log.child({component: '+layout.svelte'});
-	layout.info(import.meta.resolve('./org/nostr/ses/Subscription'));
-
-	console.log(import.meta.resolve('./org/nostr/ses/Subscription'));
 
 	let {children} = $props();
 	let isExpanded: boolean = $state(true);
@@ -121,7 +117,7 @@
 <main>
 	{#if me.pubkey !== ''}
 		<div class="left-sidebar {isExpanded ? 'expanded' : ''}">
-			<Communities isExpanded />
+			<Communities {isExpanded} />
 			<button class="sidebar-toggle" onclick={() => (isExpanded = !isExpanded)}>
 				{#if isExpanded}
 					<svg width="24" height="24" viewBox="0 0 24 24">
