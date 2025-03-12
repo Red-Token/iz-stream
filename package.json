@@ -1,12 +1,14 @@
 {
 	"name": "iz-stream",
 	"private": true,
-	"version": "0.0.2",
+	"version": "0.0.3-snapshot.0",
 	"type": "module",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
 		"preview": "vite preview",
+		"patch": "npm version patch",
+		"snapshot": "npm version prerelease --preid snapshot --no-git-tag-version",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --fail-on-warnings --output human",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"format": "prettier --write .",
