@@ -222,6 +222,7 @@ async function handleContentScriptMessage({type, params, host}) {
   }
 }
 
+
 async function handlePromptMessage({host, type, accept, conditions}, sender) {
   // return response
   openPrompt?.resolve?.(accept)

@@ -15,6 +15,8 @@ let tray;
 let mainWindow;
 let server;
 
+app.setPath("userData", "/tmp/bob/data");
+
 console.log('App is packaged:', !isDev);
 
 // only one instance
@@ -42,6 +44,22 @@ if (!gotTheLock) {
 
 		const extensionId = nos2x.id;
 		optionsWindow.loadURL(`chrome-extension://${extensionId}/options.html`);
+
+		optionsWindow.webContents.openDevTools({ mode: "detach" });
+	}
+
+	function openOptions2() {
+		const optionsWindow = new BrowserWindow({
+			width: 400,
+			height: 300,
+			webPreferences: {
+				nodeIntegration: true,
+				contextIsolation: false
+			}
+		});
+
+		const extensionId = nos2x.id;
+		optionsWindow.loadURL(`chrome-extension://kpgefcfmnafjgpblomihpgmejjdanjjp/prompt.html?host=localhost%3A3000&id=82617495493197&params=%7B%7D&type=getPublicKey&result=8dc5ce6489cdb3dc8d00e9e21db9f8da168096615560d00245cec66aafcbce2a`);
 	}
 
 	app.whenReady().then(async () => {
@@ -53,6 +71,7 @@ if (!gotTheLock) {
 					console.log('Extension loaded:', extension.name);
 					nos2x = extension;
 					openOptions();
+					openOptions2();
 				})
 				.catch((err) => {
 					console.error('Failed to load extension:', err);
@@ -117,6 +136,8 @@ async function createWindow() {
 		///TODO fix it
 		event.preventDefault();
 		shell.openExternal(url);
+
+
 	});
 	mainWindow.on('ready-to-show', async () => {
 		if (mainWindow) {

@@ -4,7 +4,7 @@
       "default_title": "nos2x"
    },
    "background": {
-      "service_worker": "test-back.js"
+      "service_worker": "test-background.bundle.js"
    },
    "content_scripts": [ {
       "all_frames": true,

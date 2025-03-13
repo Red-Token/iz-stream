@@ -150,7 +150,7 @@ class Me {
 		this.identifier !== undefined ? new Identity(globalNostrContext, this.identifier) : undefined
 	);
 	pubkey: string = $derived(this.identifier?.pubkey ?? '');
-	profile = $derived(globalRunes.profiles.get(this.pubkey));
+	profile = $derived(globalRunes.profiles.get(this.pubkey) || new NostrProfile());
 	communities = $derived.by(() => {
 		console.log('Updating CL');
 		const list = globalRunes.nip02Events.get(me.pubkey)?.list ?? [];
