@@ -19,10 +19,7 @@
 		goto('/communities');
 	};
 
-	onMount(() => {
-		const savedState = localStorage.getItem('sidebar-state');
-		isExpanded = savedState ? JSON.parse(savedState) : true;
-	});
+	onMount(() => {});
 </script>
 
 <!-- onmouseenter={isExpanded ? undefined : () => temporaryExpand(true)}

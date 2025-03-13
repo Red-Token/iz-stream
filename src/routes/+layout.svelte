@@ -22,9 +22,16 @@
 	// let profileSession: SynchronisedSession
 
 	$effect(() => {
-		isExpanded = me.pubkey !== '' ? true : false;
+		isExpanded ??= me.pubkey !== '' ? true : false;
+		console.log('test');
+	});
+
+	$effect(() => {
+		localStorage.setItem('sidebar-state', `${isExpanded}`);
 	});
 	onMount(() => {
+		const savedState = localStorage.getItem('sidebar-state');
+		isExpanded = savedState ? JSON.parse(savedState) : undefined;
 		// setContext({
 		// 	net: getDefaultNetContext(),
 		// 	app: getDefaultAppContext()
