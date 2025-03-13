@@ -8,19 +8,17 @@
 	--fg-2: #b3b3b3;
 	--fg-3: #999;
 	--link: #73c1fc;
-	--button-text-color: #1e3d66;
-	--button-main: #141429;
+	--but: #00b7ffff;
+	--button-main: rgb(0, 54, 75);
 	--button-tab: #646464;
 	--link-active: #4baffb;
 	--link-hover: #91cefd;
-	--nav-padding: 1.5rem;
 	--nav-hover: #d1ebff;
-	--border-radius-12: 12px;
-	--border-radius: 16px;
 	--border-color: #262a2c63;
 	--overlay-background: rgba(0, 0, 0, 0.4);
 	--shadow-color: rgba(184, 184, 184, 0.2);
-	--shadow-hover: #1e3d6679;
+	/* --shadow-hover: #1e3d6679; */
+	--shadow-hover: #0034477e;
 	--input-field: #8a8a8a;
 	--button-text-color: #1e3d66;
 	--accent-color: #2564ebb6;
@@ -40,6 +38,9 @@
 	--success: #48bb78;
 	--border: #e2e8f0;
 	--shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+	--nav-padding: 1.5rem;
+	--border-radius-12: 12px;
+	--border-radius: 16px;
 }
 
 :root.light {

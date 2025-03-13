@@ -305,6 +305,7 @@
 
 	.card {
 		background: var(--bg-1);
+		/* background: radial-gradient(ellipse at right top, #005c8009  45%, #14181921 100%); */
 		border: 1px solid var(--border-color);
 		border-radius: var(--border-radius);
 		padding: 1.5rem;

@@ -90,6 +90,7 @@
 	.profile-card {
 		background: var(--bg-1);
 		/* background: linear-gradient(40deg, var(--bg-1), rgba(0, 77, 107, 0.041)); */
+		/* background: radial-gradient(ellipse at right top, #005c8009  45%, #14181921 100%); */
 		border-radius: 16px;
 		border: 1px solid var(--border-color);
 		box-shadow: 0 4px 12px var(--shadow-color);
@@ -104,7 +105,7 @@
 
 	.profile-card:hover {
 		transform: translateY(-4px);
-		box-shadow: 0 8px 20px var(--shadow-hover);
+		box-shadow: 0 8px 16px var(--shadow-hover);
 	}
 
 	.banner-container {

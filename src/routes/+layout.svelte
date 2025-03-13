@@ -9,9 +9,10 @@
 	import {NostrClient} from 'iz-nostrlib';
 
 	const layout = Log.child({component: '+layout.svelte'});
+	let login: boolean | undefined = $state();
 
 	let {children} = $props();
-	let isExpanded: boolean = $state(true);
+	let isExpanded: boolean | undefined = $state(false);
 
 	const nostrClient = new NostrClient();
 
@@ -20,6 +21,9 @@
 	});
 	// let profileSession: SynchronisedSession
 
+	$effect(() => {
+		isExpanded = me.pubkey !== '' ? true : false;
+	});
 	onMount(() => {
 		// setContext({
 		// 	net: getDefaultNetContext(),

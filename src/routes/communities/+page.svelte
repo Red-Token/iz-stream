@@ -137,7 +137,7 @@
 	}
 
 	.show-movies-btn:hover {
-		background: var(--accent-hover);
+		background: var(--button-main);
 		transform: translateY(-1px);
 	}
 

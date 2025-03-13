@@ -191,6 +191,11 @@
 		fill: currentColor;
 	}
 
+	/* .btn{
+		display:block;
+
+	} */
+
 	.show-movies-btn {
 		/* TODO fix the margin of the view button, reducing the margin between key and about. */
 		display: inline-flex;
@@ -199,21 +204,20 @@
 		padding: 0.75rem 1.5rem;
 		border: 1px solid var(--border-color);
 		background: transparent;
-		color: white;
+		color: var(--fg-1);
 		border-radius: 8px;
 		font-weight: 500;
 		cursor: pointer;
-		margin-left: auto;
+		/* margin-left: auto; */
 		flex-shrink: 0;
-		margin-left: auto;
-		flex-shrink: 0;
+		margin: 20px 0 0 auto;
 		transition:
 			transform 0.2s ease,
 			background 0.3s ease;
 	}
 
 	.show-movies-btn:hover {
-		background: var(--accent-hover);
+		background: var(--button-main);
 		transform: translateY(-1px);
 	}
 
