@@ -15,7 +15,7 @@ let tray;
 let mainWindow;
 let server;
 
-app.setPath("userData", "/tmp/bob/data");
+app.setPath('userData', '/tmp/bob/data');
 
 console.log('App is packaged:', !isDev);
 
@@ -30,7 +30,7 @@ if (!gotTheLock) {
 		}
 	});
 
-	let nos2x = undefined
+	let nos2x = undefined;
 
 	function openOptions() {
 		const optionsWindow = new BrowserWindow({
@@ -45,7 +45,7 @@ if (!gotTheLock) {
 		const extensionId = nos2x.id;
 		optionsWindow.loadURL(`chrome-extension://${extensionId}/options.html`);
 
-		optionsWindow.webContents.openDevTools({ mode: "detach" });
+		optionsWindow.webContents.openDevTools({mode: 'detach'});
 	}
 
 	function openOptions2() {
@@ -59,14 +59,17 @@ if (!gotTheLock) {
 		});
 
 		const extensionId = nos2x.id;
-		optionsWindow.loadURL(`chrome-extension://kpgefcfmnafjgpblomihpgmejjdanjjp/prompt.html?host=localhost%3A3000&id=82617495493197&params=%7B%7D&type=getPublicKey&result=8dc5ce6489cdb3dc8d00e9e21db9f8da168096615560d00245cec66aafcbce2a`);
+		optionsWindow.loadURL(
+			`chrome-extension://kpgefcfmnafjgpblomihpgmejjdanjjp/prompt.html?host=localhost%3A3000&id=82617495493197&params=%7B%7D&type=getPublicKey&result=8dc5ce6489cdb3dc8d00e9e21db9f8da168096615560d00245cec66aafcbce2a`
+		);
 	}
 
 	app.whenReady().then(async () => {
 		try {
 			server = await startServer();
 
-			session.defaultSession.loadExtension(path.join(__dirname, 'extensions/kpgefcfmnafjgpblomihpgmejjdanjjp/2.4.1_0'))
+			session.defaultSession
+				.loadExtension(path.join(__dirname, 'extensions/kpgefcfmnafjgpblomihpgmejjdanjjp/2.4.1_0'))
 				.then((extension) => {
 					console.log('Extension loaded:', extension.name);
 					nos2x = extension;
@@ -77,11 +80,8 @@ if (!gotTheLock) {
 					console.error('Failed to load extension:', err);
 				});
 
-
 			createWindow();
 			setupTray();
-
-
 
 			// Остальной код меню...
 		} catch (error) {
@@ -129,15 +129,12 @@ async function createWindow() {
 		}
 	});
 
-
 	mainWindow.loadURL('http://localhost:3000'); //TODO Should be add try catch mainWindow.loadFile("fallback.html") and replace the address to argument
 
 	mainWindow.webContents.on('new-window', (event, url) => {
 		///TODO fix it
 		event.preventDefault();
 		shell.openExternal(url);
-
-
 	});
 	mainWindow.on('ready-to-show', async () => {
 		if (mainWindow) {

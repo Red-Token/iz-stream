@@ -11,7 +11,7 @@
 
 const NO_PERMISSIONS_REQUIRED = {
 	replaceURL: true
-}
+};
 
 chrome.runtime.onInstalled.addListener(() => {
 	console.log('Extension installed!' + NO_PERMISSIONS_REQUIRED.replaceURL);
