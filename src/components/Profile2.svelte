@@ -89,6 +89,7 @@
 
 	.profile-card {
 		background: var(--bg-1);
+		/* background: linear-gradient(40deg, var(--bg-1), rgba(0, 77, 107, 0.041)); */
 		border-radius: 16px;
 		border: 1px solid var(--border-color);
 		box-shadow: 0 4px 12px var(--shadow-color);
@@ -193,12 +194,12 @@
 		font-size: 0.95rem;
 		line-height: 1.5;
 		color: var(--text-primary);
-		margin: 0 0 2.5rem;
+		margin: 0 0 3.5rem;
 		display: -webkit-box;
 		-webkit-line-clamp: 3;
 		-webkit-box-orient: vertical;
 		overflow: hidden;
-		margin-bottom: 2.5rem !important;
+		margin-bottom: 3.5 !important;
 	}
 
 	.profile-actions {
