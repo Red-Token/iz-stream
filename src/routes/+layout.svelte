@@ -7,6 +7,7 @@
 	import {me} from '@src/stores/profile.svelte';
 	import {normalizeRelayUrl} from '@red-token/welshman/util';
 	import {NostrClient} from 'iz-nostrlib';
+	import {applicationRelay} from '@src/config/config';
 
 	const layout = Log.child({component: '+layout.svelte'});
 	let login: boolean | undefined = $state();
@@ -39,8 +40,8 @@
 		// // load the master relays
 		// globalState.relays = [];
 		// const url = 'wss://relay.stream.labs.h3.se';
-		const url = 'wss://relay.pre-alfa.iz-stream.com/';
-		const relays = [normalizeRelayUrl(url)];
+
+		const relays = [normalizeRelayUrl(applicationRelay)];
 
 		// const globalCommunity = new GlobalNostrContext(relays);
 		//
@@ -162,15 +163,16 @@
 	}
 
 	.sidebar-toggle {
-		position: absolute;
+		position: fixed;
 		right: -40px;
 		top: 20px;
 		width: 32px;
 		height: 32px;
-		z-index: 1000;
+		z-index: 2001;
 		background: var(--bg-1);
 		border: 2px solid var(--border-color);
 		border-radius: 8px;
+		pointer-events: auto;
 		cursor: pointer;
 		display: flex;
 		align-items: center;
@@ -186,6 +188,8 @@
 
 	.left-sidebar {
 		position: fixed;
+		pointer-events: auto;
+
 		top: 0;
 		left: 0;
 		height: 100%;

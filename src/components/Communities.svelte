@@ -163,7 +163,7 @@ onmouseleave={isExpanded ? undefined : () => temporaryExpand(false)} -->
 
 	@media (max-width: 768px) {
 		.sidebar-wrapper {
-			transform: translateX(-100%);
+			/* transform: translateX(-100%); */
 		}
 
 		.avatar {
