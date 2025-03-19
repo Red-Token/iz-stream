@@ -1,11 +1,11 @@
 <script lang="ts">
 	import {onMount} from 'svelte';
-	import type {Episode} from '@src/stores/searchResult.svelte';
+	// import type {Episode} from '@src/stores/searchResult.svelte';
 	import {goto} from '$app/navigation';
 
 	let {item} = $props();
 
-	let episode: Episode = $state({data: {}});
+	// let episode: Episode = $state({data: {}});
 
 	onMount(() => {
 		// imdbApi.getInfoOnEpisode(imdbId, seasonNumber, episodeNumber).then((result) => {

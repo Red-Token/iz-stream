@@ -81,7 +81,7 @@ export class NostrProfile {
 globalNostrContext.profileService.nip01Map.addListener((keys) => {
 	console.log('nip01', keys);
 
-	for (let key of keys) {
+	for (const key of keys) {
 		// globalRunes.ctest.add(key)
 		// console.log("SET SF" + key)
 
