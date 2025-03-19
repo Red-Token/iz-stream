@@ -29,7 +29,6 @@
 		data: new NostrUserProfileMetaData('', '', 'https://pre-alfa.iz-stream.com/users/big-fish.jpg'),
 		relay: defaultCommunityRelay
 	});
-
 	let pubkey = $derived.by(() => {
 		if (!cred.nsec.startsWith('nsec')) return 'Incorrect credentials';
 		return nip19.npubEncode(getPublicKey(<Uint8Array<ArrayBufferLike>>nip19.decode(cred.nsec).data));
@@ -68,14 +67,17 @@
 	}
 
 	class Options {
-		constructor(
-			public name: string,
-			public description: string,
-			public selected: boolean
-		) {}
+		name: string = '';
+		description: string = '';
+		selected: boolean = $state(false);
+		constructor(name: string, description: string, selected: boolean) {
+			this.name = name;
+			this.description = description;
+			this.selected = selected;
+		}
 	}
 
-	let options: Options[] = $state([new Options('nip35', 'Nip35', true), new Options('nip69', 'Nip69', false)]);
+	let options: Options[] = [new Options('nip35', 'Nip35', true), new Options('nip69', 'Nip69', false)];
 
 	onMount(() => {
 		generate();
@@ -266,21 +268,20 @@
 				{#each options as option, i}
 					<label class="option-item">
 						<input
-							class=""
+							class="sr-only"
 							type="checkbox"
 							bind:checked={option.selected}
 							onclick={() => {
 								option.selected = !option.selected;
-								console.log(i, option.selected);
 							}}
 						/>
-						<!-- <div class="custom-checkbox {option.selected ? 'checked' : ''}">
+						<div class="custom-checkbox {option.selected ? 'checked' : ''}">
 							{#if option.selected}
 								<svg class="checkmark" viewBox="0 0 12 10">
 									<path fill="none" stroke="currentColor" stroke-width="2" d="M1 5l3 3 6-6" />
 								</svg>
 							{/if}
-						</div> -->
+						</div>
 						<div class="option-info">
 							<div class="option-title">{option.name}</div>
 						</div>
