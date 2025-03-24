@@ -1,5 +1,6 @@
 import {SvelteMap, SvelteSet} from 'svelte/reactivity';
 import {
+	Followee,
 	Nip01UserMetaDataEvent,
 	Nip02FollowListEvent,
 	Nip65RelayListMetadataEvent,
@@ -150,7 +151,7 @@ class Me {
 		this.identifier !== undefined ? new Identity(globalNostrContext, this.identifier) : undefined
 	);
 	pubkey: string = $derived(this.identifier?.pubkey ?? '');
-	profile = $derived(globalRunes.profiles.get(this.pubkey));
+	profile = $derived(globalRunes.profiles.get(this.pubkey) || new NostrProfile());
 	communities = $derived.by(() => {
 		console.log('Updating CL');
 		const list = globalRunes.nip02Events.get(me.pubkey)?.list ?? [];
@@ -173,6 +174,11 @@ class Me {
 	// listPublisher: Publisher | undefined = undefined;
 	// notificationSession: SynchronisedSession | undefined = undefined;
 	// notificationSubscription: Subscription | undefined;
+	transcodingBots: Followee[] = $derived.by(() => {
+		return [
+			new Followee('b1e997f11f8d454eae2b2c1d52948e800df4e7103412d78984827eea2be138b2', undefined, 'Transcoding bot')
+		];
+	});
 }
 
 export const me = new Me();

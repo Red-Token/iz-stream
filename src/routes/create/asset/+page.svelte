@@ -14,10 +14,14 @@
 	import {wt} from '@src/stores/wtZool.svelte';
 	import {globalNostrContext, globalRunes, me} from '@src/stores/profile.svelte';
 
-	let states = $state({
+	const template = JSON.parse(sessionStorage.getItem('createTemplate') || '{}');
+
+	const states = $state({
 		community: '',
-		title: 'Big Buck Bunny',
-		imdbId: 'tt1254207',
+		botPubkey: 'b1e997f11f8d454eae2b2c1d52948e800df4e7103412d78984827eea2be138b2',
+		formats: undefined,
+		title: template.title,
+		imdbId: template.imdbId,
 		infoHash: '',
 		file: null,
 		resp: {states: {states: null, msg: 'Not started the request', progress: 0}}
@@ -122,6 +126,7 @@
 		// const dss = new DynamicSynchronisedSession(ncs.community.relays);
 		// const dp = new DynamicPublisher(dss, ncs.identity);
 
+		// TODO We need to make this safe
 		const torrent = wt.seed(states.file, options);
 
 		torrent.on('infoHash', () => {
@@ -134,11 +139,10 @@
 			// if (decoded.type !== 'nsec') throw Error('ssfsdfsfsdfsdfsddffsdfsdfsdsfdsfdfsdsfdsfd');
 			// const botSeckey = decoded.data;
 
-			// const botPubkey = 'b670e0e20fb6b7e96b0349139c03150d692a7403c986099a1aadf467daa67909';
+			// DO NOT USE CHECK THE BOTKEY
 			// const botPubkey = getPublicKey(botSeckey);
-			const botPubkey = 'b1e997f11f8d454eae2b2c1d52948e800df4e7103412d78984827eea2be138b2';
 
-			const req = new Nip9999SeederTorrentTransformationRequestEvent(botPubkey, states.title, torrent.infoHash, {
+			const req = new Nip9999SeederTorrentTransformationRequestEvent(states.botPubkey, states.title, torrent.infoHash, {
 				transform: 'cool'
 			});
 
@@ -255,6 +259,14 @@
 	</div>
 </div>
 
+<!-- <select bind:value={state.botPubkey}>
+	{#each me.transcodingBots as option}
+		<option value={option.pubkey}
+		>{option.nickname ??
+		globalRunes.profiles.get(option.pubkey)?.nip01Event.profile.name ??
+		option.pubkey}</option>
+	{/each}
+</select> -->
 <style>
 	/* test */
 	.custom-select {

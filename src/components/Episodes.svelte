@@ -17,9 +17,20 @@
 		console.log(selected);
 		console.log(currentEpisode.data.imdbID);
 	};
+
 	function view(): any {
 		const imdbID = currentEpisode.data.imdbID;
 		goto('/view/imdb/' + imdbID);
+	}
+
+	function upload(): any {
+		const template = {
+			imdbId: currentEpisode.data.imdbID,
+			title: currentEpisode.data.Title
+		};
+
+		sessionStorage.setItem('createTemplate', JSON.stringify(template));
+		goto(`/create/asset`);
 	}
 </script>
 
@@ -36,8 +47,15 @@
 			<button
 				onclick={() => {
 					view();
-				}}>VIEW</button
-			>
+				}}
+				>VIEW
+			</button>
+			<button
+				onclick={() => {
+					upload();
+				}}
+				>Upload
+			</button>
 		</div>
 	{/key}
 	<div class="episodes-sidebar">
@@ -129,6 +147,7 @@
 	.episodes-sidebar::-webkit-scrollbar-thumb:hover {
 		background: var(--scroll-thumb-hover);
 	}
+
 	.episodes-list {
 		display: flex;
 		flex-direction: column;

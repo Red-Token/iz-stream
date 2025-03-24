@@ -109,6 +109,10 @@
 		// });
 		// });
 	});
+
+	function upload() {
+		console.log(page.params.id);
+	}
 </script>
 
 <div class="video-page">
@@ -117,6 +121,8 @@
 		<VideoPlayer infoHash={s.playing.x} />
 		<!--			<TorrentLike></TorrentLike>-->
 	{/if}
+
+	<button onclick={upload}>Upload</button>
 </div>
 
 <style>

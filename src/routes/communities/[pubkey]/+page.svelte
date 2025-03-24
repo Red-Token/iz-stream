@@ -71,12 +71,21 @@
 	function join(pubkey: string): void {
 		console.log('join' + pubkey);
 
-		if (me.profile === undefined || me.publisher === undefined) return;
+		if (me.profile === undefined || me.publisher === undefined) {
+			console.log(me.pubkey);
+			console.log(me.publisher);
+			return;
+		}
 
-		const followees = me.profile.nip02Event.list
-			.reduce((map: Map<string, Followee>, element) => map.set(element.pubkey, element), new Map<string, Followee>())
-			.values()
-			.toArray();
+		console.log(JSON.stringify(me.profile.nip02Event));
+
+		const x = me.profile.nip02Event.list.reduce(
+			(map: Map<string, Followee>, element) => map.set(element.pubkey, element),
+			new Map<string, Followee>()
+		);
+
+		const y = x.values();
+		const followees = y.toArray();
 
 		followees.push(new Followee(pubkey));
 
