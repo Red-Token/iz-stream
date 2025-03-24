@@ -1,5 +1,5 @@
 <script lang="ts">
-	import {searchResult} from '../../stores/searchResult.svelte';
+	import {searchResult} from '@src/stores/searchResult.svelte';
 	import {goto} from '$app/navigation';
 	import imdbApi from '$lib/api/ImdbApi';
 
@@ -60,9 +60,26 @@
 		position: relative;
 	}
 
+	.header_search:focus-within {
+		fill: #00b7ffff;
+		box-shadow: 0px 5px 10px 2px rgb(0, 183, 255, 0.2);
+		transition: 0.5s;
+	}
+
 	.header_search_image {
 		flex-shrink: 0;
 		margin: 8px 15px 8px 20px;
+	}
+
+	.header_search_input > input {
+		flex-shrink: 0;
+		width: 790px;
+		height: 60px;
+		font-size: 22px;
+		border: none;
+		background-color: transparent;
+		color: inherit;
+		outline: none;
 	}
 
 	.header_search_input {

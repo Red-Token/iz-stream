@@ -2,20 +2,18 @@
 	import '@src/style/app.css';
 	import '@src/style/tailwind.css';
 	import {onMount} from 'svelte';
-	import PrimaryNav from '@src/components/PrimaryNav.svelte';
+	import {PrimaryNav, Communities} from '$components';
 	import {Log} from '@src/services/Logger';
 	import {me} from '@src/stores/profile.svelte';
 	import {normalizeRelayUrl} from '@red-token/welshman/util';
 	import {NostrClient} from 'iz-nostrlib';
-	import Communities from '@src/components/Communities.svelte';
+	import {applicationRelay} from '@src/config/config';
 
 	const layout = Log.child({component: '+layout.svelte'});
-	layout.info(import.meta.resolve('./org/nostr/ses/Subscription'));
-
-	console.log(import.meta.resolve('./org/nostr/ses/Subscription'));
+	let login: boolean | undefined = $state();
 
 	let {children} = $props();
-	let isExpanded: boolean = $state(true);
+	let isExpanded: boolean | undefined = $state(false);
 
 	const nostrClient = new NostrClient();
 
@@ -24,7 +22,17 @@
 	});
 	// let profileSession: SynchronisedSession
 
+	$effect(() => {
+		isExpanded ??= me.pubkey !== '' ? true : false;
+		console.log('test');
+	});
+
+	$effect(() => {
+		localStorage.setItem('sidebar-state', `${isExpanded}`);
+	});
 	onMount(() => {
+		const savedState = localStorage.getItem('sidebar-state');
+		isExpanded = savedState ? JSON.parse(savedState) : undefined;
 		// setContext({
 		// 	net: getDefaultNetContext(),
 		// 	app: getDefaultAppContext()
@@ -32,8 +40,8 @@
 		// // load the master relays
 		// globalState.relays = [];
 		// const url = 'wss://relay.stream.labs.h3.se';
-		const url = 'wss://relay.pre-alfa.iz-stream.com/';
-		const relays = [normalizeRelayUrl(url)];
+
+		const relays = [normalizeRelayUrl(applicationRelay)];
 
 		// const globalCommunity = new GlobalNostrContext(relays);
 		//
@@ -121,7 +129,7 @@
 <main>
 	{#if me.pubkey !== ''}
 		<div class="left-sidebar {isExpanded ? 'expanded' : ''}">
-			<Communities isExpanded />
+			<Communities {isExpanded} />
 			<button class="sidebar-toggle" onclick={() => (isExpanded = !isExpanded)}>
 				{#if isExpanded}
 					<svg width="24" height="24" viewBox="0 0 24 24">
@@ -155,15 +163,16 @@
 	}
 
 	.sidebar-toggle {
-		position: absolute;
+		position: fixed;
 		right: -40px;
 		top: 20px;
 		width: 32px;
 		height: 32px;
-		z-index: 1000;
+		z-index: 2001;
 		background: var(--bg-1);
 		border: 2px solid var(--border-color);
 		border-radius: 8px;
+		pointer-events: auto;
 		cursor: pointer;
 		display: flex;
 		align-items: center;
@@ -179,6 +188,8 @@
 
 	.left-sidebar {
 		position: fixed;
+		pointer-events: auto;
+
 		top: 0;
 		left: 0;
 		height: 100%;

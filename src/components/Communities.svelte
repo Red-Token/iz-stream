@@ -1,11 +1,10 @@
 <script lang="ts">
 	import {onMount} from 'svelte';
-	import {defaultNip01, defaultNip02, me} from '@src/stores/profile.svelte';
+	import {defaultNip01, defaultNip02, me, globalRunes} from '@src/stores/profile.svelte';
 	import {goto} from '$app/navigation';
-	import {globalRunes} from '@src/stores/profile.svelte';
 	// import {communities} from '@src/stores/community.svelte';
 
-	//let {isExpanded} = $props();
+	let {isExpanded} = $props();
 
 	let communities = $derived.by(() => {
 		console.log(me.pubkey);
@@ -20,10 +19,7 @@
 		goto('/communities');
 	};
 
-	onMount(() => {
-		const savedState = localStorage.getItem('sidebar-state');
-		//isExpanded = savedState ? JSON.parse(savedState) : true;
-	});
+	onMount(() => {});
 </script>
 
 <!-- onmouseenter={isExpanded ? undefined : () => temporaryExpand(true)}
@@ -167,7 +163,7 @@ onmouseleave={isExpanded ? undefined : () => temporaryExpand(false)} -->
 
 	@media (max-width: 768px) {
 		.sidebar-wrapper {
-			transform: translateX(-100%);
+			/* transform: translateX(-100%); */
 		}
 
 		.avatar {

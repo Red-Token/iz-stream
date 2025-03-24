@@ -9,7 +9,7 @@
 	const {infoHash} = $props();
 	let videoElement: HTMLVideoElement | null = null;
 
-	console.log(infoHash)
+	console.log(infoHash);
 
 	let player: any = null;
 
@@ -21,14 +21,14 @@
 		download: 0
 	});
 
-	console.log(infoHash)
+	console.log(infoHash);
 
 	const options = {
 		announce: ['wss://tracker.webtorrent.dev'],
 		maxWebConns: 500
 	};
 
-	console.log(infoHash)
+	console.log(infoHash);
 
 	function update(torrent: Torrent) {
 		torrentInfo.done = torrent.done;
@@ -37,7 +37,7 @@
 		torrentInfo.upload = torrent.uploaded;
 	}
 
-	console.log(infoHash)
+	console.log(infoHash);
 
 	function loadTorrent(torrent: Torrent) {
 		console.log('loadTorrent', torrent);
@@ -90,7 +90,7 @@
 		}
 	}
 
-	console.log(infoHash)
+	console.log(infoHash);
 
 	onMount(() => {
 		if (videoElement) {
@@ -111,7 +111,6 @@
 
 		new Promise<Torrent>((resolve, reject) => {
 			wt.get(infoHash).then((torrent: Torrent) => {
-
 				console.log(infoHash);
 
 				if (torrent == null) torrent = wt.add(infoHash, options);
@@ -174,33 +173,33 @@
 </div>
 
 <style>
-    .video-page {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 2rem;
-        min-height: 100vh;
-        min-width: 100vw;
-        background-color: var(--bg-1);
-        gap: 1rem;
-    }
+	.video-page {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		padding: 2rem;
+		min-height: 100vh;
+		min-width: 100vw;
+		background-color: var(--bg-1);
+		gap: 1rem;
+	}
 
-    .video-container {
-        width: 100%;
-        max-width: 1200px;
-        background: var(--bg-2);
-        border: 1px solid var(--border-color);
-        border-radius: 16px;
-        box-shadow: 0 4px 12px var(--shadow-color);
-        padding: 1.5rem;
-        position: relative;
-        display: flex;
-        justify-content: center;
-        height: auto;
-        margin: 0 auto;
-    }
+	.video-container {
+		width: 100%;
+		max-width: 1200px;
+		background: var(--bg-2);
+		border: 1px solid var(--border-color);
+		border-radius: 16px;
+		box-shadow: 0 4px 12px var(--shadow-color);
+		padding: 1.5rem;
+		position: relative;
+		display: flex;
+		justify-content: center;
+		height: auto;
+		margin: 0 auto;
+	}
 
-    .video-js {
-        width: 100%;
-    }
+	.video-js {
+		width: 100%;
+	}
 </style>

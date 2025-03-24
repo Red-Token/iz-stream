@@ -1,13 +1,12 @@
 <script lang="ts">
 	import {searchResult} from '@src/stores/searchResult.svelte';
-	import SeriesComponent from '@src/components/Series.svelte';
-	import MovieComponent from '@src/components/MovieComponent.svelte';
+	import {Series, MovieComponent} from '$components';
 </script>
 
 {#each searchResult.items as item}
 	<!-- imdbId={item.imdbResult.imdbID} numberOfSeasons={} countSeasons={item.imdbResult.totalSeasons} -->
 	{#if item.imdbResult.Type === 'series'}
-		<SeriesComponent {item} />
+		<Series {item} />
 	{:else}
 		<MovieComponent {item}></MovieComponent>
 	{/if}

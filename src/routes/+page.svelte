@@ -1,10 +1,6 @@
 <script lang="ts">
-	import {globalNostrContext} from '@src/stores/profile.svelte';
-</script>
+	import {onMount} from 'svelte';
+	import {goto} from '$app/navigation';
 
-Running these relays:
-{#each globalNostrContext.relays.value as relay}
-	<div>
-		{relay}
-	</div>
-{/each}
+	onMount(() => goto('/search'));
+</script>

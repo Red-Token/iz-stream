@@ -1,5 +1,5 @@
 <script lang="ts">
-	import {onMount} from 'svelte';
+	import {onDestroy, onMount} from 'svelte';
 	import {goto} from '$app/navigation';
 	import {EventType, type Publisher, safeFindSingleTagValue} from 'iz-nostrlib';
 	import {Nip35TorrentEvent} from 'iz-nostrlib/nips';
@@ -16,18 +16,40 @@
 
 	const template = JSON.parse(sessionStorage.getItem('createTemplate') || '{}');
 
-	const state = $state({
-		community: undefined,
+	const states = $state({
+		community: '',
 		botPubkey: 'b1e997f11f8d454eae2b2c1d52948e800df4e7103412d78984827eea2be138b2',
 		formats: undefined,
 		title: template.title,
 		imdbId: template.imdbId,
 		infoHash: '',
 		file: null,
-		resp: {state: {state: null, msg: 'Not started the request', progress: 0}}
+		resp: {states: {states: null, msg: 'Not started the request', progress: 0}}
 	});
 
-	// const community = $derived(globalRunes.communities.get(state.community ?? ''));
+	let selectedOption: string | undefined = $state('');
+	let isOpen: boolean = $state(false);
+	let selectElement: HTMLElement | null = null;
+
+	function handleClickOutside(event: MouseEvent): void {
+		if (selectElement && !selectElement.contains(event.target as Node)) {
+			isOpen = false;
+		}
+	}
+
+	$effect(() => {
+		if (isOpen) {
+			document.addEventListener('click', handleClickOutside);
+		} else {
+			document.removeEventListener('click', handleClickOutside);
+		}
+	});
+
+	onDestroy(() => {
+		document.removeEventListener('click', handleClickOutside);
+	});
+
+	// const community = $derived(globalRunes.communities.get(states.community ?? ''));
 
 	// let title = 'Big Buck Bunny DASH';
 	// let imdbId = 'tt1254207';
@@ -57,13 +79,13 @@
 		// Send the message
 		const mediaTags: string[] = [];
 
-		if (state.imdbId !== '') {
-			mediaTags.push(`imdb:${state.imdbId}`);
+		if (states.imdbId !== '') {
+			mediaTags.push(`imdb:${states.imdbId}`);
 		}
 
 		const te: Nip35TorrentEvent = new Nip35TorrentEvent(
-			state.title,
-			state.infoHash,
+			states.title,
+			states.infoHash,
 			'Description',
 			[],
 			[],
@@ -71,13 +93,13 @@
 			[]
 		);
 
-		console.log(state.community);
+		console.log(states.community);
 
-		if (state.community === undefined || me.identity === undefined)
+		if (states.community === undefined || me.identity === undefined)
 			throw new Error('Community not found or identiy invalid');
 
 		//TODO: this is a hack we just force the main identity on things here and create on demand
-		const cnc = new CommunityNostrContext(state.community, globalNostrContext);
+		const cnc = new CommunityNostrContext(states.community, globalNostrContext);
 		const session = new DynamicSynchronisedSession(cnc.relays);
 		const dp = new DynamicPublisher(session, me.identity);
 		dp.publish(te);
@@ -88,24 +110,24 @@
 		// 	const x = publisher.publish(Nip35TorrentEvent.KIND, te.opts);
 		// });
 
-		goto(`/view/infoHash/${state.infoHash}`).then((r) => {
+		goto(`/view/infoHash/${states.infoHash}`).then((r) => {
 			console.log(r);
 		});
 	}
 
 	function onTranscode() {
-		console.log(state.file);
+		console.log(states.file);
 		console.log('transcode!');
 
-		if (state.community === undefined || me.identity === undefined) throw new Error('Community not found!');
+		if (states.community === undefined || me.identity === undefined) throw new Error('Community not found!');
 
-		const cnc = new CommunityNostrContext(state.community, globalNostrContext);
+		const cnc = new CommunityNostrContext(states.community, globalNostrContext);
 		const ncs = new NostrCommunityServiceClient(cnc, me.identity);
 		// const dss = new DynamicSynchronisedSession(ncs.community.relays);
 		// const dp = new DynamicPublisher(dss, ncs.identity);
 
 		// TODO We need to make this safe
-		const torrent = wt.seed(state.file, options);
+		const torrent = wt.seed(states.file, options);
 
 		torrent.on('infoHash', () => {
 			console.log('infoHash:' + torrent.infoHash);
@@ -117,11 +139,10 @@
 			// if (decoded.type !== 'nsec') throw Error('ssfsdfsfsdfsdfsddffsdfsdfsdsfdsfdfsdsfdsfd');
 			// const botSeckey = decoded.data;
 
-			// const botPubkey = 'b670e0e20fb6b7e96b0349139c03150d692a7403c986099a1aadf467daa67909';
 			// DO NOT USE CHECK THE BOTKEY
 			// const botPubkey = getPublicKey(botSeckey);
 
-			const req = new Nip9999SeederTorrentTransformationRequestEvent(state.botPubkey, state.title, torrent.infoHash, {
+			const req = new Nip9999SeederTorrentTransformationRequestEvent(states.botPubkey, states.title, torrent.infoHash, {
 				transform: 'cool'
 			});
 
@@ -132,12 +153,12 @@
 
 				const sep = new StaticEventsProcessor([
 					new Nip9999SeederTorrentTransformationResponseEventHandler((resp) => {
-						state.resp.state = resp.state;
+						states.resp.states = resp.state;
 
 						if (resp.state.final) {
 							console.log('final');
 
-							state.infoHash = safeFindSingleTagValue(event, 'x');
+							states.infoHash = safeFindSingleTagValue(event, 'x');
 							wt.remove(torrent.infoHash);
 						}
 					})
@@ -161,41 +182,55 @@
 	}
 
 	async function handleChange(event: any) {
-		state.file = event.target.files[0];
+		states.file = event.target.files[0];
 	}
 </script>
 
 <div class="create-container">
 	<div class="form-card">
-		<div class="input-group">
-			{state.community}
-			<!--{community?.nip01Event.profile.name ?? ''}-->
-			<select bind:value={state.community}>
-				{#each me.communities as option}
-					<option value={option.pubkey}
-					>{option.nickname ??
-					globalRunes.profiles.get(option.pubkey)?.nip01Event.profile.name ??
-					option.pubkey}</option
-					>
-				{/each}
-			</select>
-			<select bind:value={state.botPubkey}>
-				{#each me.transcodingBots as option}
-					<option value={option.pubkey}
-					>{option.nickname ??
-					globalRunes.profiles.get(option.pubkey)?.nip01Event.profile.name ??
-					option.pubkey}</option>
-				{/each}
-			</select>
-			<input type="text" bind:value={state.title} placeholder="Movie title" class="form-input" />
-			<input type="text" bind:value={state.imdbId} placeholder="IMDB ID" class="form-input" />
-			<label class="upload-label">
-				<input type="file" id="file" accept="video/*" onchange={handleChange} class="file-input" />
-			</label>
+		<form class="input-group">
+			<div class="form-field">
+				<label for="community">Community</label>
+				<div class="custom-select" bind:this={selectElement}>
+					<div class="select-trigger" role="dialog" onclick={() => (isOpen = !isOpen)}>
+						{selectedOption || 'Select community'}
+					</div>
+					{#if isOpen}
+						<ul class="select-options">
+							{#each me.communities as option}
+								<li
+									onclick={() => {
+										selectedOption = globalRunes.profiles.get(option.pubkey)?.nip01Event.profile.name ?? option.pubkey;
+										states.community = option.pubkey;
+										isOpen = false;
+									}}
+								>
+									{option.nickname ?? globalRunes.profiles.get(option.pubkey)?.nip01Event.profile.name ?? option.pubkey}
+								</li>
+							{/each}
+						</ul>
+					{/if}
+				</div>
+			</div>
 
-			{#if state.resp.state.state === null}
-				{#if state.file !== null}
-					<button class="submit-btn" onclick={() => onTranscode()}>
+			<div class="form-field">
+				<label for="title">Movie title</label>
+				<input id="title" type="text" bind:value={states.title} placeholder="Movie title" class="form-input" />
+			</div>
+
+			<div class="form-field">
+				<label for="imdbId">IMDB ID</label>
+				<input id="imdbId" type="text" bind:value={states.imdbId} placeholder="IMDB ID" class="form-input" />
+			</div>
+
+			<div class="form-field">
+				<label for="file" class="upload-label">Upload video</label>
+				<input id="file" type="file" accept="video/*" onchange={handleChange} class="file-input" />
+			</div>
+
+			{#if states.resp.states.states === null}
+				{#if states.file !== null}
+					<button type="button" class="submit-btn" onclick={() => onTranscode()}>
 						Submit to Seeder for transcoding
 						<svg class="submit-icon" viewBox="0 0 24 24">
 							<path d="M3 20v-6l8-2-8-2V4l19 8-19 8Z" />
@@ -204,210 +239,237 @@
 				{/if}
 			{:else}
 				<div class="progressbar-container">
-					<div class="progressbar-bar" style="width: {state.resp.state.progress}%;"></div>
-					<div class="progressbar-text">{state.resp.state.state}</div>
+					<div class="progressbar-bar" style="width: {states.resp.states.progress}%;"></div>
+					<div class="progressbar-text">{states.resp.states.states}</div>
 				</div>
 			{/if}
 
-			<input type="text" bind:value={state.infoHash} placeholder="Info Hash" class="form-input" />
-		</div>
-		<button disabled={state.infoHash === ''} class="submit-btn" onclick={() => onCreate().then()}>
-			Create
-			<svg class="submit-icon" viewBox="0 0 24 24">
-				<path d="M3 20v-6l8-2-8-2V4l19 8-19 8Z" />
-			</svg>
-		</button>
+			<div class="form-field">
+				<label for="infoHash">Info Hash</label>
+				<input id="infoHash" type="text" bind:value={states.infoHash} placeholder="Info Hash" class="form-input" />
+			</div>
+
+			<button type="submit" disabled={states.infoHash === ''} class="submit-btn" onclick={() => onCreate().then()}>
+				Create
+				<svg class="submit-icon" viewBox="0 0 24 24">
+					<path d="M3 20v-6l8-2-8-2V4l19 8-19 8Z" />
+				</svg>
+			</button>
+		</form>
 	</div>
 </div>
 
+<!-- <select bind:value={state.botPubkey}>
+	{#each me.transcodingBots as option}
+		<option value={option.pubkey}
+		>{option.nickname ??
+		globalRunes.profiles.get(option.pubkey)?.nip01Event.profile.name ??
+		option.pubkey}</option>
+	{/each}
+</select> -->
 <style>
-    .form-input,
-    .submit-btn {
-        box-sizing: border-box;
-    }
+	/* test */
+	.custom-select {
+		position: relative;
+		width: 100%;
+	}
+	.select-trigger {
+		padding: 10px;
+		background: var(--bg-2);
+		border: 1px solid var(--border-color);
+		border-radius: 8px;
+		color: var(--fg-1);
+		cursor: pointer;
+	}
+	.select-options {
+		position: absolute;
+		top: 100%;
+		left: 0;
+		right: 0;
+		background: var(--bg-2);
+		border: 2px solid var(--border-color);
+		border-radius: 8px;
+		max-height: 200px;
+		overflow-y: auto;
+		z-index: 10;
+		backdrop-filter: blur(10px);
+	}
+	.select-options li {
+		padding: 10px;
+		color: var(--fg-1);
+		cursor: pointer;
+	}
+	.select-options li:hover {
+		background: var(--accent-color);
+	}
 
-    .create-container {
-        max-width: 600px;
-        margin: 2rem auto;
-        padding: 0 1rem;
-    }
+	/* end test */
 
-    .form-card {
-        background: var(--bg-1);
-        border-radius: 16px;
-        border: 1px solid var(--border-color);
-        padding: 2rem;
-        box-shadow: 0 4px 12px var(--shadow-color);
-    }
+	.create-container {
+		max-width: 600px;
+		margin: 2rem auto;
+		padding: 0 1rem;
+		box-sizing: border-box;
+	}
 
-    .input-group {
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
-        margin-bottom: 2rem;
-    }
+	.form-card {
+		background: var(--bg-1);
+		border-radius: 16px;
+		border: 1px solid var(--border-color);
+		padding: 2rem;
+		box-shadow: 0 4px 12px var(--shadow-color);
+		overflow: hidden;
+	}
 
-    .form-input {
-        width: 100%;
-        padding: 1rem;
-        font-size: 1rem;
-        background: var(--bg-2);
-        border: 1px solid var(--border-color);
-        border-radius: 8px;
-        color: var(--text-fg-1);
-        transition: all 0.3s ease;
-        margin: 0;
-        will-change: box-shadow, border-color;
-    }
+	.input-group {
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
+	}
 
-    .form-input:focus {
-        outline: none;
-        border-color: var(--accent-color);
-        transform: translateY(-1px);
+	.form-field {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
 
-        box-shadow: 0 0 0 3px var(--accent-transparent),
-        0 2px 8px var(--color-hover);
-    }
+	label {
+		font-size: 0.9rem;
+		color: var(--fg-1);
+	}
 
-    .form-input::placeholder {
-        color: var(--fg-2);
-    }
+	.form-input {
+		width: 100%;
+		padding: 1rem;
+		font-size: 1rem;
+		background: var(--bg-2);
+		border: 1px solid var(--border-color);
+		border-radius: 8px;
+		color: var(--text-fg-1);
+		transition: all 0.3s ease;
+	}
 
-    .form-input:has(:focus) {
-        transform: translateY(-1px);
-    }
+	.form-input:focus {
+		outline: none;
+		border-color: var(--accent-color);
+		transform: translateY(-1px);
+		box-shadow:
+			0 0 0 3px var(--accent-transparent),
+			0 2px 8px var(--color-hover);
+	}
 
-    .upload-label {
-        display: block;
-        padding: 0.75rem;
-        background: var(--bg-3);
-        color: var(--fg-1);
-        border-radius: 6px;
-        cursor: pointer;
-        transition: background 0.2s ease;
-    }
+	.form-input::placeholder {
+		color: var(--fg-2);
+	}
 
-    .upload-label:hover {
-        background: var(--border-color);
-    }
+	.upload-label {
+		display: block;
+		padding: 0.75rem;
+		background: var(--bg-3);
+		color: var(--fg-1);
+		border-radius: 6px;
+		cursor: pointer;
+		transition: background 0.2s ease;
+		text-align: center;
+	}
 
-    .file-input {
-        cursor: pointer;
-    }
+	.upload-label:hover {
+		background: var(--border-color);
+	}
 
-    .progressbar-container {
-        width: 100%;
-        height: 30px;
-        position: relative;
-        background: var(--bg-2);
-        border: 2px solid var(--border-color);
-        border-radius: 8px;
-        align-items: center;
-        overflow: hidden;
-    }
+	.file-input {
+		display: none;
+	}
 
-    .progressbar-bar {
-        text-align: justify;
-        height: 100%;
-        background: var(--accent-color);
-        animation: width 0.4s;
-    }
+	.progressbar-container {
+		width: 100%;
+		height: 30px;
+		position: relative;
+		background: var(--bg-2);
+		border: 2px solid var(--border-color);
+		border-radius: 8px;
+		overflow: hidden;
+	}
 
-    .progressbar-text {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        color: #fff;
-        font-size: 14px;
-        pointer-events: none;
-    }
+	.progressbar-bar {
+		height: 100%;
+		background: var(--accent-color);
+		/* animation: width 0.4s; */
+		transition: width 0.4s ease-in-out;
+	}
 
-    .submit-btn {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        width: 100%;
-        padding: 1rem;
-        border: 2px solid var(--border-color);
-        background: transparent;
-        color: white;
-        border-radius: 8px;
-        font-size: 1.1rem;
-        font-weight: 500;
-        cursor: pointer;
-        transition: transform 0.2s ease,
-        background 0.3s ease;
-    }
+	.progressbar-text {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		color: #fff;
+		font-size: 14px;
+		pointer-events: none;
+	}
 
-    .submit-btn:hover {
-        transform: translateY(-1px);
-        background: var(--accent-color);
-    }
+	.submit-btn {
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+		width: 100%;
+		padding: 1rem;
+		border: 2px solid var(--border-color);
+		background: transparent;
+		color: white;
+		border-radius: 8px;
+		font-size: 1.1rem;
+		font-weight: 500;
+		cursor: pointer;
+		transition:
+			transform 0.2s ease,
+			background 0.3s ease;
+	}
 
-    .submit-btn:disabled {
-        color: #999;
-        cursor: not-allowed;
-    }
+	.submit-btn:hover {
+		transform: translateY(-1px);
+		background: var(--accent-color);
+	}
 
-    .submit-btn:disabled:hover {
-        background-color: var(--bg-2);
-    }
+	.submit-btn:disabled {
+		color: #999;
+		cursor: not-allowed;
+	}
 
-    .submit-icon {
-        width: 24px;
-        height: 24px;
-        fill: currentColor;
-    }
+	.submit-btn:disabled:hover {
+		background-color: var(--bg-2);
+	}
 
-    .create-container {
-        max-width: 600px;
-        margin: 2rem auto;
-        padding: 0 1rem;
-        box-sizing: border-box;
-    }
+	.submit-icon {
+		width: 24px;
+		height: 24px;
+		fill: currentColor;
+	}
 
-    .form-card {
-        background: var(--bg-1);
-        border-radius: 16px;
-        border: 1px solid var(--border-color);
-        padding: 2rem;
-        box-shadow: 0 4px 12px var(--shadow-color);
-        overflow: hidden;
-    }
+	@media (max-width: 768px) {
+		.create-container {
+			padding: 0 0.5rem;
+		}
 
-    @media (max-width: 768px) {
-        .create-container {
-            padding: 0 0.5rem;
-        }
+		.form-card {
+			padding: 1.5rem;
+			border-radius: 12px;
+		}
 
-        .form-card {
-            padding: 1.5rem;
-            border-radius: 12px;
-        }
+		.form-input,
+		.submit-btn {
+			padding: 0.875rem;
+			font-size: 0.95rem;
+		}
+	}
 
-        .form-input {
-            padding: 0.875rem;
-            font-size: 0.95rem;
-        }
+	@media (max-width: 480px) {
+		.form-card {
+			padding: 1rem;
+		}
 
-        .submit-btn {
-            font-size: 1rem;
-            padding: 0.875rem;
-        }
-    }
-
-    .form-input {
-        will-change: box-shadow, border-color;
-    }
-
-    @media (max-width: 480px) {
-        .form-card {
-            padding: 1rem;
-        }
-
-        .input-group {
-            gap: 1rem;
-        }
-    }
+		.input-group {
+			gap: 1rem;
+		}
+	}
 </style>

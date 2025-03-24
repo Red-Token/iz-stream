@@ -17,7 +17,7 @@
 
 	import {QRCode} from '@red-token/iz-svelte-library';
 	import {NostrClient, type SignerData, SignerType} from 'iz-nostrlib';
-	import {me} from '../../../stores/profile.svelte';
+	import {me} from '@src/stores/profile.svelte';
 	import {logIn} from '@src/stores/community.svelte';
 
 	const abortController = new AbortController();

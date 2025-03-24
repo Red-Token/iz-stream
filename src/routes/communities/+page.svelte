@@ -1,7 +1,7 @@
 <script lang="ts">
-	import {globalRunes} from '@src/stores/profile.svelte.js';
+	import {globalRunes} from '@src/stores/profile.svelte';
 	import {UserType} from 'iz-nostrlib/nips';
-	import Profile2 from '@src/components/Profile2.svelte';
+	import {Profile2} from '$components';
 	import {goto} from '$app/navigation';
 
 	// let cred = $state({nsec: 'nsec16lc2cn2gzgf3vcv20lwkqquprqujpkq9pj0wcxmnw8scxh6j0yrqlc9ae0'});
@@ -137,7 +137,7 @@
 	}
 
 	.show-movies-btn:hover {
-		background: var(--accent-hover);
+		background: var(--button-main);
 		transform: translateY(-1px);
 	}
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import {me} from '../../stores/profile.svelte';
+	import {me} from '@src/stores/profile.svelte';
 	import {onMount} from 'svelte';
 	import {EventType, NostrClient, type Publisher} from 'iz-nostrlib';
 	// import {

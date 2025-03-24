@@ -1,5 +1,5 @@
 <script lang="ts">
-	import {wt} from '../stores/wtZool.svelte';
+	import {wt} from '@src/stores/wtZool.svelte';
 	import {onMount} from 'svelte';
 
 	let {infoHash} = $props();
@@ -18,7 +18,7 @@
 
 		torrent.on('ready', () => {
 			// Torrents can contain many files. Let's use the .mp4 file
-			const file = torrent.files.find((file) => file.name.endsWith('.mp4'));
+			const file = torrent.files.find((file: any) => file.name.endsWith('.mp4'));
 
 			if (file === undefined) throw new Error('ALIENS');
 
@@ -34,22 +34,22 @@
 			console.log('Ready to play!');
 		});
 
-		torrent.on('warning', (err) => {
+		torrent.on('warning', (err: any) => {
 			console.log(err);
 		});
-		torrent.on('error', (err) => {
+		torrent.on('error', (err: any) => {
 			console.log(err);
 		});
-		torrent.on('wire', (wire) => {
+		torrent.on('wire', (wire: any) => {
 			console.log(wire);
 			console.log('number of peers' + torrent.numPeers);
 		});
-		torrent.on('download', (bytes) => {
+		torrent.on('download', (bytes: any) => {
 			console.log(bytes);
 			console.log('received: ' + torrent.received);
 			console.log('downloaded: ' + torrent.downloaded);
 		});
-		torrent.on('upload', (bytes) => {
+		torrent.on('upload', (bytes: any) => {
 			console.log(bytes);
 			console.log('uploaded: ' + torrent.uploaded);
 		});

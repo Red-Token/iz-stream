@@ -18,11 +18,7 @@ export default [
 	...sveltePlugin.configs['flat/prettier'],
 	{
 		languageOptions: {
-			globals: {
-				...globals.browser,
-				...globals.node,
-				...globals.esne
-			},
+			globals: {...globals.browser, ...globals.node, ...globals.es2024},
 			parser: tsParser,
 			parserOptions: {
 				ecmaVersion: 'latest',
@@ -38,13 +34,9 @@ export default [
 		languageOptions: {
 			parser: svelteParser,
 			parserOptions: {
-				svelteFeatures: {
-					experimentalGenerics: true
-				},
+				svelteFeatures: {experimentalGenerics: true},
 				svelteConfig,
-				parser: {
-					ts: '@typescript-eslint/parser'
-				},
+				parser: {ts: '@typescript-eslint/parser'},
 				extraFileExtensions: ['.svelte']
 			}
 		}
@@ -53,27 +45,12 @@ export default [
 		files: ['**/*ts', '*.ts'],
 		languageOptions: {
 			parser: tsParser,
-			parserOptions: {
-				tsconfigRootDir: import.meta.dirname,
-				project: './tsconfig.json'
-			}
+			parserOptions: {tsconfigRootDir: import.meta.dirname, project: './tsconfig.json'}
 		}
 	},
 	{
-		plugins: {
-			'@typescript-eslint': tsPlugin,
-			import: importPlugin,
-			svelte: sveltePlugin
-		},
-		settings: {
-			'svelte/typescript': () => require('typescript'),
-			'import/resolver': {
-				typescript: {
-					alwaysTryTypes: true,
-					project: './tsconfig.json'
-				}
-			}
-		}
+		plugins: {'@typescript-eslint': tsPlugin, svelte: sveltePlugin}
+		//settings: {'svelte/typescript': () => require('typescript')}
 	},
 	{
 		ignores: [
@@ -85,7 +62,8 @@ export default [
 			'tailwind.config.ts',
 			'**/sw.min.js',
 			'**/node_modules',
-			'**/*.js'
+			'**/*.js',
+			'**/vite.config.ts'
 		]
 	},
 	{
@@ -93,7 +71,6 @@ export default [
 			...sveltePlugin.configs.recommended.rules,
 			'a11y-click-events-have-key-events': 'off',
 			'a11y-autofocus': 'off',
-			'import/no-unresolved': ['error', {ignore: ['^\\$app/', '^\\$env/', '^virtual:']}],
 			// '@typescript-eslint/no-unsafe-member-access': 'off',
 			// 'no-constant-condition': 'off',
 			// 'svelte/no-unused-class-name' : 'warn',// style
