@@ -15,7 +15,9 @@ export default defineConfig({
 			]
 		})
 	],
-
+	// build: {
+	// 	minify: true,
+	// },
 	test: {
 		setupFiles: ['./vitest.setup.ts'],
 		include: ['test/**/*.{test,spec}.{js,ts}']
