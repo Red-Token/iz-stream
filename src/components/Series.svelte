@@ -19,11 +19,9 @@
 
 			imdbApi.getInfoOnSeason(item.imdbResult.imdbID, i).then((res) => {
 				for (let e of res.Episodes) {
-					//console.log(e);
 					const episode: Episode = $state({data: e});
 					season.episodes.push(episode);
 					imdbApi.getInfoOnEpisode(item.imdbResult.imdbID, i, e.Episode).then((res2) => {
-						//console.log(res2);
 						episode.data = res2;
 					});
 				}

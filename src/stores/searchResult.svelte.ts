@@ -16,7 +16,7 @@ export class SearchResultItem {
 	id: string = '';
 	title: string = '';
 	description: string = '';
-	imdbResult: any;
+	imdbResult: any = $state();
 	seasons: Season[] = $state([]);
 	assets: Asset[] = $state([]);
 }
