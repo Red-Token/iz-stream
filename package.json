@@ -1,8 +1,9 @@
 {
 	"name": "iz-stream",
 	"private": false,
+	"description": "Electron application description",
 	"author": {
-		"name": "Rene Malmgren",
+		"name": "Red-Token",
 		"email": "rene.malmgren@redtoken.ae"
 	},
 	"version": "0.0.4",

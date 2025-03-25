@@ -6,6 +6,7 @@ node_modules
 .netlify
 .wrangler
 .svelte-kit
+.vite
 build
 electron/main
 electron/preload
@@ -31,5 +32,3 @@ vite.config.ts.timestamp-*
 .idea
 .vscode
 .test
-.vite/main/main.js
-.vite/preload/preload.js

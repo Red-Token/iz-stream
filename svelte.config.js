@@ -29,6 +29,7 @@ const config = {
 			errorTemplate: 'src/error.html'
 		},
 		alias: {
+			$config: 'src/config/config.js',
 			'@src': 'src',
 			$components: 'src/components',
 			'@test': 'test'

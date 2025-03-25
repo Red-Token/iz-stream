@@ -11,10 +11,15 @@ if (!app.requestSingleInstanceLock()) {
 	app.quit();
 }
 //path
-const __filename = url.fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const srcFolder = path.join(app.getAppPath(), `build/renderer`);
+
+const srcFolder = path.join(app.getAppPath(), `.vite/main_window`);
+const extensionsFolder = path.join(process.resourcesPath, `extensions`);
 const staticAssetsFolder = import.meta.env.DEV ? path.join(import.meta.dirname, '../../static/') : srcFolder;
+const extensionsPath = import.meta.env.DEV
+	? path.join(import.meta.dirname, '../../electron/extensions/')
+	: extensionsFolder;
+
+console.log('extensionPath: ', extensionsPath);
 // Variables
 
 const isDev = !app.isPackaged;
@@ -67,12 +72,12 @@ app.on('ready', () => {
 			(await isFile(
 				path.join(srcFolder, path.dirname(requestPath), `${path.basename(requestPath) || 'index'}.html`)
 			)) ??
-			path.join(srcFolder, 'index.html');
+			path.join(srcFolder, '200.html');
 
 		return await net.fetch(url.pathToFileURL(responseFilePath).toString());
 	});
 	session.defaultSession
-		.loadExtension(path.join(__dirname, '../extensions/kpgefcfmnafjgpblomihpgmejjdanjjp/2.4.1_0'))
+		.loadExtension(path.join(extensionsPath, '/kpgefcfmnafjgpblomihpgmejjdanjjp/2.4.1_0'))
 		.then((extension) => {
 			console.log('Extension loaded:', extension.name);
 			nos2x = extension;
@@ -148,8 +153,9 @@ function openOptions2(): void {
 	});
 
 	const extensionId = nos2x.id;
+
 	optionsWindow.loadURL(
-		`chrome-extension://${extensionId}/prompt.html?host=localhost%3A5173&id=82617495493197&params=%7B%7D&type=getPublicKey&result=8dc5ce6489cdb3dc8d00e9e21db9f8da168096615560d00245cec66aafcbce2a`
+		`chrome-extension://${extensionId}/prompt.html?id=82617495493197&params=%7B%7D&type=getPublicKey&result=8dc5ce6489cdb3dc8d00e9e21db9f8da168096615560d00245cec66aafcbce2a`
 	);
 }
 
@@ -161,8 +167,9 @@ function createWindow() {
 		height: 700,
 		minWidth: 400,
 		minHeight: 200,
-		show: false,
-		titleBarStyle: 'hiddenInset',
+
+		// show: false,
+		// titleBarStyle: 'hiddenInset',
 		darkTheme: true,
 		// titleBarOverlay: {
 		// 	color: '#101010',
@@ -173,7 +180,7 @@ function createWindow() {
 		backgroundColor: 'black',
 		webPreferences: {
 			contextIsolation: true,
-			devTools: isDev,
+			devTools: true, //isDev,
 			nodeIntegration: true,
 			preload: path.join(import.meta.dirname, '../preload/preload.js')
 		}
@@ -210,7 +217,7 @@ function createWindow() {
 
 /// Add Contect Menu
 function setupTray() {
-	tray = new Tray(path.join(__dirname, '../../static', 'favicon.png'));
+	tray = new Tray(path.join(staticAssetsFolder, '/icon.png'));
 	tray.setToolTip('iz-stream');
 	tray.setContextMenu(
 		Menu.buildFromTemplate([

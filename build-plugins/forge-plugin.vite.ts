@@ -115,48 +115,7 @@ async function packageAfterCopy(
 	await writeFile(packagePath, JSON.stringify(cleanPackageJson, undefined, '\t'));
 
 	// https://patorjk.com/software/taag/#p=display&h=0&f=Stop&t=Electron%20Forge%0APackage%20Complete
-	console.log(
-		'@###+!+:     _______  _                                              _______                                           '
-	);
-	console.log(
-		'@@#++!::.   (_______)| |               _                            (_______)                                          '
-	);
-	console.log(
-		'@###!!+:     _____   | |  ____   ____ | |_    ____   ___   ____      _____   ___    ____   ____   ____                 '
-	);
-	console.log(
-		'@@#++!::    |  ___)  | | / _  ) / ___)|  _)  / ___) / _ \\ |  _ \\    |  ___) / _ \\  / ___) / _  | / _  )                '
-	);
-	console.log(
-		'@###+:+:.   | |_____ | |( (/ / ( (___ | |__ | |    | |_| || | | |   | |    | |_| || |    ( ( | |( (/ /                 '
-	);
-	console.log(
-		'@@#+++::.   |_______)|_| \\____) \\____) \\___)|_|     \\___/ |_| |_|   |_|     \\___/ |_|     \\_|| | \\____)                '
-	);
-	console.log(
-		'@@##+!+:                                                                                 (_____|                       '
-	);
-	console.log(
-		'@##+++:.     ______                _                               ______                       _                     '
-	);
-	console.log(
-		'@##+::+:.   (_____ \\              | |                             / _____)                     | |        _           '
-	);
-	console.log(
-		'@@##+!::     _____) ) ____   ____ | |  _   ____   ____   ____    | /        ___   ____   ____  | |  ____ | |_    ____ '
-	);
-	console.log(
-		'@###+!+:.   |  ____/ / _  | / ___)| | / ) / _  | / _  | / _  )   | |       / _ \\ |    \\ |  _ \\ | | / _  )|  _)  / _  )'
-	);
-	console.log(
-		'@@#++:::    | |     ( ( | |( (___ | |< ( ( ( | |( ( | |( (/ /    | \\_____ | |_| || | | || | | || |( (/ / | |__ ( (/ / '
-	);
-	console.log(
-		'@###:++:.   |_|      \\_||_| \\____)|_| \\_) \\_||_| \\_|| | \\____)    \\______) \\___/ |_|_|_|| ||_/ |_| \\____) \\___) \\____)'
-	);
-	console.log(
-		'@##++!::.                                       (_____|                                 |_|                          '
-	);
+	console.log('...package complete');
 }
 
 async function viteDevBuilder(
@@ -250,7 +209,7 @@ export class ForgePlugin_Vite extends PluginBase<Config> {
 		if (this.instanceRunning) return false;
 		this.instanceRunning = true;
 
-		rm(path.resolve('./.vite/{main,preload}'), {force: true, recursive: true});
+		rm(path.resolve('./.vite/'), {force: true, recursive: true});
 
 		const rendererServers: {name: string; server: vite.ViteDevServer; url: string}[] = [];
 		const buildWatchers: RollupWatcher[] = [];
