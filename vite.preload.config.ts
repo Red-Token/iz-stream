@@ -3,7 +3,7 @@ import {builtinModules} from 'node:module';
 
 export default defineConfig({
 	build: {
-		outDir: 'electron/preload',
+		outDir: '.vite/preload',
 		minify: 'esbuild',
 		rollupOptions: {
 			external: ['electron', ...builtinModules.map((m) => [m, `node:${m}`]).flat()],

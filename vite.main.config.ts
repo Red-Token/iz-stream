@@ -3,7 +3,7 @@ import {builtinModules} from 'node:module';
 
 export default defineConfig({
 	build: {
-		outDir: 'electron/main',
+		outDir: '.vite/main',
 		minify: 'esbuild',
 		lib: {
 			entry: './src-electron/main.ts',

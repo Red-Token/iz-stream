@@ -250,7 +250,7 @@ export class ForgePlugin_Vite extends PluginBase<Config> {
 		if (this.instanceRunning) return false;
 		this.instanceRunning = true;
 
-		rm(path.resolve('./.vite'), {force: true, recursive: true});
+		rm(path.resolve('./.vite/{main,preload}'), {force: true, recursive: true});
 
 		const rendererServers: {name: string; server: vite.ViteDevServer; url: string}[] = [];
 		const buildWatchers: RollupWatcher[] = [];

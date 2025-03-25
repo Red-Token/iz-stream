@@ -15,17 +15,28 @@
 		".svelte-kit/ambient.d.ts",
 		".svelte-kit/non-ambient.d.ts",
 		".svelte-kit/types/**/$types.d.ts",
-		// "src/**/*.js",
-		// "src/**/*.ts",
-		// "src/**/*.svelte",
-		// "tests/**/*.js",
-		// "tests/**/*.ts",
-		// "tests/**/*.svelte",
+		"vite.renderer.config.ts",
+		"vite.main.config.ts",
+		"src/**/*.js",
 		"forge.env.d.ts",
-		"src-electron/main/**/*"
-		// "src-native/**/*",
-		// "src-renderer/**/*"
+		"src/**/*.ts",
+		"src/**/*.svelte",
+		"src-electron/**/*",
+		"tests/**/*.js",
+		"tests/**/*.ts",
+		"tests/**/*.svelte"
+		// 	// "src-native/**/*",
+	],
+	"exclude": [
+		"node_modules/**",
+		"src/service-worker.js",
+		"src/service-worker/**/*.js",
+		"src/service-worker.ts",
+		"src/service-worker/**/*.ts",
+		"src/service-worker.d.ts",
+		"src/service-worker/**/*.d.ts"
 	]
+
 	// Path aliases are handled by https://svelte.dev/docs/kit/configuration#alias
 	// except $lib which is handled by https://svelte.dev/docs/kit/configuration#files
 	//

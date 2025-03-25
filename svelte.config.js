@@ -15,9 +15,9 @@ const config = {
 			relative: false
 		},
 		adapter: adapter({
-			pages: 'build/renderer',
 			fallback: 'index.html',
-			assets: 'build/renderer'
+			pages: '.vite/main_window',
+			assets: '.vite/main_window'
 		}),
 		files: {
 			assets: 'static',
