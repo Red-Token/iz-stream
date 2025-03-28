@@ -6,7 +6,6 @@ import {FusesPlugin} from '@electron-forge/plugin-fuses';
 import {FuseV1Options, FuseVersion} from '@electron/fuses';
 import {ForgePlugin_Vite, OnRebuildDo} from './build-plugins/forge-plugin.vite';
 import {type ForgeConfig} from '@electron-forge/shared-types';
-import path from 'path';
 
 const config: ForgeConfig = {
 	// https://electron.github.io/packager/main/interfaces/Options.html
@@ -18,7 +17,7 @@ const config: ForgeConfig = {
 		// Keep this false. The Forge Vite plugin handles deleting `node_modules` itself.
 		prune: false,
 		icon: './static/icon',
-		extraResource: './electron/extensions'
+		extraResource: './node_modules/@red-token/nos2x-electron/dist/'
 	},
 	rebuildConfig: {
 		//force: true,

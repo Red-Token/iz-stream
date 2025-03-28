@@ -85,10 +85,13 @@
 	"dependencies": {
 		"@noble/hashes": "^1.5.0",
 		"@red-token/iz-svelte-library": "^0.0.12",
+		"@red-token/nos2x-electron": "^0.1.1",
 		"@red-token/welshman": "^0.2.7",
 		"@types/simple-peer": "^9.11.8",
 		"@videojs/http-streaming": "^3.16.2",
+		"async-mutex": "^0.5.0",
 		"electron-squirrel-startup": "^1.0.1",
+		"electron-store": "^10.0.1",
 		"iz-nostrlib": "^0.2.3",
 		"leaflet": "^1.9.4",
 		"ngeohash": "^0.6.3",

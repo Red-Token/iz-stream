@@ -1,8 +1,10 @@
-import {app, BrowserWindow, ipcMain, protocol, net, Tray, Menu, shell, session, type Extension} from 'electron';
+import {app, BrowserWindow, protocol, net, Tray, Menu, session} from 'electron';
 import path from 'path';
 import url from 'url';
 import {stat} from 'node:fs/promises';
 import electronSquirrelStartup from 'electron-squirrel-startup';
+
+import {initializeExtension} from '@red-token/nos2x-electron/extension-init';
 
 if (electronSquirrelStartup) app.quit();
 
@@ -13,21 +15,26 @@ if (!app.requestSingleInstanceLock()) {
 //path
 
 const srcFolder = path.join(app.getAppPath(), `.vite/main_window`);
-const extensionsFolder = path.join(process.resourcesPath, `extensions`);
+const extensionsFolder = path.join(process.resourcesPath, `dist`, `extension`);
+// const extensionsFolder = path.join(app.getAppPath(), `extensions`);
 const staticAssetsFolder = import.meta.env.DEV ? path.join(import.meta.dirname, '../../static/') : srcFolder;
 const extensionsPath = import.meta.env.DEV
-	? path.join(import.meta.dirname, '../../electron/extensions/')
+	? path.join(import.meta.dirname, '../../node_modules/@red-token/nos2x-electron/dist/extension')
 	: extensionsFolder;
+
+// const extensionPath = path.join(__dirname, 'extension');
+
+// Init nos2x
 
 console.log('extensionPath: ', extensionsPath);
 // Variables
-
 const isDev = !app.isPackaged;
 const isMac = process.platform === 'darwin';
 const scheme = 'app';
 
+let nos2x: any;
 let tray: Tray;
-let nos2x: Extension;
+// let nos2x: Extension;
 let mainWindow: BrowserWindow;
 
 // app.setPath('userData', '/tmp/bob/data');
@@ -49,14 +56,14 @@ protocol.registerSchemesAsPrivileged([
 			secure: true,
 			allowServiceWorkers: true,
 			supportFetchAPI: true,
+			bypassCSP: true,
 			corsEnabled: false,
 			stream: true, // video stream from schema
 			codeCache: true
 		}
 	}
 ]);
-
-app.on('ready', () => {
+app.whenReady().then(async () => {
 	protocol.handle(scheme, async (request) => {
 		const requestPath = path.normalize(decodeURIComponent(new URL(request.url).pathname));
 
@@ -76,15 +83,24 @@ app.on('ready', () => {
 
 		return await net.fetch(url.pathToFileURL(responseFilePath).toString());
 	});
-	session.defaultSession
-		.loadExtension(path.join(extensionsPath, '/kpgefcfmnafjgpblomihpgmejjdanjjp/2.4.1_0'))
-		.then((extension) => {
-			console.log('Extension loaded:', extension.name);
-			nos2x = extension;
-			openOptions();
-			openOptions2();
-		});
+	nos2x = initializeExtension({
+		extensionPath: extensionsPath,
+		debug: true
+	});
+	// await integrateNos2x(app, extensionsPath);
+	// session.defaultSession
+	// 	.loadExtension(path.join(extensionsPath, '/kpgefcfmnafjgpblomihpgmejjdanjjp'))
+	// 	.then((extension) => {
+	// 		console.log('Extension loaded:', extension.name);
+	// 		nos2x = extension;
+	// 		openOptions(`${nos2x.id}/options.html`, true);
+	// 		openOptions(
+	// 			`${nos2x.id}/prompt.html?host=localhost%3A5173&id=82617495493197&params=%7B%7D&type=getPublicKey&result=8dc5ce6489cdb3dc8d00e9e21db9f8da168096615560d00245cec66aafcbce2a`
+	// 		);
+	// 	});
 
+	createWindow();
+	setupTray();
 	/// Remove app Menu
 	// if (isMac) {
 	// 	Menu.setApplicationMenu(
@@ -95,9 +111,9 @@ app.on('ready', () => {
 	// }
 });
 
-app.on('ready', createWindow);
+// app.on('ready', createWindow);
 
-app.on('ready', setupTray);
+// app.on('ready', setupTray);
 
 app.on('window-all-closed', () => {
 	if (!isMac) app.quit();
@@ -109,55 +125,22 @@ app.on('activate', () => {
 	}
 });
 
-ipcMain.on('toggleDevTools', (event) => event.sender.toggleDevTools());
-ipcMain.on('setTitleBarColors', (event, bgColor, iconColor) => {
-	const window = BrowserWindow.fromWebContents(event.sender);
-	if (window === null) return;
+// ipcMain.on('toggleDevTools', (event) => event.sender.toggleDevTools());
+// ipcMain.on('setTitleBarColors', (event, bgColor, iconColor) => {
+// 	const window = BrowserWindow.fromWebContents(event.sender);
+// 	if (window === null) return;
 
-	// MacOS title bar overlay buttons do not need styling so the function is undefined
-	if (window.setTitleBarOverlay === undefined) return;
+// 	// MacOS title bar overlay buttons do not need styling so the function is undefined
+// 	if (window.setTitleBarOverlay === undefined) return;
 
-	window.setTitleBarOverlay({
-		color: bgColor,
-		symbolColor: iconColor,
-		height: 40
-	});
-});
+// 	window.setTitleBarOverlay({
+// 		color: bgColor,
+// 		symbolColor: iconColor,
+// 		height: 40
+// 	});
+// });
 
 //#region Functions
-
-function openOptions(): void {
-	const optionsWindow = new BrowserWindow({
-		width: 400,
-		height: 300,
-		webPreferences: {
-			nodeIntegration: true,
-			contextIsolation: false
-		}
-	});
-
-	const extensionId = nos2x.id;
-	optionsWindow.loadURL(`chrome-extension://${extensionId}/options.html`);
-
-	optionsWindow.webContents.openDevTools({mode: 'detach'});
-}
-
-function openOptions2(): void {
-	const optionsWindow = new BrowserWindow({
-		width: 400,
-		height: 300,
-		webPreferences: {
-			nodeIntegration: true,
-			contextIsolation: false
-		}
-	});
-
-	const extensionId = nos2x.id;
-
-	optionsWindow.loadURL(
-		`chrome-extension://${extensionId}/prompt.html?id=82617495493197&params=%7B%7D&type=getPublicKey&result=8dc5ce6489cdb3dc8d00e9e21db9f8da168096615560d00245cec66aafcbce2a`
-	);
-}
 
 function createWindow() {
 	mainWindow = new BrowserWindow({
@@ -168,7 +151,7 @@ function createWindow() {
 		minWidth: 400,
 		minHeight: 200,
 
-		// show: false,
+		show: false,
 		// titleBarStyle: 'hiddenInset',
 		darkTheme: true,
 		// titleBarOverlay: {
@@ -179,9 +162,12 @@ function createWindow() {
 		// },
 		backgroundColor: 'black',
 		webPreferences: {
+			session: session.defaultSession,
 			contextIsolation: true,
+
 			devTools: true, //isDev,
-			nodeIntegration: true,
+			nodeIntegration: false,
+			// preload: app.nos2x.getPreloadPath()
 			preload: path.join(import.meta.dirname, '../preload/preload.js')
 		}
 	});
@@ -192,6 +178,7 @@ function createWindow() {
 		// Open the DevTools.
 		// mainWindow.webContents.openDevTools();
 	} else {
+		// mainWindow.loadFile(path.join(srcFolder, `index.html`))
 		mainWindow.loadURL('app://-/');
 	}
 
@@ -200,16 +187,30 @@ function createWindow() {
 	// 	event.preventDefault();
 	// 	shell.openExternal(url);
 	// });
+
+	// mainWindow.webContents.on('did-finish-load', () => {
+	// 	const extensionPath = path.join(extensionsPath,  'nostr-provider.js');
+	// 	const scriptContent = fs.readFileSync(extensionPath, 'utf-8');
+	// 	mainWindow.webContents
+	// 		.executeJavaScript(scriptContent)
+	// 		.then(() => console.log('extensionscript install'))
+	// 		.catch((err) => console.error('error script install:', err));
+	// });
 	mainWindow.on('ready-to-show', async () => {
 		if (mainWindow) {
 			mainWindow.show();
 			mainWindow.focus();
 		}
 	});
+	// mainWindow.webContents.on('did-finish-load', () => {
+	// 	const extensions = mainWindow.webContents.session.getAllExtensions();
+	// 	console.log('Extensions in session of MainWindow:', extensions);
+	// });
 	mainWindow.on('close', (event) => {
 		// if (!app.isQuiting) {
 		event.preventDefault();
 		mainWindow.hide();
+
 		// }
 	});
 	mainWindow.on('minimize', () => mainWindow.minimize());
@@ -222,6 +223,21 @@ function setupTray() {
 	tray.setContextMenu(
 		Menu.buildFromTemplate([
 			{label: 'Show', click: () => mainWindow.show()},
+			{
+				label: 'nos2x:Option',
+				click: () =>
+					nos2x.openOptions().catch((err: Error) => {
+						console.error('Error opening options:', err);
+					})
+			},
+			{
+				label: 'nos2x: Get Public Key',
+				click: () => {
+					nos2x.getPublicKeyOrShowOptions().catch((err: Error) => {
+						console.error('Error getting public key:', err);
+					});
+				}
+			},
 			{label: 'Quit', click: () => app.exit()}
 		])
 	);

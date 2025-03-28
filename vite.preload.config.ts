@@ -11,7 +11,7 @@ export default defineConfig({
 			// Also `build.rollupOptions.input` allows for multiple entry points.
 			// https://rollupjs.org/configuration-options/#input
 			input: {
-				preload: './src/preload.ts'
+				preload: 'src-electron/preload.ts'
 			},
 			output: {
 				format: 'commonjs',
