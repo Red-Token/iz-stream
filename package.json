@@ -57,6 +57,7 @@
 		"autoprefixer": "^10.4.20",
 		"electron": "34",
 		"electron-builder": "^25.1.8",
+		"esbuild": "^0.25.1",
 		"eslint": "^9.18.0",
 		"eslint-config-prettier": "^10.0.1",
 		"eslint-import-resolver-typescript": "^3.8.3",
