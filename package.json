@@ -85,7 +85,7 @@
 	"dependencies": {
 		"@noble/hashes": "^1.5.0",
 		"@red-token/iz-svelte-library": "^0.0.12",
-		"@red-token/nos2x-electron": "^0.1.1",
+		"@red-token/nos2x-electron": "^0.1.2",
 		"@red-token/welshman": "^0.2.7",
 		"@types/simple-peer": "^9.11.8",
 		"@videojs/http-streaming": "^3.16.2",
