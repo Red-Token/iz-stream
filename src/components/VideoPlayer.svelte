@@ -86,7 +86,7 @@
 			player.src([
 				{
 					// src: xn,
-					src: playFile.streamURL,
+					src: playFile.streamURL
 					// type: playFile.type
 					// type: 'application/dash+xml'
 				}

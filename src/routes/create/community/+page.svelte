@@ -15,6 +15,7 @@
 	import {normalizeURL} from 'nostr-tools/utils';
 	import {onMount} from 'svelte';
 	import {fade} from 'svelte/transition';
+	import CheckBoxes from '@src/components/create/CheckBoxes.svelte';
 
 	let cred = $state({nsec: ''});
 	let isAdvancedOpen = $state(false);
@@ -265,27 +266,9 @@
 
 		{#if isAdvancedOpen}
 			<div class="advanced-options">
-				{#each options as option, i}
-					<label class="option-item">
-						<input
-							class="sr-only"
-							type="checkbox"
-							bind:checked={option.selected}
-							onclick={() => {
-								option.selected = !option.selected;
-							}}
-						/>
-						<div class="custom-checkbox {option.selected ? 'checked' : ''}">
-							{#if option.selected}
-								<svg class="checkmark" viewBox="0 0 12 10">
-									<path fill="none" stroke="currentColor" stroke-width="2" d="M1 5l3 3 6-6" />
-								</svg>
-							{/if}
-						</div>
-						<div class="option-info">
-							<div class="option-title">{option.name}</div>
-						</div>
-					</label>
+				{#each options as option}
+					<CheckBoxes checked={option.selected} name={option.name} selected={() => (option.selected = !option.selected)}
+					></CheckBoxes>
 				{/each}
 			</div>
 		{/if}
@@ -455,9 +438,6 @@
 		}
 	}
 
-	.fade {
-		transition: opacity 0.3s;
-	}
 	/* Advanced Settings */
 
 	.header-content {
@@ -466,36 +446,12 @@
 	}
 	.advanced-section {
 		background: var(--bg-2);
+		transition: all 0.3s ease;
+		overflow: hidden;
 	}
 
 	.accordion-header:hover {
 		background: var(--bg-3);
-	}
-
-	.sr-only {
-		position: absolute;
-		width: 1px;
-		height: 1px;
-		padding: 0;
-		margin: -1px;
-		overflow: hidden;
-		clip: rect(0, 0, 0, 0);
-		border: 0;
-	}
-
-	.option-item {
-		display: flex;
-		cursor: pointer;
-		gap: 1rem;
-		padding: 1rem;
-		border-radius: var(--border-radius);
-		margin-bottom: 0.5rem;
-		background: var(--bg-2);
-	}
-
-	.advanced-section {
-		transition: all 0.3s ease;
-		overflow: hidden;
 	}
 
 	.accordion-header {
@@ -517,52 +473,6 @@
 		margin-top: 1rem;
 		padding-top: 1rem;
 		border-top: 2px solid var(--bg-3);
-	}
-
-	.option-item {
-		display: flex;
-		align-items: center;
-		gap: 12px;
-		padding: 10px;
-		border-radius: 6px;
-		transition: background 0.2s;
-	}
-
-	.option-title {
-		font-weight: 500;
-		margin-bottom: 4px;
-	}
-
-	.option-desc {
-		font-size: 0.9em;
-		color: #666;
-	}
-
-	/* checkbox */
-	.custom-checkbox {
-		border: 2px solid var(--fg-2);
-		flex-shrink: 0;
-		transition: all 0.2s ease;
-		width: 20px;
-		height: 20px;
-		/* border: 2px solid #ccc; */
-		border-radius: 4px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.custom-checkbox.checked {
-		border-color: var(--accent-color);
-		background: var(--accent-transparent);
-	}
-
-	.checkmark {
-		width: 100%;
-		height: 100%;
-		/* mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E"); */
-		/* background: var(--accent-color); */
-		clip-path: polygon(28% 56%, 15% 44%, 6% 55%, 28% 76%, 88% 16%, 76% 6%, 28% 56%);
 	}
 
 	/* Editor Relay */

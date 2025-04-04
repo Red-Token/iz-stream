@@ -12,8 +12,8 @@ const config = {
 			directives: {
 				// 'worker-src': ['self'],
 				// 'script-src': ['self']
-				'script-src': ["'self'", "'unsafe-inline'", "blob:"],
-				'worker-src': ["'self'", "blob:"]
+				'script-src': ["'self'", "'unsafe-inline'", 'blob:'],
+				'worker-src': ["'self'", 'blob:']
 			}
 		},
 		paths: {
@@ -25,7 +25,7 @@ const config = {
 				fallback: 'index.html',
 				pages: '.vite/main_window',
 				assets: '.vite/main_window'
-			}),
+			})
 		]),
 		// adapter: adapter({
 		// 	fallback: 'index.html',
