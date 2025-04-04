@@ -14,6 +14,15 @@
 	import {wt} from '@src/stores/wtZool.svelte';
 	import {globalNostrContext, globalRunes, me} from '@src/stores/profile.svelte';
 
+	// type RequestState = {
+	// 	state: string,
+	// 	seq: number,
+	// 	total: number,
+	// 	progress: number,
+	// 	message: string,
+	// 	final: boolean,
+	// }
+
 	const template = JSON.parse(sessionStorage.getItem('createTemplate') || '{}');
 
 	const states = $state({
@@ -24,8 +33,14 @@
 		imdbId: template.imdbId,
 		infoHash: '',
 		file: null,
-		resp: {states: {states: null, msg: 'Not started the request', progress: 0}}
+		resp: {states: {state: null, seq: 0, total: 100, message: 'Not started the request', progress: 0, final: false}}
 	});
+
+	let progress = $derived(
+		states.resp.states.final
+			? 100
+			: (100 * Math.max(states.resp.states.seq - 1, 0) + states.resp.states.progress) / states.resp.states.total
+	);
 
 	let selectedOption: string | undefined = $state('');
 	let isOpen: boolean = $state(false);
@@ -72,6 +87,7 @@
 
 	const options = {
 		announce: ['wss://tracker.webtorrent.dev', 'wss://tracker.btorrent.xyz', 'wss://tracker.openwebtorrent.com'],
+		// announce: ['wss://tracker.webtorrent.dev', 'wss://tracker.btorrent.xyz'],
 		maxWebConns: 500
 	};
 
@@ -115,7 +131,7 @@
 		});
 	}
 
-	function onTranscode() {
+	async function onTranscode() {
 		console.log(states.file);
 		console.log('transcode!');
 
@@ -142,9 +158,66 @@
 			// DO NOT USE CHECK THE BOTKEY
 			// const botPubkey = getPublicKey(botSeckey);
 
-			const req = new Nip9999SeederTorrentTransformationRequestEvent(states.botPubkey, states.title, torrent.infoHash, {
-				transform: 'cool'
-			});
+			// TODO: VERY UGLY COPY PASTE THAT SHOULD BE MOVED SOMEWHERE ELSE! WE NEDD A BOT API MODULE
+			type Format = {
+				width: number;
+				height: number;
+				video_bitrate?: string;
+			};
+
+			type Formats = {
+				[key: string]: Format;
+			};
+
+			const formats: Formats = {
+				sd: {
+					width: 720,
+					height: 480
+					// video_bitrate: '1500k'
+				},
+				hd: {
+					width: 1280,
+					height: 720
+					// video_bitrate: '2500k'
+				},
+				fhd: {
+					width: 1920,
+					height: 1080
+					// video_bitrate: '5000k'
+				}
+				// uhd: {
+				// 	width: 3840,
+				// 	height: 2160
+				// 	// video_bitrate: '8000k'
+				// }
+			};
+
+			type Language = {
+				short: string;
+				name: string;
+			};
+
+			type Languages = {
+				[key: string]: Language;
+			};
+
+			const languages: Languages = {
+				en: {short: 'en', name: 'English'}
+			};
+
+			const reqt = {
+				file: torrent.files[0].path,
+				subtitles: [{lang: languages.en}],
+				formats: formats,
+				imdbId: states.imdbId
+			};
+
+			const req = new Nip9999SeederTorrentTransformationRequestEvent(
+				states.botPubkey,
+				states.title,
+				torrent.infoHash,
+				reqt
+			);
 
 			const {dss, pub} = ncs.request(req);
 
@@ -168,9 +241,9 @@
 			});
 		});
 
-		torrent.on('upload', (bytes: any) => {
-			console.log(bytes);
-		});
+		// torrent.on('upload', (bytes: any) => {
+		// 	// console.log(bytes);
+		// });
 
 		torrent.on('error', (err: any) => {
 			console.log(err);
@@ -228,8 +301,8 @@
 				<input id="file" type="file" accept="video/*" onchange={handleChange} class="file-input" />
 			</div>
 
-			{#if states.resp.states.states === null}
-				{#if states.file !== null}
+			{#if states.resp.states.state === null}
+				{#if states.file !== null && states.community !== undefined}
 					<button type="button" class="submit-btn" onclick={() => onTranscode()}>
 						Submit to Seeder for transcoding
 						<svg class="submit-icon" viewBox="0 0 24 24">
@@ -239,8 +312,8 @@
 				{/if}
 			{:else}
 				<div class="progressbar-container">
-					<div class="progressbar-bar" style="width: {states.resp.states.progress}%;"></div>
-					<div class="progressbar-text">{states.resp.states.states}</div>
+					<div class="progressbar-bar" style="width: {progress}%;"></div>
+					<div class="progressbar-text">{states.resp.states.state}</div>
 				</div>
 			{/if}
 
@@ -273,6 +346,7 @@
 		position: relative;
 		width: 100%;
 	}
+
 	.select-trigger {
 		padding: 10px;
 		background: var(--bg-2);
@@ -281,6 +355,7 @@
 		color: var(--fg-1);
 		cursor: pointer;
 	}
+
 	.select-options {
 		position: absolute;
 		top: 100%;
@@ -294,11 +369,13 @@
 		z-index: 10;
 		backdrop-filter: blur(10px);
 	}
+
 	.select-options li {
 		padding: 10px;
 		color: var(--fg-1);
 		cursor: pointer;
 	}
+
 	.select-options li:hover {
 		background: var(--accent-color);
 	}

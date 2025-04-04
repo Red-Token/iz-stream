@@ -9,6 +9,7 @@
 	import {Nip35TorrentEvent, UserType} from 'iz-nostrlib/nips';
 	import {DynamicSubscription, DynamicSynchronisedSession} from 'iz-nostrlib/ses';
 	import {globalRunes} from '@src/stores/profile.svelte';
+	import {goto} from '$app/navigation';
 
 	enum RelayType {
 		READ = 'read',
@@ -111,7 +112,9 @@
 	});
 
 	function upload() {
+		sessionStorage.setItem('createTemplate', JSON.stringify({title: '', imdbId: page.params.id}));
 		console.log(page.params.id);
+		goto('/create/asset');
 	}
 </script>
 

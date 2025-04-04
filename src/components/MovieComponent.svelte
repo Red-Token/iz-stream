@@ -17,6 +17,16 @@
 		// console.log(id);
 		goto('/view/imdb/' + id);
 	}
+
+	function upload(): any {
+		const template = {
+			imdbId: item.imdbResult.imdbID,
+			title: item.imdbResult.Title
+		};
+
+		sessionStorage.setItem('createTemplate', JSON.stringify(template));
+		goto(`/create/asset`);
+	}
 </script>
 
 <div class="movies-container">
@@ -39,6 +49,7 @@
 
 			<div class="movie-actions">
 				<button onclick={() => view(item.imdbResult.imdbID)} class="view-movie-btn">View</button>
+				<button onclick={() => upload()} class="view-movie-btn">Upload</button>
 			</div>
 		</div>
 	</div>
