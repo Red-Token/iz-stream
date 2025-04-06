@@ -20,7 +20,7 @@ const config = {
 			relative: false
 		},
 		adapter: multiAdapter([
-			staticAdapter({pages: 'build/static', fallback: 'index.html'}),
+			staticAdapter({pages: 'build', fallback: 'index.html'}),
 			adapter({
 				fallback: 'index.html',
 				pages: '.vite/main_window',

@@ -15,6 +15,8 @@
 		"make": "tsx node_modules/@electron-forge/cli/src/electron-forge-make",
 		"dev": "vite dev -c ./vite.renderer.config.ts",
 		"build": "vite build -c ./vite.renderer.config.ts",
+		"docker": "npm run build && sudo ./build.sh local",
+		"docker:pub": "sudo ./publish.sh",
 		"preview": "vite preview -c ./vite.renderer.config.ts",
 		"patch": "npm version patch",
 		"snapshot": "npm version prerelease --preid snapshot --no-git-tag-version",

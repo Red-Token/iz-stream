@@ -1,0 +1,8 @@
+services:
+  iz-stream:
+    image: ivnjey/iz-stream-dev:latest
+    container_name: iz-stream
+    pull_policy: always
+    ports:
+      - '4133:4133'
+    restart: unless-stopped

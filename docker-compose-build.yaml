@@ -1,0 +1,8 @@
+services:
+  iz-stream:
+    build: .
+    image: ${DOCKER_NAME}:${VERSION}
+    container_name: iz-stream
+    ports:
+      - '4133:4133'
+    restart: unless-stopped
