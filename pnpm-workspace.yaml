@@ -1,0 +1,13 @@
+onlyBuiltDependencies:
+  - '@tailwindcss/oxide'
+  - bufferutil
+  - core-js
+  - cpu-features
+  - electron
+  - electron-winstaller
+  - esbuild
+  - node-datachannel
+  - ssh2
+  - unrs-resolver
+  - utf-8-validate
+  - utp-native
