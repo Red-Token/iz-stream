@@ -17,6 +17,7 @@
 	import {fade} from 'svelte/transition';
 	import CheckBoxes from '@src/components/create/CheckBoxes.svelte';
 	import {IconCopy, IconEye, IconEyeOff, IconKey, IconChevronUp, IconChevronDown} from '$components/Icons';
+	import {Button} from '$components';
 
 	let cred = $state({nsec: ''});
 	let isAdvancedOpen = $state(false);
@@ -180,12 +181,13 @@
 				{/if}
 			</div>
 		</div>
-		<button class="btn generate" onclick={handleGenerate} class:animating={isAnimating}>
+		<Button className="btn generate" onClick={handleGenerate}>
+			<!-- class:animating={isAnimating} -->
 			<span class="btn-icon">
 				<IconKey className="key-icon" size={24} />
 			</span>
 			Generate Key
-		</button>
+		</Button>
 	</div>
 
 	<!-- Main Settings -->

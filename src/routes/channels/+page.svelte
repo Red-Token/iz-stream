@@ -1,7 +1,7 @@
 <script lang="ts">
 	import {goto} from '$app/navigation';
 	import {UserType} from 'iz-nostrlib/nips';
-	import {Profile2} from '$components';
+	import {Button, Profile2} from '$components';
 	import {globalRunes} from '@src/stores/profile.svelte';
 	import {IconArrow} from '$components/Icons';
 
@@ -15,10 +15,10 @@
 <div class="profiles-container">
 	{#each globalRunes.nip01Events.values().filter((val) => val.type === UserType.INDIVIDUAL) as val, i}
 		<Profile2 nip01Event={val} {i}>
-			<button class="show-movies-btn" onclick={() => gotoPage(val.pubkey)}>
+			<Button className="btn show-movies-btn" onClick={() => gotoPage(val.pubkey)}>
 				Explore
 				<IconArrow className="arrow-icon" direction="right" size={18} fillColor="currentColor" strokeColor="none" />
-			</button>
+			</Button>
 		</Profile2>
 	{/each}
 </div>
@@ -190,42 +190,6 @@
 		fill: currentColor;
 	}
 
-	/* .btn{
-		display:block;
-
-	} */
-
-	.show-movies-btn {
-		/* TODO fix the margin of the view button, reducing the margin between key and about. */
-		display: inline-flex;
-		align-items: center;
-		gap: 0.5rem;
-		padding: 0.75rem 1.5rem;
-		border: 1px solid var(--border-color);
-		background: transparent;
-		color: var(--fg-1);
-		border-radius: 8px;
-		font-weight: 500;
-		cursor: pointer;
-		/* margin-left: auto; */
-		flex-shrink: 0;
-		margin: 20px 0 0 auto;
-		transition:
-			transform 0.2s ease,
-			background 0.3s ease;
-	}
-
-	.show-movies-btn:hover {
-		background: var(--button-main);
-		transform: translateY(-1px);
-	}
-
-	.arrow-icon {
-		width: 18px;
-		height: 18px;
-		/* fill: currentColor; */ /* IconArrow uses stroke by default, fill can be removed or adjusted in component if needed */
-	}
-
 	@media (max-width: 768px) {
 		.profiles-container {
 			grid-template-columns: 1fr;
@@ -258,12 +222,6 @@
 			flex-direction: column;
 			gap: 1rem;
 			margin-top: 1.5rem;
-		}
-
-		.show-movies-btn {
-			width: 100%;
-			order: 1;
-			margin-left: 0;
 		}
 
 		.website-link {
