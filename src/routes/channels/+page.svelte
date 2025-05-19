@@ -3,6 +3,7 @@
 	import {UserType} from 'iz-nostrlib/nips';
 	import {Profile2} from '$components';
 	import {globalRunes} from '@src/stores/profile.svelte';
+	import {IconArrow} from '$components/Icons';
 
 	function gotoPage(key: string) {
 		goto(`/channels/${key}/torrents`);
@@ -16,9 +17,7 @@
 		<Profile2 nip01Event={val} {i}>
 			<button class="show-movies-btn" onclick={() => gotoPage(val.pubkey)}>
 				Explore
-				<svg class="arrow-icon" viewBox="0 0 24 24">
-					<path d="M6.4 18 5 16.6 14.6 7H6V5h12v12h-2V8.4Z" />
-				</svg>
+				<IconArrow className="arrow-icon" direction="right" size={18} fillColor="currentColor" strokeColor="none" />
 			</button>
 		</Profile2>
 	{/each}
@@ -224,7 +223,7 @@
 	.arrow-icon {
 		width: 18px;
 		height: 18px;
-		fill: currentColor;
+		/* fill: currentColor; */ /* IconArrow uses stroke by default, fill can be removed or adjusted in component if needed */
 	}
 
 	@media (max-width: 768px) {

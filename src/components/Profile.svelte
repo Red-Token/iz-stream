@@ -1,5 +1,6 @@
 <script lang="ts">
 	import {globalRunes} from '@src/stores/profile.svelte';
+	import {IconLink, IconArrow} from '$components/Icons';
 
 	const {key, i} = $props();
 	// let profile = globalRunes.profiles.get(key);
@@ -57,21 +58,14 @@
 					target="_blank"
 					rel="noopener noreferrer"
 				>
-					<svg class="link-icon" viewBox="0 0 24 24">
-						<!-- TODO Move all svgs to a separate library. -->
-						<path
-							d="M11 17H7Q4.925 17 3.463 15.537T2 12Q2 9.925 3.463 8.462T7 7H11V9H7Q5.75 9 4.875 9.875T4 12Q4 13.25 4.875 14.125T7 15H11V17ZM8 13V11H16V13H8ZM13 17V15H17Q18.25 15 19.125 14.125T20 12Q20 10.75 19.125 9.875T17 9H13V7H17Q19.075 7 20.538 8.462T22 12Q22 14.075 20.538 15.537T17 17H13Z"
-						/>
-					</svg>
+					<IconLink className="link-icon" />
 					Website
 				</a>
 			{/if}
 
 			<button class="show-movies-btn" onclick={() => gotoPage()}>
 				Show movies
-				<svg class="arrow-icon" viewBox="0 0 24 24">
-					<path d="M6.4 18 5 16.6 14.6 7H6V5h12v12h-2V8.4Z" />
-				</svg>
+				<IconArrow className="arrow-icon" direction="right" size={18} fillColor="currentColor" strokeColor="none" />
 			</button>
 		</div>
 	</div>
@@ -241,7 +235,7 @@
 	.link-icon {
 		width: 18px;
 		height: 18px;
-		fill: currentColor;
+		/* fill: currentColor; */ /* теперь управляется пропсом fill в IconLink */
 	}
 
 	.show-movies-btn {
@@ -273,7 +267,7 @@
 	.arrow-icon {
 		width: 18px;
 		height: 18px;
-		fill: currentColor;
+		/* fill: currentColor; */ /* теперь управляется пропсами fill/stroke в IconArrow */
 	}
 
 	@media (max-width: 768px) {

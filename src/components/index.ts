@@ -12,3 +12,4 @@ export {default as LogInComponent} from './login/LogInComponent.svelte';
 export {default as Popup} from './login/Popup.svelte';
 export {default as TorrentLike} from './torrenttalk/TorrentLike.svelte';
 export {default as TorrentTalk} from './torrenttalk/TorrentTalk.svelte';
+export {default as Button} from './Button.svelte';

@@ -3,6 +3,7 @@
 	import {UserType} from 'iz-nostrlib/nips';
 	import {Profile2} from '$components';
 	import {goto} from '$app/navigation';
+	import {IconArrow} from '$components/Icons';
 
 	// let cred = $state({nsec: 'nsec16lc2cn2gzgf3vcv20lwkqquprqujpkq9pj0wcxmnw8scxh6j0yrqlc9ae0'});
 	//
@@ -79,9 +80,7 @@
 		<Profile2 nip01Event={val} {i}>
 			<button class="show-movies-btn" onclick={() => gotoPage(val.pubkey)}>
 				Explore
-				<svg class="arrow-icon" viewBox="0 0 24 24">
-					<path d="M6.4 18 5 16.6 14.6 7H6V5h12v12h-2V8.4Z" />
-				</svg>
+				<IconArrow className="arrow-icon" direction="right" size={18} fillColor="currentColor" strokeColor="none" />
 			</button>
 		</Profile2>
 	{/each}

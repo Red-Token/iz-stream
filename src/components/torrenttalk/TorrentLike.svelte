@@ -5,6 +5,7 @@
 	import {SvelteMap} from 'svelte/reactivity';
 	import {Nip25ReactionsEvent} from 'iz-nostrlib/nips';
 	import {createRefETags} from 'iz-nostrlib/util';
+	import {IconHeart} from '$components/Icons';
 	// import {communities} from '@src/stores/community.svelte';
 
 	let session: SynchronisedSession;
@@ -13,6 +14,9 @@
 	let reactions: SvelteMap<string, Nip25ReactionsEvent> = $state(new SvelteMap<string, Nip25ReactionsEvent>());
 
 	let liked = $state(false);
+	//TODO write this another way
+	let iconFillColor = $derived(liked ? 'red' : 'none');
+	let iconStrokeColor = $derived(liked ? 'red' : 'var(--icon-color, #333)');
 
 	let rand = $derived.by(() => {
 		return reactions
@@ -79,17 +83,7 @@
 	<p class="zil-value">zil: {rand}</p>
 	<div class="button-group">
 		<button onclick={like} class="torrent-button like-button {liked ? 'liked' : ''}" aria-label="Like">
-			<svg viewBox="0 0 24 24" class="icon-like" xmlns="http://www.w3.org/2000/svg">
-				<path
-					d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28
-			   2 8.5 2 5.42 4.42 3 7.5 3
-			   c1.74 0 3.41 0.81 4.5 2.09
-			   C13.09 3.81 14.76 3 16.5 3
-			   19.58 3 22 5.42 22 8.5
-			   c0 3.78-3.4 6.86-8.55 11.54
-			   L12 21.35z"
-				/>
-			</svg>
+			<IconHeart className="icon-like" fillColor={iconFillColor} strokeColor={iconStrokeColor} />
 		</button>
 		<button onclick={count} class="torrent-button winga-button"> WINGA </button>
 	</div>
@@ -135,8 +129,8 @@
 	.icon-like {
 		width: 24px;
 		height: 24px;
-		fill: none;
-		stroke: var(--icon-color, #333);
+		/* fill: none; */ /* controlled by prop */
+		/* stroke: var(--icon-color, #333); */ /* controlled by prop */
 		stroke-width: 2px;
 		transition: all 0.3s ease;
 	}
@@ -153,17 +147,17 @@
 	}
 
 	.like-button:hover .icon-like {
-		stroke: red;
+		/* stroke: red; */ /* Let hover be handled by direct prop change or parent style if necessary */
 	}
 
 	.like-button.liked {
-		border-color: red;
+		/* border-color: red; */ /* This style is for the button itself, not the icon */
 	}
 
-	.like-button.liked .icon-like {
-		fill: red;
-		stroke: red;
-	}
+	/* .like-button.liked .icon-like { */
+	/* fill: red; */ /* controlled by prop */
+	/* stroke: red; */ /* controlled by prop */
+	/* } */
 
 	.winga-button {
 		background: var(--warning-color);
