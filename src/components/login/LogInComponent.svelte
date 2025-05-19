@@ -3,6 +3,7 @@
 	import {me} from '@src/stores/profile.svelte';
 	import {goto} from '$app/navigation';
 	import {logOut} from '@src/stores/community.svelte';
+	import {IconUser, IconLogout, IconLock, IconChannel} from '$components/Icons';
 
 	let isPopupOpen = $state(false); // Track the popup visibility
 
@@ -100,47 +101,27 @@
 			{#if isMenuOpen}
 				<div class="dropdown-menu" role="menu" aria-labelledby="user-menu-button">
 					<button class="menu-item" onclick={goToProfilePage} role="menuitem" tabindex="0">
-						<svg class="menu-icon profile-icon" viewBox="0 0 24 24">
-							<path
-								d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"
-							/>
-						</svg>
+						<IconUser className="menu-icon profile-icon" fillColor="var(--fg-1)" />
 						Profile
 					</button>
 
 					<button class="menu-item" onclick={goToChannelPage} role="menuitem" tabindex="0">
-						<svg class="menu-icon profile-icon" viewBox="0 0 24 24">
-							<path
-								d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-8 6.5c1.93 0 3.5-1.57 3.5-3.5S13.93 3.5 12 3.5 8.5 5.07 8.5 7s1.57 3.5 3.5 3.5zM18 18H6v-1.12c0-1.21 2.17-1.34 2.98-.03.63.99 1.67 1.64 3.02 1.64s2.39-.65 3.02-1.64c.81-1.31 2.98-1.18 2.98.03V18z"
-							/>
-						</svg>
+						<IconChannel className="menu-icon profile-icon" />
 						My Channel
 					</button>
 
 					<button class="menu-item" onclick={goToCreateMoviePage} role="menuitem" tabindex="0">
-						<svg class="menu-icon profile-icon" viewBox="0 0 24 24">
-							<path
-								d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-8 6.5c1.93 0 3.5-1.57 3.5-3.5S13.93 3.5 12 3.5 8.5 5.07 8.5 7s1.57 3.5 3.5 3.5zM18 18H6v-1.12c0-1.21 2.17-1.34 2.98-.03.63.99 1.67 1.64 3.02 1.64s2.39-.65 3.02-1.64c.81-1.31 2.98-1.18 2.98.03V18z"
-							/>
-						</svg>
+						<IconChannel className="menu-icon profile-icon" />
 						Create Movie
 					</button>
 
 					<button class="menu-item" onclick={goToCreateCommunityPage} role="menuitem" tabindex="0">
-						<svg class="menu-icon profile-icon" viewBox="0 0 24 24">
-							<path
-								d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-8 6.5c1.93 0 3.5-1.57 3.5-3.5S13.93 3.5 12 3.5 8.5 5.07 8.5 7s1.57 3.5 3.5 3.5zM18 18H6v-1.12c0-1.21 2.17-1.34 2.98-.03.63.99 1.67 1.64 3.02 1.64s2.39-.65 3.02-1.64c.81-1.31 2.98-1.18 2.98.03V18z"
-							/>
-						</svg>
+						<IconChannel className="menu-icon profile-icon" />
 						Create Community
 					</button>
 
 					<button class="menu-item logout" onclick={logOut} role="menuitem" tabindex="0">
-						<svg class="menu-icon lock-icon" viewBox="0 0 24 24">
-							<path
-								d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"
-							/>
-						</svg>
+						<IconLogout className="menu-icon" />
 						Log Out
 					</button>
 				</div>
@@ -148,11 +129,7 @@
 		</div>
 	{:else}
 		<button class="login-btn" onclick={openPopup} tabindex="0" aria-label="Login">
-			<svg class="lock-icon" viewBox="0 0 24 24">
-				<path
-					d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"
-				/>
-			</svg>
+			<IconLock className="lock-icon" fillColor="currentColor" />
 			<span class="login-text">Log In</span>
 		</button>
 	{/if}
@@ -251,17 +228,18 @@
 	}
 
 	.lock-icon {
-		fill: #ef4444;
+		/* fill: #ef4444; */ /* Removed, now controlled by prop or default */
 	}
 
 	.profile-icon {
-		fill: var(--fg-1);
+		/* fill: var(--fg-1); */ /* Removed, now controlled by prop or default */
 	}
 
 	.menu-icon {
 		width: 18px;
 		height: 18px;
 		flex-shrink: 0;
+		/* fill property for menu-icon is handled by individual icon components default or specific prop */
 	}
 
 	.logout {
@@ -283,12 +261,6 @@
 
 	.login-btn:hover {
 		filter: brightness(1.1);
-	}
-
-	.lock-icon {
-		width: 18px;
-		height: 18px;
-		fill: currentColor;
 	}
 
 	.login-text {

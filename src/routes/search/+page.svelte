@@ -2,6 +2,7 @@
 	import {searchResult} from '@src/stores/searchResult.svelte';
 	import {goto} from '$app/navigation';
 	import imdbApi from '$lib/api/ImdbApi';
+	import {IconSearch} from '$components/Icons';
 
 	// let search = 'Big Buck Bunny';
 	let search = 'Sintel';
@@ -23,7 +24,7 @@
 <div class="container">
 	<div class="header_search">
 		<div class="header_search_image">
-			<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"></svg>
+			<IconSearch size={30} />
 		</div>
 
 		<div class="header_search_input">

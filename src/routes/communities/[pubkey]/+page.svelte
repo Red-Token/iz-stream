@@ -4,6 +4,7 @@
 	import {defaultNip02, globalRunes, me} from '@src/stores/profile.svelte';
 	import {Followee, Nip02FollowListEvent} from 'iz-nostrlib/nips';
 	import {onMount} from 'svelte';
+	import {IconFollow, IconArrow} from '$components/Icons';
 
 	const defaultProfile = new NostrUserProfileMetaData();
 
@@ -123,11 +124,7 @@
 			</div>
 			<button class="follow-btn" onclick={follow}>
 				{joinable ? 'Join' : 'Leave'}
-				<svg class="follow-icon" viewBox="0 0 24 24">
-					<path
-						d="M18 13h-5v5c0 .55-.45 1-1 1s-1-.45-1-1v-5H6c-.55 0-1-.45-1-1s.45-1 1-1h5V6c0-.55.45-1 1-1s1 .45 1 1v5h5c.55 0 1 .45 1 1s-.45 1-1 1z"
-					/>
-				</svg>
+				<IconFollow className="follow-icon" />
 			</button>
 		</div>
 	</div>
@@ -141,9 +138,7 @@
 				</div>
 				<button class="view-btn" onclick={() => view(event)}>
 					VIEW
-					<svg class="arrow-icon" viewBox="0 0 24 24">
-						<path d="M6.4 18 5 16.6 14.6 7H6V5h12v12h-2V8.4Z" />
-					</svg>
+					<IconArrow className="arrow-icon" direction="right" />
 				</button>
 			</div>
 		{/each}
@@ -240,7 +235,7 @@
 	.follow-icon {
 		width: 20px;
 		height: 20px;
-		fill: currentColor;
+		/* fill: currentColor; */ /* IconFollow uses stroke by default */
 	}
 
 	.events-list {
@@ -313,6 +308,12 @@
 	.view-btn:hover {
 		background: var(--accent-color);
 		color: white;
+	}
+
+	.arrow-icon {
+		width: 18px; /* Or manage size via prop <IconArrow size={18} /> */
+		height: 18px; /* Or manage size via prop <IconArrow size={18} /> */
+		/* fill: currentColor; */ /* IconArrow uses stroke by default */
 	}
 
 	@media (max-width: 768px) {

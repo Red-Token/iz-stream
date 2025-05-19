@@ -2,6 +2,7 @@
 	import {onMount} from 'svelte';
 	import {defaultNip01, defaultNip02, me, globalRunes} from '@src/stores/profile.svelte';
 	import {goto} from '$app/navigation';
+	import { IconAddInCircle } from '$components/Icons';
 	// import {communities} from '@src/stores/community.svelte';
 
 	let {isExpanded} = $props();
@@ -48,11 +49,7 @@ onmouseleave={isExpanded ? undefined : () => temporaryExpand(false)} -->
 					<div class="avatar-conteiner">
 						<div class="avatar">
 							<button class="button-add" aria-label="add-community" onclick={add}>
-								<svg width="48" height="48" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-									<circle class="button-add" cx="24" cy="24" r="22" />
-									<line x1="24" y1="16" x2="24" y2="32" stroke="white" stroke-width="3" stroke-linecap="round" />
-									<line x1="16" y1="24" x2="32" y2="24" stroke="white" stroke-width="3" stroke-linecap="round" />
-								</svg>
+								<IconAddInCircle circleClass="button-add" />
 							</button>
 						</div>
 					</div>

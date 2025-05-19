@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { IconCheckmark } from '$components/Icons';
 	let {name, selected, checked}: {name: string; selected: Function; checked: boolean} = $props();
 </script>
 
@@ -6,9 +7,7 @@
 	<input class="sr-only" type="checkbox" bind:checked onclick={() => selected()} />
 	<div class="custom-checkbox {checked ? 'checked' : ''}">
 		{#if checked}
-			<svg class="checkmark" viewBox="0 0 12 10">
-				<path fill="none" stroke="currentColor" stroke-width="2" d="M1 5l3 3 6-6" />
-			</svg>
+			<IconCheckmark className="checkmark" size="100%" />
 		{/if}
 	</div>
 	<div class="option-info">

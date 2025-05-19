@@ -18,7 +18,7 @@ export default [
 	...sveltePlugin.configs['flat/prettier'],
 	{
 		languageOptions: {
-			globals: {...globals.browser, ...globals.node, ...globals.es2024},
+			globals: { ...globals.browser, ...globals.node, ...globals.es2024 },
 			parser: tsParser,
 			parserOptions: {
 				ecmaVersion: 'latest',
@@ -32,11 +32,11 @@ export default [
 	{
 		files: ['**/*.{svelte, svelte.ts}', '*.{svelte, svelte.ts}'],
 		languageOptions: {
-			parser: svelteParser,
+			parser: tsParser,
 			parserOptions: {
-				svelteFeatures: {experimentalGenerics: true},
+				svelteFeatures: { experimentalGenerics: true },
 				svelteConfig,
-				parser: {ts: '@typescript-eslint/parser'},
+				// parser: { ts: '@typescript-eslint/parser' },
 				extraFileExtensions: ['.svelte']
 			}
 		}
@@ -45,11 +45,11 @@ export default [
 		files: ['**/*ts', '*.ts'],
 		languageOptions: {
 			parser: tsParser,
-			parserOptions: {tsconfigRootDir: import.meta.dirname, project: './tsconfig.json'}
+			parserOptions: { tsconfigRootDir: import.meta.dirname, project: './tsconfig.json' }
 		}
 	},
 	{
-		plugins: {'@typescript-eslint': tsPlugin, svelte: sveltePlugin}
+		plugins: { '@typescript-eslint': tsPlugin, svelte: sveltePlugin }
 		//settings: {'svelte/typescript': () => require('typescript')}
 	},
 	{
@@ -85,7 +85,7 @@ export default [
 			'@typescript-eslint/no-explicit-any': 'warn',
 
 			'no-unsafe-optional-chaining': 'error',
-			'no-constant-condition': ['error', {checkLoops: false}]
+			'no-constant-condition': ['error', { checkLoops: false }]
 			// '@typescript-eslint/no-extra-semi': 'off',
 			// '@typescript-eslint/ban-ts-comment': 'off',
 			// '@typescript-eslint/no-unused-vars': [

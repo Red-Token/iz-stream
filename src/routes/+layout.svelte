@@ -8,6 +8,7 @@
 	import {normalizeRelayUrl} from '@red-token/welshman/util';
 	import {NostrClient} from 'iz-nostrlib';
 	import {applicationRelay, devMode, baseUrls, packageMode, package_Mode} from '$config';
+	import { IconChevronLeft, IconChevronRight } from '$components/Icons';
 
 	const layout = Log.child({component: '+layout.svelte'});
 	let login: boolean | undefined = $state();
@@ -133,13 +134,9 @@
 			<Communities {isExpanded} />
 			<button class="sidebar-toggle" onclick={() => (isExpanded = !isExpanded)}>
 				{#if isExpanded}
-					<svg width="24" height="24" viewBox="0 0 24 24">
-						<path d="M15 18l-6-6 6-6" stroke="currentColor" fill="none" />
-					</svg>
+					<IconChevronLeft size={24} />
 				{:else}
-					<svg width="24" height="24" viewBox="0 0 24 24">
-						<path d="M9 18l6-6-6-6" stroke="currentColor" fill="none" />
-					</svg>
+					<IconChevronRight size={24} />
 				{/if}
 			</button>
 		</div>

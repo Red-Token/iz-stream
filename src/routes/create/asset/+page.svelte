@@ -14,6 +14,7 @@
 	import {wt} from '@src/stores/wtZool.svelte';
 	import {globalNostrContext, globalRunes, me} from '@src/stores/profile.svelte';
 	import CheckBoxes from '@src/components/create/CheckBoxes.svelte';
+	import {IconChevronUp, IconChevronDown, IconSubmit} from '$components/Icons';
 
 	// type RequestState = {
 	// 	state: string,
@@ -316,13 +317,9 @@
 						</div>
 						<div class="chevron">
 							{#if isAdvancedOpen}
-								<svg width="16" height="16" viewBox="0 0 24 24">
-									<path fill="currentColor" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z" />
-								</svg>
+								<IconChevronUp size={16} />
 							{:else}
-								<svg width="16" height="16" viewBox="0 0 24 24">
-									<path fill="currentColor" d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
-								</svg>
+								<IconChevronDown size={16} />
 							{/if}
 						</div>
 					</div>
@@ -356,9 +353,7 @@
 				{#if states.file !== null && states.community !== undefined}
 					<button type="button" class="submit-btn" onclick={() => onTranscode()}>
 						Submit to Seeder for transcoding
-						<svg class="submit-icon" viewBox="0 0 24 24">
-							<path d="M3 20v-6l8-2-8-2V4l19 8-19 8Z" />
-						</svg>
+						<IconSubmit className="submit-icon" />
 					</button>
 				{/if}
 			{:else}
@@ -375,9 +370,7 @@
 
 			<button type="submit" disabled={states.infoHash === ''} class="submit-btn" onclick={() => onCreate().then()}>
 				Create
-				<svg class="submit-icon" viewBox="0 0 24 24">
-					<path d="M3 20v-6l8-2-8-2V4l19 8-19 8Z" />
-				</svg>
+				<IconSubmit className="submit-icon" />
 			</button>
 		</form>
 	</div>

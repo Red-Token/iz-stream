@@ -16,6 +16,7 @@
 	import {onMount} from 'svelte';
 	import {fade} from 'svelte/transition';
 	import CheckBoxes from '@src/components/create/CheckBoxes.svelte';
+	import {IconCopy, IconEye, IconEyeOff, IconKey, IconChevronUp, IconChevronDown} from '$components/Icons';
 
 	let cred = $state({nsec: ''});
 	let isAdvancedOpen = $state(false);
@@ -164,30 +165,13 @@
 				<div class="input-actions">
 					<button class="icon-btn ghost" onclick={copyNsec}>
 						<!-- SVG Icon for Copy -->
-						<svg class="icon" viewBox="0 0 24 24" width="20" height="20">
-							<path
-								fill="currentColor"
-								d="M19 21H8V7h11m0-2H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2m-3-4H4a2 2 0 0 0-2 2v14h2V3h12V1z"
-							/>
-						</svg>
+						<IconCopy className="icon" fill="currentColor" size={20} />
 					</button>
 					<button class="icon-btn ghost" onclick={() => (showKey = !showKey)}>
 						{#if showKey}
-							<!-- Eye Closed SVG -->
-							<svg class="icon" viewBox="0 0 24 24" width="20" height="20">
-								<path
-									fill="currentColor"
-									d="M11.83 9L15 12.16V12a3 3 0 0 0-3-3h-.17m-4.3.8l1.55 1.55c-.05.21-.08.42-.08.65a3 3 0 0 0 3 3c.22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53a5 5 0 0 1-5-5c0-.79.2-1.53.53-2.2M2 4.27l2.28 2.28l.45.45C3.08 8.3 1.78 10 1 12c1.73 4.39 6 7.5 11 7.5c1.55 0 3.03-.3 4.38-.84l.43.42L19.73 22 21 20.73 3.27 3M12 7a5 5 0 0 1 5 5c0 .64-.13 1.26-.36 1.82l2.93 2.93c1.5-1.25 2.7-2.89 3.43-4.75c-1.73-4.39-6-7.5-11-7.5c-1.4 0-2.74.25-4 .7l2.17 2.15C10.74 7.13 11.35 7 12 7Z"
-								/>
-							</svg>
+							<IconEyeOff className="icon" fill="currentColor" size={20} />
 						{:else}
-							<!-- Eye Open SVG -->
-							<svg class="icon" viewBox="0 0 24 24" width="20" height="20">
-								<path
-									fill="currentColor"
-									d="M12 9a3 3 0 0 1 3 3a3 3 0 0 1-3 3a3 3 0 0 1-3-3a3 3 0 0 1 3-3m0-4.5c5 0 9.27 3.11 11 7.5c-1.73 4.39-6 7.5-11 7.5S2.73 16.39 1 12c1.73-4.39 6-7.5 11-7.5M3.18 12a9.821 9.821 0 0 0 17.64 0a9.821 9.821 0 0 0-17.64 0Z"
-								/>
-							</svg>
+							<IconEye className="icon" fill="currentColor" size={20} />
 						{/if}
 					</button>
 				</div>
@@ -198,14 +182,8 @@
 		</div>
 		<button class="btn generate" onclick={handleGenerate} class:animating={isAnimating}>
 			<span class="btn-icon">
-				<svg class="key-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
-					<svg class="key-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
-						<circle cx="12" cy="9" r="3" stroke="currentColor" stroke-width="1.5" fill="none" />
-						<path d="M12 12V18M12 18H9V21H15V18H12Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
-						<path d="M15 12L18 9L21 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-					</svg>
-				</svg></span
-			>
+				<IconKey className="key-icon" size={24} />
+			</span>
 			Generate Key
 		</button>
 	</div>
@@ -253,13 +231,9 @@
 			</div>
 			<div class="chevron">
 				{#if isAdvancedOpen}
-					<svg width="16" height="16" viewBox="0 0 24 24">
-						<path fill="currentColor" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z" />
-					</svg>
+					<IconChevronUp size={16} fillColor="currentColor" />
 				{:else}
-					<svg width="16" height="16" viewBox="0 0 24 24">
-						<path fill="currentColor" d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
-					</svg>
+					<IconChevronDown size={16} fillColor="currentColor" />
 				{/if}
 			</div>
 		</div>
