@@ -16,7 +16,7 @@
 	}>();
 </script>
 
-<button class={className} class:{disabled} onclick={onClick}>
+<button class={className} {disabled} onclick={onClick}>
 	{@render children()}
 </button>
 
@@ -55,6 +55,7 @@
 		gap: 0.75rem;
 		padding: 0.75rem 1.5rem;
 		border-radius: var(--border-radius-12);
+		cursor: pointer;
 		border: none;
 		font-weight: 500;
 		transition:
@@ -109,15 +110,26 @@
 			transform: rotate(0) scale(1);
 		}
 	}
+	.follow-btn {
+		display: flex;
+		gap: 0.75rem;
+		padding: 0.75rem 1.5rem;
+		background: var(--button-main);
+		color: white;
+		border: none;
+		border-radius: 8px;
+		font-size: 1rem;
+	}
 
+	.bg-transparent {
+		background: transparent;
+	}
 	.show-movies-btn {
 		/* TODO fix the margin of the view button, reducing the margin between key and about. */
 		display: inline-flex;
-		align-items: center;
 		gap: 0.5rem;
 		padding: 0.75rem 1.5rem;
 		border: 1px solid var(--border-color);
-		background: transparent;
 		color: var(--fg-1);
 		border-radius: 8px;
 		font-weight: 500;
@@ -132,14 +144,14 @@
 	}
 
 	.submit-btn {
-		display: flex; /* Important for icon alignment */
+		display: flex;
 		align-items: center;
-		justify-content: center; /* To center content if text is short */
-		gap: 0.75rem; /* Space between text and icon */
+		justify-content: center;
+		gap: 0.75rem;
 		width: 100%;
 		padding: 1rem 2rem;
-		background: var(--accent-color); /* primary in Button.svelte uses bg-accent */
-		color: white; /* primary in Button.svelte uses text-white */
+		background: var(--button-main);
+		color: white;
 		border: none;
 		border-radius: 8px;
 		font-size: 1.1rem;
@@ -149,23 +161,63 @@
 
 		&:hover {
 			transform: translateY(-1px);
-			background: var(--accent-color); /* Button.svelte uses var(--accent-hover) */
+			filter: brightness(1.1);
+			box-shadow: 0 4px 8px var(--accent-transparent);
 		}
+	}
+	.submit-btn:disabled {
+		background-color: var(--bg-2);
+		color: #999;
+		cursor: not-allowed;
+	}
 
-		&:disabled {
-			color: #999;
-			cursor: not-allowed;
-		}
-
-		&:disabled:hover {
-			background-color: var(--bg-2);
-		}
+	.submit-btn:disabled:hover {
+		background-color: var(--bg-2);
 	}
 	.submit-icon {
 		width: 24px;
 		height: 24px;
 		fill: currentColor;
 	}
+	.view-btn {
+		position: absolute;
+		top: 50%;
+		margin-left: 0;
+		display: flex;
+		right: 1.5rem;
+		background: var(--bg-2);
+		color: var(--fg-2);
+		align-items: center;
+		gap: 0.5rem;
+		padding: 0.5rem 1.25rem;
+		background: transparent;
+		border: 2px solid var(--border-color);
+		border-radius: 6px;
+		transform: translateY(-50%);
+		transition: all 0.3s ease;
+		margin-left: auto;
+		&:hover {
+			background: var(--accent-color);
+			color: white;
+		}
+	}
+	@media (max-width: 768px) {
+		.follow-btn {
+			margin-top: 1rem;
+			width: 100%;
+			justify-content: center;
+		}
 
-	/* Ensure ring-accent-focus and other focus rings are defined (e.g. focus:ring-accent) */
+		.submit-btn {
+			padding: 0.875rem;
+			font-size: 0.95rem;
+		}
+
+		.view-btn {
+			top: auto;
+			bottom: 1rem;
+			right: 1rem;
+			transform: none;
+		}
+	}
 </style>

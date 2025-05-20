@@ -5,6 +5,7 @@
 	import {Followee, Nip02FollowListEvent} from 'iz-nostrlib/nips';
 	import {onMount} from 'svelte';
 	import {IconFollow, IconArrow} from '$components/Icons';
+	import {Button} from '@src/components';
 
 	const defaultProfile = new NostrUserProfileMetaData();
 
@@ -122,10 +123,10 @@
 					{page.params.pubkey.slice(0, 8)}...{page.params.pubkey.slice(-8)}
 				</div>
 			</div>
-			<button class="follow-btn" onclick={follow}>
+			<Button className="btn follow-btn" onClick={follow}>
 				{joinable ? 'Join' : 'Leave'}
 				<IconFollow className="follow-icon" />
-			</button>
+			</Button>
 		</div>
 	</div>
 
@@ -136,10 +137,10 @@
 					<h2 class="event-title">{event.title}</h2>
 					<p class="event-x">{event.x}</p>
 				</div>
-				<button class="view-btn" onclick={() => view(event)}>
+				<Button className="view-btn" onClick={() => view(event)}>
 					VIEW
 					<IconArrow className="arrow-icon" direction="right" />
-				</button>
+				</Button>
 			</div>
 		{/each}
 	</div>
@@ -211,33 +212,6 @@
 		word-break: break-all;
 	}
 
-	.follow-btn {
-		display: flex;
-		align-items: center;
-		gap: 0.75rem;
-		padding: 0.75rem 1.5rem;
-		background: var(--accent-color);
-		color: white;
-		border: none;
-		border-radius: 8px;
-		font-size: 1rem;
-		cursor: pointer;
-		transition:
-			transform 0.2s ease,
-			background 0.3s ease;
-	}
-
-	.follow-btn:hover {
-		background: var(--accent-hover);
-		transform: translateY(-1px);
-	}
-
-	.follow-icon {
-		width: 20px;
-		height: 20px;
-		/* fill: currentColor; */ /* IconFollow uses stroke by default */
-	}
-
 	.events-list {
 		display: grid;
 		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -286,30 +260,6 @@
 		-webkit-box-orient: vertical;
 	}
 
-	.view-btn {
-		position: absolute;
-		top: 50%;
-		margin-left: 0;
-		display: flex;
-		right: 1.5rem;
-		background: var(--bg-2);
-		color: var(--fg-2);
-		align-items: center;
-		gap: 0.5rem;
-		padding: 0.5rem 1.25rem;
-		background: transparent;
-		border: 2px solid var(--border-color);
-		border-radius: 6px;
-		transform: translateY(-50%);
-		transition: all 0.3s ease;
-		margin-left: auto;
-	}
-
-	.view-btn:hover {
-		background: var(--accent-color);
-		color: white;
-	}
-
 	.arrow-icon {
 		width: 18px; /* Or manage size via prop <IconArrow size={18} /> */
 		height: 18px; /* Or manage size via prop <IconArrow size={18} /> */
@@ -345,19 +295,6 @@
 
 		.channel-name {
 			font-size: 1.5rem;
-		}
-
-		.follow-btn {
-			margin-top: 1rem;
-			width: 100%;
-			justify-content: center;
-		}
-
-		.view-btn {
-			top: auto;
-			bottom: 1rem;
-			right: 1rem;
-			transform: none;
 		}
 
 		.events-list {

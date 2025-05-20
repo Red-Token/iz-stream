@@ -15,6 +15,7 @@
 	import {globalNostrContext, globalRunes, me} from '@src/stores/profile.svelte';
 	import CheckBoxes from '@src/components/create/CheckBoxes.svelte';
 	import {IconChevronUp, IconChevronDown, IconSubmit} from '$components/Icons';
+	import {Button} from '@src/components';
 
 	// type RequestState = {
 	// 	state: string,
@@ -351,10 +352,10 @@
 
 			{#if states.resp.states.state === null}
 				{#if states.file !== null && states.community !== undefined}
-					<button type="button" class="submit-btn" onclick={() => onTranscode()}>
+					<Button className="submit-btn" onClick={() => onTranscode()}>
 						Submit to Seeder for transcoding
 						<IconSubmit className="submit-icon" />
-					</button>
+					</Button>
 				{/if}
 			{:else}
 				<div class="progressbar-container">
@@ -368,10 +369,10 @@
 				<input id="infoHash" type="text" bind:value={states.infoHash} placeholder="Info Hash" class="form-input" />
 			</div>
 
-			<button type="submit" disabled={states.infoHash === ''} class="submit-btn" onclick={() => onCreate().then()}>
+			<Button className="submit-btn" disabled={states.infoHash === ''} onClick={() => onCreate().then()}>
 				Create
 				<IconSubmit className="submit-icon" />
-			</button>
+			</Button>
 		</form>
 	</div>
 </div>
@@ -573,38 +574,6 @@
 		pointer-events: none;
 	}
 
-	.submit-btn {
-		display: flex;
-		align-items: center;
-		gap: 0.75rem;
-		width: 100%;
-		padding: 1rem;
-		border: 2px solid var(--border-color);
-		background: transparent;
-		color: white;
-		border-radius: 8px;
-		font-size: 1.1rem;
-		font-weight: 500;
-		cursor: pointer;
-		transition:
-			transform 0.2s ease,
-			background 0.3s ease;
-	}
-
-	.submit-btn:hover {
-		transform: translateY(-1px);
-		background: var(--accent-color);
-	}
-
-	.submit-btn:disabled {
-		color: #999;
-		cursor: not-allowed;
-	}
-
-	.submit-btn:disabled:hover {
-		background-color: var(--bg-2);
-	}
-
 	.submit-icon {
 		width: 24px;
 		height: 24px;
@@ -621,8 +590,7 @@
 			border-radius: 12px;
 		}
 
-		.form-input,
-		.submit-btn {
+		.form-input {
 			padding: 0.875rem;
 			font-size: 0.95rem;
 		}
