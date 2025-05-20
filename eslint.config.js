@@ -60,6 +60,7 @@ export default [
 			'**/docs',
 			'**/vite*',
 			'tailwind.config.ts',
+			'capacitor.config.ts',
 			'**/sw.min.js',
 			'**/node_modules',
 			'**/*.js',

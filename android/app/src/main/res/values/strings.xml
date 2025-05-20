@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">iz-stream</string>
+    <string name="title_activity_main">iz-stream</string>
+    <string name="package_name">com.example.izstream</string>
+    <string name="custom_url_scheme">com.example.izstream</string>
+</resources>
