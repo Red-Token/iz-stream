@@ -13,9 +13,8 @@
 	import type {TrustedEvent} from '@red-token/welshman/util';
 	import {wt} from '@src/stores/wtZool.svelte';
 	import {globalNostrContext, globalRunes, me} from '@src/stores/profile.svelte';
-	import CheckBoxes from '@src/components/create/CheckBoxes.svelte';
 	import {IconChevronUp, IconChevronDown, IconSubmit} from '$components/Icons';
-	import {Button} from '$components/lib';
+	import {Button, CheckBoxes} from '$components/lib';
 
 	// type RequestState = {
 	// 	state: string,

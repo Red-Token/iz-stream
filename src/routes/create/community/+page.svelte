@@ -15,9 +15,8 @@
 	import {normalizeURL} from 'nostr-tools/utils';
 	import {onMount} from 'svelte';
 	import {fade} from 'svelte/transition';
-	import CheckBoxes from '@src/components/create/CheckBoxes.svelte';
 	import {IconCopy, IconEye, IconEyeOff, IconKey, IconChevronUp, IconChevronDown} from '$components/Icons';
-	import {Button} from '$components/lib';
+	import {Button, CheckBoxes} from '$components/lib';
 
 	let cred = $state({nsec: ''});
 	let isAdvancedOpen = $state(false);
