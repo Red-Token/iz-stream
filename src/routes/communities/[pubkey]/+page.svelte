@@ -5,7 +5,7 @@
 	import {Followee, Nip02FollowListEvent} from 'iz-nostrlib/nips';
 	import {onMount} from 'svelte';
 	import {IconFollow, IconArrow} from '$components/Icons';
-	import {Button} from '@src/components';
+	import {Button} from '$components/lib';
 
 	const defaultProfile = new NostrUserProfileMetaData();
 

@@ -1,7 +1,8 @@
 <script lang="ts">
 	import {goto} from '$app/navigation';
 	import {UserType} from 'iz-nostrlib/nips';
-	import {Button, Profile2} from '$components';
+	import {Profile2} from '$components';
+	import {Button} from '$components/lib';
 	import {globalRunes} from '@src/stores/profile.svelte';
 	import {IconArrow} from '$components/Icons';
 

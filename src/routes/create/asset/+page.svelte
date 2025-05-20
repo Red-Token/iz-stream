@@ -15,7 +15,7 @@
 	import {globalNostrContext, globalRunes, me} from '@src/stores/profile.svelte';
 	import CheckBoxes from '@src/components/create/CheckBoxes.svelte';
 	import {IconChevronUp, IconChevronDown, IconSubmit} from '$components/Icons';
-	import {Button} from '@src/components';
+	import {Button} from '$components/lib';
 
 	// type RequestState = {
 	// 	state: string,
