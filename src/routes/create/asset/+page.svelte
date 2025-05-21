@@ -15,6 +15,8 @@
 	import {globalNostrContext, globalRunes, me} from '@src/stores/profile.svelte';
 	import {IconChevronUp, IconChevronDown, IconSubmit} from '$components/Icons';
 	import {Button, CheckBoxes} from '$components/lib';
+	//TODO: Temporary solution
+	import {botPubkey} from '$config';
 
 	// type RequestState = {
 	// 	state: string,
@@ -29,7 +31,7 @@
 
 	const states = $state({
 		community: '',
-		botPubkey: 'b1e997f11f8d454eae2b2c1d52948e800df4e7103412d78984827eea2be138b2',
+		botPubkey: botPubkey,
 		formats: undefined,
 		title: template.title,
 		imdbId: template.imdbId,
