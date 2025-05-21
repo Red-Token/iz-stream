@@ -4,6 +4,7 @@
 	import {goto} from '$app/navigation';
 	import {logOut} from '@src/stores/community.svelte';
 	import {IconUser, IconLogout, IconLock, IconChannel} from '$components/Icons';
+	import {Button} from '$components/lib';
 
 	let isPopupOpen = $state(false); // Track the popup visibility
 
@@ -128,10 +129,10 @@
 			{/if}
 		</div>
 	{:else}
-		<button class="login-btn" onclick={openPopup} tabindex="0" aria-label="Login">
+		<Button className="login-btn" onClick={openPopup}>
 			<IconLock className="lock-icon" fillColor="currentColor" />
 			<span class="login-text">Log In</span>
-		</button>
+		</Button>
 	{/if}
 
 	<Popup isOpen={isPopupOpen} {closePopup} />
@@ -166,7 +167,7 @@
 		height: 36px;
 		border-radius: 50%;
 		overflow: hidden;
-		background: var(--accent-color);
+		background: var(--button-main);
 		flex-shrink: 0;
 	}
 
@@ -244,23 +245,6 @@
 
 	.logout {
 		color: #ef4444;
-	}
-
-	.login-btn {
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-		padding: 0.3rem 0.6rem;
-		background: var(--accent-color);
-		color: white;
-		border: none;
-		border-radius: 8px;
-		transition: filter 0.3s ease;
-		cursor: pointer;
-	}
-
-	.login-btn:hover {
-		filter: brightness(1.1);
 	}
 
 	.login-text {

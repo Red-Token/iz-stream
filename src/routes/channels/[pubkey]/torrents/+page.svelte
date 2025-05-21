@@ -9,6 +9,7 @@
 	import type {TrustedEvent} from '@red-token/welshman/util';
 	import {Nip35TorrentEvent, NostrUserProfileMetaData, UserType} from 'iz-nostrlib/nips';
 	import {IconFollow, IconArrow} from '$components/Icons';
+	import {Button} from '$components/lib';
 
 	let events: Nip35TorrentEvent[] = $state([]);
 
@@ -116,10 +117,10 @@
 					<h2 class="event-title">{event.title}</h2>
 					<p class="event-x">{event.x}</p>
 				</div>
-				<button class="view-btn" onclick={() => view(event)}>
+				<Button className="view-btn" onClick={() => view(event)}>
 					VIEW
 					<IconArrow className="arrow-icon" direction="right" size={18} fillColor="currentColor" strokeColor="none" />
-				</button>
+				</Button>
 			</div>
 		{/each}
 	</div>
@@ -264,30 +265,6 @@
 		display: -webkit-box;
 		-webkit-line-clamp: 2;
 		-webkit-box-orient: vertical;
-	}
-
-	.view-btn {
-		position: absolute;
-		top: 50%;
-		margin-left: 0;
-		display: flex;
-		right: 1.5rem;
-		background: var(--bg-2);
-		color: var(--fg-2);
-		align-items: center;
-		gap: 0.5rem;
-		padding: 0.5rem 1.25rem;
-		background: transparent;
-		border: 2px solid var(--border-color);
-		border-radius: 6px;
-		transform: translateY(-50%);
-		transition: all 0.3s ease;
-		margin-left: auto;
-	}
-
-	.view-btn:hover {
-		background: var(--accent-color);
-		color: white;
 	}
 
 	.arrow-icon {

@@ -92,3 +92,22 @@
 		msg: {state.resp.state.msg}
 	</div>
 </div>
+
+<style>
+	.update-btn {
+		width: 100%;
+		padding: 1rem;
+		background: var(--accent-color);
+		color: white;
+		border: none;
+		border-radius: 8px;
+		font-size: 1rem;
+		font-weight: 500;
+		cursor: pointer;
+		transition: filter 0.2s ease;
+	}
+
+	.update-btn:hover {
+		filter: brightness(1.1);
+	}
+</style>

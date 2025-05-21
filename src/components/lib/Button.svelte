@@ -179,13 +179,71 @@
 		height: 24px;
 		fill: currentColor;
 	}
+
+	.login-btn {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 0.3rem 0.6rem;
+		background: var(--button-main);
+		color: white;
+		border: none;
+		border-radius: 8px;
+		transition: filter 0.3s ease;
+		cursor: pointer;
+
+		&:hover {
+			filter: brightness(1.1);
+		}
+	}
+
+	.popup-login {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5rem;
+		width: 100%;
+		padding: 0.75rem;
+		margin: 0.5rem 0;
+		border: none;
+		border-radius: 8px;
+		font-weight: 500;
+		cursor: pointer;
+		transition: all 0.3s ease;
+	}
+
+	.popup-login:focus {
+		outline: 2px solid var(--button-main);
+		outline-offset: 2px;
+	}
+
+	.popup-login:first-of-type {
+		background: var(--button-main);
+		color: white;
+	}
+
+	.popup-login:last-of-type {
+		background: transparent;
+		border: 1px solid var(--border-color);
+		color: var(--text-secondary);
+	}
+
+	.popup-login:hover {
+		filter: brightness(1.1);
+	}
+
+	.popup-login:last-of-type:hover {
+		background: var(--bg-3);
+		border-color: var(--text-secondary);
+		color: var(--text-primary);
+	}
+
 	.view-btn {
 		position: absolute;
 		top: 50%;
 		margin-left: 0;
 		display: flex;
 		right: 1.5rem;
-		background: var(--bg-2);
 		color: var(--fg-2);
 		align-items: center;
 		gap: 0.5rem;
@@ -197,8 +255,24 @@
 		transition: all 0.3s ease;
 		margin-left: auto;
 		&:hover {
-			background: var(--accent-color);
+			background: var(--button-main);
 			color: white;
+		}
+	}
+
+	.update-btn {
+		width: 100%;
+		padding: 1rem;
+		background: var(--button-main);
+		color: white;
+		border: none;
+		border-radius: 8px;
+		font-size: 1rem;
+		font-weight: 500;
+		cursor: pointer;
+		transition: filter 0.2s ease;
+		&:hover {
+			filter: brightness(1.1);
 		}
 	}
 	@media (max-width: 768px) {
@@ -218,6 +292,16 @@
 			bottom: 1rem;
 			right: 1rem;
 			transform: none;
+		}
+	}
+	@media (max-width: 640px) {
+		.popup-login {
+			padding: 1rem;
+		}
+	}
+	@media (max-width: 480px) {
+		.login-btn {
+			padding: 0.5rem;
 		}
 	}
 </style>

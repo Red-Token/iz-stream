@@ -2,6 +2,7 @@
 	import {onMount} from 'svelte';
 	import {defaultNip01, me} from '@src/stores/profile.svelte';
 	import {Nip01UserMetaDataEvent, NostrUserProfileMetaData} from 'iz-nostrlib/nip01';
+	import {Button} from '@src/components/lib';
 
 	// TODO We need to fix this.
 	// const ci = communities[0].identities.values().toArray()[0];
@@ -168,7 +169,7 @@
 				</label>
 			</div>
 
-			<button onclick={onUpdate} class="update-btn"> Update Profile </button>
+			<Button onClick={onUpdate} className="update-btn">Update Profile</Button>
 		</div>
 	</div>
 {/if}
@@ -361,23 +362,6 @@
 		width: 18px;
 		height: 18px;
 		accent-color: var(--accent-color);
-	}
-
-	.update-btn {
-		width: 100%;
-		padding: 1rem;
-		background: var(--accent-color);
-		color: white;
-		border: none;
-		border-radius: 8px;
-		font-size: 1rem;
-		font-weight: 500;
-		cursor: pointer;
-		transition: filter 0.2s ease;
-	}
-
-	.update-btn:hover {
-		filter: brightness(1.1);
 	}
 
 	@media (max-width: 768px) {

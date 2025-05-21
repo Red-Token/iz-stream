@@ -72,12 +72,13 @@
 		left: 0;
 		width: 0;
 		height: 2px;
-		background: var(--accent-color);
+		background: var(--button-main);
 		transition: width 0.3s ease;
 	}
 
 	.primary-nav a[aria-current='true'] {
-		color: var(--accent-color);
+		color: var(--button-main);
+		filter: brightness(2.3);
 	}
 
 	.primary-nav a[aria-current='true']::after,
