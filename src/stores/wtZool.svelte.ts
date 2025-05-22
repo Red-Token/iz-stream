@@ -1,6 +1,7 @@
-//@ts-expect-ignore //TODO something needs to be done about this.
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+//@ts-expect-error //TODO something needs to be done about this.
 import SimplePeer from 'simple-peer/simplepeer.min.js';
-//@ts-expect-ignore
+// @ts-ignore
 import WebTorrent from 'webtorrent/dist/webtorrent.min.js';
 
 const rtcConfig = {

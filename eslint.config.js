@@ -36,7 +36,7 @@ export default [
 			parserOptions: {
 				svelteFeatures: {experimentalGenerics: true},
 				svelteConfig,
-				// parser: { ts: '@typescript-eslint/parser' },
+				parser: {ts: '@typescript-eslint/parser'},
 				extraFileExtensions: ['.svelte']
 			}
 		}
@@ -71,6 +71,7 @@ export default [
 	{
 		rules: {
 			...sveltePlugin.configs.recommended.rules,
+
 			'a11y-click-events-have-key-events': 'off',
 			'a11y-autofocus': 'off',
 			// '@typescript-eslint/no-unsafe-member-access': 'off',
