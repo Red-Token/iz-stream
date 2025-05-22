@@ -1,4 +1,5 @@
 <script lang="ts">
+	import {Button} from '@src/components/lib';
 	import {onMount} from 'svelte';
 	let file: File;
 	let state = $state({resp: {state: {state: 'not started', msg: 'Not started the request'}}, infoHash: ''});
@@ -60,8 +61,8 @@
 	function handleChange(event: any) {
 		file = event.target.files[0];
 	}
-
-	function publish(event: any) {
+	// event: any
+	function publish() {
 		console.log('publish');
 	}
 
@@ -78,12 +79,14 @@
 		<label for="file">Choose a file:</label>
 		<input type="file" id="file" name="file" onchange={handleChange} />
 	</div>
-	<button type="submit" class="update-btn" onclick={handleSubmit}>Upload</button>
+	<!-- type="submit" -->
+	<Button class="btn btn-filled btn-padding-large btn-gap-medium btn-full-width" onClick={handleSubmit}>Upload</Button>
 	<div>
 		<input type="text" bind:value={state.infoHash} placeholder="InfoHash" class="form-input" />
 		<p></p>
 		{#if state.infoHash !== ''}
-			<button type="submit" class="update-btn" onclick={publish}>Publish</button>
+			<!-- type="submit" -->
+			<Button class="btn btn-filled btn-padding-large btn-gap-medium btn-full-width" onClick={publish}>Publish</Button>
 		{/if}
 	</div>
 	<div>

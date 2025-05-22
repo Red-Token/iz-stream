@@ -4,6 +4,7 @@
 	import {Profile2} from '$components';
 	import {goto} from '$app/navigation';
 	import {IconArrow} from '$components/Icons';
+	import {Button} from '@src/components/lib';
 
 	// let cred = $state({nsec: 'nsec16lc2cn2gzgf3vcv20lwkqquprqujpkq9pj0wcxmnw8scxh6j0yrqlc9ae0'});
 	//
@@ -78,10 +79,10 @@
 <div class="profiles-container">
 	{#each globalRunes.nip01Events.values().filter((val) => val.type === UserType.COMMUNITY) as val, i}
 		<Profile2 nip01Event={val} {i}>
-			<button class="show-movies-btn" onclick={() => gotoPage(val.pubkey)}>
+			<Button class="btn btn-show btn-outlined btn-padding-medium btn-gap-small" onClick={() => gotoPage(val.pubkey)}>
 				Explore
 				<IconArrow className="arrow-icon" direction="right" size={18} fillColor="currentColor" strokeColor="none" />
-			</button>
+			</Button>
 		</Profile2>
 	{/each}
 </div>
@@ -112,38 +113,6 @@
 		max-width: 1440px;
 		margin: 0 auto;
 		z-index: 1;
-	}
-
-	.show-movies-btn {
-		/* TODO fix the margin of the view button, reducing the margin between key and about. */
-		display: inline-flex;
-		align-items: center;
-		gap: 0.5rem;
-		padding: 0.75rem 1.5rem;
-		border: 1px solid var(--border-color);
-		background: transparent;
-		color: white;
-		border-radius: 8px;
-		font-weight: 500;
-		cursor: pointer;
-		margin-left: auto;
-		flex-shrink: 0;
-		margin-left: auto;
-		flex-shrink: 0;
-		transition:
-			transform 0.2s ease,
-			background 0.3s ease;
-	}
-
-	.show-movies-btn:hover {
-		background: var(--button-main);
-		transform: translateY(-1px);
-	}
-
-	.arrow-icon {
-		width: 18px;
-		height: 18px;
-		fill: currentColor;
 	}
 
 	.profile-edit {

@@ -51,12 +51,12 @@
 
 			{@render children?.()}
 
-			<!--			<button class="show-movies-btn" onclick={() => gotoPage()}>-->
+			<!--			<Button class="btn btn-outlined btn-padding-medium btn-gap-small" onClick={() => gotoPage()}>-->
 			<!--				Show movies-->
 			<!--				<svg class="arrow-icon" viewBox="0 0 24 24">-->
 			<!--					<path d="M6.4 18 5 16.6 14.6 7H6V5h12v12h-2V8.4Z" />-->
 			<!--				</svg>-->
-			<!--			</button>-->
+			<!--			</Button>-->
 		</div>
 	</div>
 </article>
@@ -224,44 +224,6 @@
 		opacity: 0.8;
 	}
 
-	.link-icon {
-		width: 18px;
-		height: 18px;
-		/* fill: currentColor; */ /* Управляется IconLink */
-	}
-
-	.show-movies-btn {
-		/* TODO fix the margin of the view button, reducing the margin between key and about. */
-		display: inline-flex;
-		align-items: center;
-		gap: 0.5rem;
-		padding: 0.75rem 1.5rem;
-		border: 1px solid var(--border-color);
-		background: transparent;
-		color: white;
-		border-radius: 8px;
-		font-weight: 500;
-		cursor: pointer;
-		margin-left: auto;
-		flex-shrink: 0;
-		margin-left: auto;
-		flex-shrink: 0;
-		transition:
-			transform 0.2s ease,
-			background 0.3s ease;
-	}
-
-	.show-movies-btn:hover {
-		background: var(--accent-hover);
-		transform: translateY(-1px);
-	}
-
-	.arrow-icon {
-		width: 18px;
-		height: 18px;
-		fill: currentColor;
-	}
-
 	@media (max-width: 768px) {
 		.profiles-container {
 			grid-template-columns: 1fr;
@@ -294,12 +256,6 @@
 			flex-direction: column;
 			gap: 1rem;
 			margin-top: 1.5rem;
-		}
-
-		.show-movies-btn {
-			width: 100%;
-			order: 1;
-			margin-left: 0;
 		}
 
 		.website-link {

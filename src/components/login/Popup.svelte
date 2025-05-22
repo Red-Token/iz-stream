@@ -31,9 +31,18 @@
 	<div class="popup-overlay" onclick={() => closePopup()}>
 		<div class="popup">
 			{#if nip07 !== undefined}
-				<Button className="popup-login" onClick={() => nip07LogIn()}>LogIn NIP07</Button>
+				<!-- margin: 0.5rem 0; -->
+				<Button
+					class="btn btn-full-width btn-filled btn-padding-medium btn-gap-small"
+					style="margin: 0.5rem 0;"
+					onClick={() => nip07LogIn()}>LogIn NIP07</Button
+				>
 			{/if}
-			<Button className="popup-login" onClick={() => closePopup()}>Close</Button>
+			<Button
+				class="btn btn-full-width btn-bg-3 btn-outlined btn-padding-medium btn-gap-small"
+				style="margin: 0.5rem 0;"
+				onClick={() => closePopup()}>Close</Button
+			>
 		</div>
 	</div>
 {/if}

@@ -8,7 +8,7 @@
 	import {normalizeRelayUrl} from '@red-token/welshman/util';
 	import {NostrClient} from 'iz-nostrlib';
 	import {applicationRelay, devMode, baseUrls, packageMode, package_Mode} from '$config';
-	import { IconChevronLeft, IconChevronRight } from '$components/Icons';
+	import {IconChevronLeft, IconChevronRight} from '$components/Icons';
 
 	const layout = Log.child({component: '+layout.svelte'});
 	let login: boolean | undefined = $state();

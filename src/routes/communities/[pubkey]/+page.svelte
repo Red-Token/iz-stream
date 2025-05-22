@@ -123,7 +123,7 @@
 					{page.params.pubkey.slice(0, 8)}...{page.params.pubkey.slice(-8)}
 				</div>
 			</div>
-			<Button className="btn follow-btn" onClick={follow}>
+			<Button class="btn btn-filled btn-padding-medium btn-gap-medium" onClick={follow}>
 				{joinable ? 'Join' : 'Leave'}
 				<IconFollow className="follow-icon" />
 			</Button>
@@ -137,7 +137,7 @@
 					<h2 class="event-title">{event.title}</h2>
 					<p class="event-x">{event.x}</p>
 				</div>
-				<Button className="view-btn" onClick={() => view(event)}>
+				<Button class="btn btn-outlined btn-padding-medium btn-gap-small btn-color-fg2" onClick={() => view(event)}>
 					VIEW
 					<IconArrow className="arrow-icon" direction="right" />
 				</Button>

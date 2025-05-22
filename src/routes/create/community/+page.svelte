@@ -180,7 +180,7 @@
 				{/if}
 			</div>
 		</div>
-		<Button className="btn generate" onClick={handleGenerate}>
+		<Button class="btn btn-outlined btn-padding-medium btn-gap-medium" onClick={handleGenerate}>
 			<!-- class:animating={isAnimating} -->
 			<span class="btn-icon">
 				<IconKey className="key-icon" size={24} />
@@ -250,7 +250,11 @@
 	</div>
 	{#if pubkey}
 		<div class="creator-footer">
-			<button class="btn primary large" onclick={create} disabled={!isFormValid}> Create Community </button>
+			<Button
+				class="btn btn-outlined btn-padding-large btn-gap-medium btn-full-width btn-color-white"
+				onClick={create}
+				disabled={!isFormValid}>Create Community</Button
+			>
 		</div>
 	{/if}
 </div>

@@ -16,7 +16,7 @@
 <div class="profiles-container">
 	{#each globalRunes.nip01Events.values().filter((val) => val.type === UserType.INDIVIDUAL) as val, i}
 		<Profile2 nip01Event={val} {i}>
-			<Button className="btn show-movies-btn" onClick={() => gotoPage(val.pubkey)}>
+			<Button class="btn btn-show btn-outlined btn-padding-medium btn-gap-smalln" onClick={() => gotoPage(val.pubkey)}>
 				Explore
 				<IconArrow className="arrow-icon" direction="right" size={18} fillColor="currentColor" strokeColor="none" />
 			</Button>

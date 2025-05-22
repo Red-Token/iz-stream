@@ -129,7 +129,7 @@
 			{/if}
 		</div>
 	{:else}
-		<Button className="login-btn" onClick={openPopup}>
+		<Button class="btn btn-filled btn-padding-small btn-gap-small" onClick={openPopup}>
 			<IconLock className="lock-icon" fillColor="currentColor" />
 			<span class="login-text">Log In</span>
 		</Button>
@@ -282,10 +282,6 @@
 	@media (max-width: 480px) {
 		.login-text {
 			display: none;
-		}
-
-		.login-btn {
-			padding: 0.5rem;
 		}
 	}
 

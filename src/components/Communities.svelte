@@ -2,7 +2,7 @@
 	import {onMount} from 'svelte';
 	import {defaultNip01, defaultNip02, me, globalRunes} from '@src/stores/profile.svelte';
 	import {goto} from '$app/navigation';
-	import { IconAddInCircle } from '$components/Icons';
+	import {IconAddInCircle} from '$components/Icons';
 	// import {communities} from '@src/stores/community.svelte';
 
 	let {isExpanded} = $props();

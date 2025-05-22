@@ -353,7 +353,7 @@
 
 			{#if states.resp.states.state === null}
 				{#if states.file !== null && states.community !== undefined}
-					<Button className="submit-btn" onClick={() => onTranscode()}>
+					<Button class="btn btn-filled btn-padding-large btn-gap-medium btn-full-width" onClick={() => onTranscode()}>
 						Submit to Seeder for transcoding
 						<IconSubmit className="submit-icon" />
 					</Button>
@@ -370,7 +370,11 @@
 				<input id="infoHash" type="text" bind:value={states.infoHash} placeholder="Info Hash" class="form-input" />
 			</div>
 
-			<Button className="submit-btn" disabled={states.infoHash === ''} onClick={() => onCreate().then()}>
+			<Button
+				class="btn btn-filled btn-padding-large btn-gap-medium btn-full-width"
+				disabled={states.infoHash === ''}
+				onClick={() => onCreate().then()}
+			>
 				Create
 				<IconSubmit className="submit-icon" />
 			</Button>

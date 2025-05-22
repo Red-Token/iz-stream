@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { IconCheckmark } from '$components/Icons';
+	import {IconCheckmark} from '$components/Icons';
 	let {name, selected, checked}: {name: string; selected: Function; checked: boolean} = $props();
 </script>
 

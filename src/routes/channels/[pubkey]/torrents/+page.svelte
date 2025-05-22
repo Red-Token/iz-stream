@@ -102,10 +102,10 @@
 				</div>
 			</div>
 			{#if me.pubkey !== '' && page.params.pubkey !== me.pubkey}
-				<button class="follow-btn" onclick={follow}>
+				<Button class="btn btn-filled btn-padding-medium btn-gap-medium" onClick={follow}>
 					Follow
 					<IconFollow className="follow-icon" />
-				</button>
+				</Button>
 			{/if}
 		</div>
 	</div>
@@ -117,7 +117,7 @@
 					<h2 class="event-title">{event.title}</h2>
 					<p class="event-x">{event.x}</p>
 				</div>
-				<Button className="view-btn" onClick={() => view(event)}>
+				<Button class="btn btn-outlined btn-padding-medium btn-gap-small btn-color-fg2" onClick={() => view(event)}>
 					VIEW
 					<IconArrow className="arrow-icon" direction="right" size={18} fillColor="currentColor" strokeColor="none" />
 				</Button>
@@ -192,33 +192,6 @@
 		word-break: break-all;
 	}
 
-	.follow-btn {
-		display: flex;
-		align-items: center;
-		gap: 0.75rem;
-		padding: 0.75rem 1.5rem;
-		background: var(--accent-color);
-		color: white;
-		border: none;
-		border-radius: 8px;
-		font-size: 1rem;
-		cursor: pointer;
-		transition:
-			transform 0.2s ease,
-			background 0.3s ease;
-	}
-
-	.follow-btn:hover {
-		background: var(--accent-hover);
-		transform: translateY(-1px);
-	}
-
-	.follow-icon {
-		width: 20px;
-		height: 20px;
-		/* fill: currentColor; */ /* IconFollow uses stroke by default */
-	}
-
 	.events-list {
 		display: grid;
 		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -267,12 +240,6 @@
 		-webkit-box-orient: vertical;
 	}
 
-	.arrow-icon {
-		width: 18px; /* Or manage size via prop <IconArrow size={18} /> */
-		height: 18px; /* Or manage size via prop <IconArrow size={18} /> */
-		/* fill: currentColor; */ /* IconArrow uses stroke by default */
-	}
-
 	@media (max-width: 768px) {
 		.event-card {
 			padding-right: 1rem;
@@ -302,19 +269,6 @@
 
 		.channel-name {
 			font-size: 1.5rem;
-		}
-
-		.follow-btn {
-			margin-top: 1rem;
-			width: 100%;
-			justify-content: center;
-		}
-
-		.view-btn {
-			top: auto;
-			bottom: 1rem;
-			right: 1rem;
-			transform: none;
 		}
 
 		.events-list {

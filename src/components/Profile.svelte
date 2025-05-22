@@ -1,6 +1,7 @@
 <script lang="ts">
 	import {globalRunes} from '@src/stores/profile.svelte';
 	import {IconLink, IconArrow} from '$components/Icons';
+	import {Button} from '$components/lib';
 
 	const {key, i} = $props();
 	// let profile = globalRunes.profiles.get(key);
@@ -63,10 +64,10 @@
 				</a>
 			{/if}
 
-			<button class="show-movies-btn" onclick={() => gotoPage()}>
+			<Button class="btn btn-outlined btn-padding-medium btn-gap-small" onClick={() => gotoPage()}>
 				Show movies
 				<IconArrow className="arrow-icon" direction="right" size={18} fillColor="currentColor" strokeColor="none" />
-			</button>
+			</Button>
 		</div>
 	</div>
 </article>
@@ -232,44 +233,6 @@
 		opacity: 0.8;
 	}
 
-	.link-icon {
-		width: 18px;
-		height: 18px;
-		/* fill: currentColor; */ /* теперь управляется пропсом fill в IconLink */
-	}
-
-	.show-movies-btn {
-		/* TODO fix the margin of the view button, reducing the margin between key and about. */
-		display: inline-flex;
-		align-items: center;
-		gap: 0.5rem;
-		padding: 0.75rem 1.5rem;
-		border: 1px solid var(--border-color);
-		background: transparent;
-		color: white;
-		border-radius: 8px;
-		font-weight: 500;
-		cursor: pointer;
-		margin-left: auto;
-		flex-shrink: 0;
-		margin-left: auto;
-		flex-shrink: 0;
-		transition:
-			transform 0.2s ease,
-			background 0.3s ease;
-	}
-
-	.show-movies-btn:hover {
-		background: var(--accent-hover);
-		transform: translateY(-1px);
-	}
-
-	.arrow-icon {
-		width: 18px;
-		height: 18px;
-		/* fill: currentColor; */ /* теперь управляется пропсами fill/stroke в IconArrow */
-	}
-
 	@media (max-width: 768px) {
 		.profiles-container {
 			grid-template-columns: 1fr;
@@ -304,11 +267,6 @@
 			margin-top: 1.5rem;
 		}
 
-		.show-movies-btn {
-			width: 100%;
-			order: 1;
-			margin-left: 0;
-		}
 		.website-link {
 			order: 2;
 			width: 100%;

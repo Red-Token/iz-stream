@@ -169,7 +169,9 @@
 				</label>
 			</div>
 
-			<Button onClick={onUpdate} className="update-btn">Update Profile</Button>
+			<Button onClick={onUpdate} class="btn btn-outlined  btn-padding-large btn-gap-medium btn-full-width"
+				>Update Profile</Button
+			>
 		</div>
 	</div>
 {/if}

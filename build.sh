@@ -69,8 +69,6 @@ echo "Docker name: ${DOCKER_NAME}"
 export VERSION=$VERSION
 export DOCKER_NAME=$DOCKER_NAME
 
-# export DOCKERHUB_USERNAME=$DOCKERHUB_USERNAME
-
 echo "Starting build for version $VERSION..."
 
 docker stop $PACKAGE_NAME
