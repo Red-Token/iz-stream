@@ -115,6 +115,9 @@
 	.btn-show {
 		margin: 20px 0 0 auto;
 	}
+	.margin-sm {
+		margin: 0.5rem;
+	}
 
 	.btn-animating:active .key-icon {
 		transform: scale(0.95);

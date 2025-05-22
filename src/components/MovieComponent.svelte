@@ -2,6 +2,7 @@
 	import {onMount} from 'svelte';
 	// import type {Episode} from '@src/stores/searchResult.svelte';
 	import {goto} from '$app/navigation';
+	import {Button} from './lib';
 
 	let {item} = $props();
 
@@ -48,8 +49,13 @@
 			</div>
 
 			<div class="movie-actions">
-				<button onclick={() => view(item.imdbResult.imdbID)} class="view-movie-btn">View</button>
-				<button onclick={() => upload()} class="view-movie-btn">Upload</button>
+				<Button
+					onClick={() => view(item.imdbResult.imdbID)}
+					class="btn margin-sm btn-outlined btn-padding-small btn-gap-small">View</Button
+				>
+				<Button onClick={() => upload()} class="btn margin-sm btn-outlined btn-padding-small btn-gap-small"
+					>Upload</Button
+				>
 			</div>
 		</div>
 	</div>
