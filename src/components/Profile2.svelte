@@ -1,14 +1,19 @@
 <script lang="ts">
 	import {type Snippet} from 'svelte';
 	import {IconLink} from '$components/Icons';
+	import type {Nip01UserMetaDataEvent} from 'iz-nostrlib/nip01';
 
-	const {children, nip01Event, i} = $props();
+	const {children, nip01Event, i}: {
+        children?: Snippet;
+        nip01Event: Nip01UserMetaDataEvent;
+        i: number;
+    } = $props();
 
 	// let nip01Event : Nip01UserMetaDataEvent = globalRunes.profiles.get(key)?.nip01Event ?? defaultNip01;
 
-	function gotoPage() {
-		console.log(nip01Event.pubkey);
-	}
+	// function gotoPage() {
+	// 	console.log(nip01Event.pubkey);
+	// }
 </script>
 
 <article class="profile-card" style="animation-delay: {i * 0.1}s">
@@ -32,9 +37,11 @@
 		<div class="profile-header">
 			<h1 class="display-name">{nip01Event.profile.display_name || 'Anonymous'}</h1>
 			<h2 class="username">@{nip01Event.profile.name || 'unknown'}</h2>
-			<!--			<div class="profile-key" title={nip01Event.key}>-->
-			<!--&lt;!&ndash;				Key: {nip01Event.key.slice(0, 8)}...{nip01Event.key.slice(-8)}&ndash;&gt;-->
-			<!--			</div>-->
+			{#if nip01Event.pubkey}
+				<div class="profile-key" title={nip01Event.pubkey}>
+					Key: {nip01Event.pubkey.slice(0, 8)}...{nip01Event.pubkey.slice(-8)}
+				</div>
+			{/if}
 		</div>
 
 		{#if nip01Event.profile.about}

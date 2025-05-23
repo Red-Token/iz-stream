@@ -2,7 +2,6 @@ export {default as Communities} from './Communities.svelte';
 export {default as Episodes} from './Episodes.svelte';
 export {default as MovieComponent} from './MovieComponent.svelte';
 export {default as PrimaryNav} from './PrimaryNav.svelte';
-export {default as Profile} from './Profile.svelte';
 export {default as Profile2} from './Profile2.svelte';
 export {default as Seasons} from './Seasons.svelte';
 export {default as Series} from './Series.svelte';

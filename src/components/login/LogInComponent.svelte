@@ -9,7 +9,7 @@
 	let isPopupOpen = $state(false); // Track the popup visibility
 
 	let isMenuOpen = $state(false);
-	let menuButton: any; //TODO replace 'any'
+	let menuButton: HTMLButtonElement | null = null;
 
 	function openPopup() {
 		isPopupOpen = true;
@@ -36,31 +36,36 @@
 	}
 
 	//TODO fix this trash...
-	function handleClickOutside(event: any) {
+	function handleClickOutside(event: MouseEvent) {
 		if (
 			menuButton &&
-			!menuButton.contains(event.target) &&
-			!document.querySelector('.dropdown-menu')?.contains(event.target) //wtf
+			!menuButton.contains(event.target as Node) &&
+			!document.querySelector('.dropdown-menu')?.contains(event.target as Node) //wtf
 		) {
 			closeMenu();
 		}
 	}
 
-	function toggleUserMenu(event: any) {
-		//TODO replace 'any'
+	$effect(() => {
+		if (isMenuOpen) {
+			document.addEventListener('click', handleClickOutside);
+			return () => {
+				document.removeEventListener('click', handleClickOutside);
+			};
+		}
+	});
+
+	function toggleUserMenu(event: MouseEvent) {
 		event.stopPropagation();
 		isMenuOpen = !isMenuOpen;
-		if (isMenuOpen) {
-			setTimeout(() => document.addEventListener('click', handleClickOutside)); //wtf two
-		}
 	}
 
 	function closeMenu() {
 		isMenuOpen = false;
-		document.removeEventListener('click', handleClickOutside);
+		// document.removeEventListener('click', handleClickOutside);
 	}
 
-	function handleKeydown(event: any) {
+	function handleKeydown(event: KeyboardEvent) {
 		//TODO: change it
 		switch (event.key) {
 			case 'Escape':

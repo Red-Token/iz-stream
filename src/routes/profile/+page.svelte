@@ -1,8 +1,8 @@
 <script lang="ts">
-	import {onMount} from 'svelte';
+	// import {onMount} from 'svelte';
 	import {defaultNip01, me} from '@src/stores/profile.svelte';
 	import {Nip01UserMetaDataEvent, NostrUserProfileMetaData} from 'iz-nostrlib/nip01';
-	import {Button} from '@src/components/lib';
+	import {Button} from '$components/lib';
 
 	// TODO We need to fix this.
 	// const ci = communities[0].identities.values().toArray()[0];
@@ -21,26 +21,27 @@
 	let profile = $state(classToObject(me.profile?.nip01Event.profile ?? defaultNip01.profile));
 
 	type imageLoad = 'picture' | 'banner';
-	let urlInputs = {
+	let urlInputs = $state({
 		picture: true,
 		banner: true
-	};
+	});
 
 	let tempUrls = $state({
 		picture: profile.picture,
 		banner: profile.banner
 	});
 
-	onMount(async () => {});
+	// onMount(async () => {});
 
 	//TODO This function not working. it needs to be fixed to
 	// uploadold an image to 'https://image.nostr.build/{key}' or find a way to set base64 in the profile.picture .
-	const handleAddImage = (event: any, type: imageLoad) => {
-		const file: File = event?.target?.files[0];
+	const handleAddImage = (event: Event, type: imageLoad) => {
+		const target = event.target as HTMLInputElement;
+		const file: File | undefined = target?.files?.[0];
 		if (file) {
 			const reader = new FileReader();
-			reader.onload = (e) => {
-				if (profile) profile[type] = e.target!.result; //TODO fix it
+			reader.onload = (e: ProgressEvent<FileReader>) => {
+				if (profile && e.target?.result) profile[type] = e.target.result as string; //TODO fix it
 			};
 			reader.readAsDataURL(file);
 		}

@@ -1,4 +1,4 @@
-<script lang="ts">
+<!-- <script lang="ts">
 	import {globalRunes} from '@src/stores/profile.svelte';
 	import {IconLink, IconArrow} from '$components/Icons';
 	import {Button} from '$components/lib';
@@ -296,4 +296,4 @@
 			justify-content: center;
 		}
 	}
-</style>
+</style> -->
