@@ -4,8 +4,7 @@
 	import {onMount} from 'svelte';
 	import {logIn} from '@src/stores/community.svelte';
 	import {Button} from '$components/lib';
-
-	let {isOpen = false, closePopup}: {isOpen: boolean; closePopup: Function} = $props();
+	import {uiStore} from '@src/stores/uiStore.svelte';
 
 	let nip07: Nip07 | undefined = undefined;
 
@@ -21,27 +20,27 @@
 		const signerData = {type: SignerType.NIP07, pubkey: pubkey};
 		console.log(signerData.pubkey);
 		logIn(signerData);
-		closePopup();
+		uiStore.closeLoginPopup();
 	}
 </script>
 
-{#if isOpen}
+{#if uiStore.loginPopupOpen}
 	<!-- svelte-ignore a11y_click_events_have_key_events -->
 	<!-- svelte-ignore a11y_no_static_element_interactions -->
-	<div class="popup-overlay" onclick={() => closePopup()}>
-		<div class="popup">
+	<div class="popup-overlay" onclick={() => uiStore.closeLoginPopup()}>
+		<div class="popup" onclick={(e) => e.stopPropagation()}>
 			{#if nip07 !== undefined}
 				<!-- margin: 0.5rem 0; -->
 				<Button
 					class="btn btn-full-width btn-filled btn-padding-medium btn-gap-small"
 					style="margin: 0.5rem 0;"
-					onClick={() => nip07LogIn()}>LogIn NIP07</Button
+					onClick={nip07LogIn}>LogIn NIP07</Button
 				>
 			{/if}
 			<Button
 				class="btn btn-full-width btn-bg-3 btn-outlined btn-padding-medium btn-gap-small"
 				style="margin: 0.5rem 0;"
-				onClick={() => closePopup()}>Close</Button
+				onClick={() => uiStore.closeLoginPopup()}>Close</Button
 			>
 		</div>
 	</div>

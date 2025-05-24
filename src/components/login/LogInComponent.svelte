@@ -1,23 +1,14 @@
 <script lang="ts">
-	import {Popup} from '$components';
+	// import {Popup} from '$components'; // Popup будет в layout
 	import {me} from '@src/stores/profile.svelte';
 	import {goto} from '$app/navigation';
 	import {logOut} from '@src/stores/community.svelte';
 	import {IconUser, IconLogout, IconLock, IconChannel} from '$components/Icons';
 	import {Button} from '$components/lib';
-
-	let isPopupOpen = $state(false); // Track the popup visibility
+	import {uiStore} from '@src/stores/uiStore.svelte'; // Импортируем uiStore
 
 	let isMenuOpen = $state(false);
 	let menuButton: HTMLButtonElement | null = null;
-
-	function openPopup() {
-		isPopupOpen = true;
-	}
-
-	function closePopup() {
-		isPopupOpen = false;
-	}
 
 	function goToChannelPage() {
 		goto(`/channels/${me.pubkey}/torrents`);
@@ -134,13 +125,11 @@
 			{/if}
 		</div>
 	{:else}
-		<Button class="btn btn-filled btn-padding-small btn-gap-small" onClick={openPopup}>
+		<Button class="btn btn-filled btn-padding-small btn-gap-small" onClick={uiStore.openLoginPopup}>
 			<IconLock className="lock-icon" fillColor="currentColor" />
 			<span class="login-text">Log In</span>
 		</Button>
 	{/if}
-
-	<Popup isOpen={isPopupOpen} {closePopup} />
 </div>
 
 <style>

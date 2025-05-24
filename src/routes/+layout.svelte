@@ -2,7 +2,7 @@
 	import '@src/style/app.css';
 	import '@src/style/tailwind.css';
 	import {onMount} from 'svelte';
-	import {PrimaryNav, Communities} from '$components';
+	import {PrimaryNav, Communities, Popup} from '$components';
 	import {Log} from '@src/services/Logger';
 	import {me} from '@src/stores/profile.svelte';
 	import {normalizeRelayUrl} from '@red-token/welshman/util';
@@ -148,6 +148,8 @@
 		</div>
 	</div>
 </main>
+
+<Popup />
 
 <style>
 	main {
