@@ -121,7 +121,7 @@
 			position: fixed;
 			bottom: 0;
 			left: 0;
-			z-index: 10;
+			z-index: 100;
 			right: 0;
 			width: 100%;
 			max-width: 100%;
@@ -132,17 +132,26 @@
 		.nav-content {
 			justify-content: center;
 			height: 56px;
+			align-items: center;
+			position: relative;
 		}
 
 		.nav-links {
 			position: static;
 			transform: none;
 			gap: 1.2rem;
+			display: flex;
+			align-items: center;
 		}
 
-		/* .login-btn {
-							display: none; should be fix
-						} */
+		.login-btn {
+			pointer-events: auto;
+			position: absolute;
+			right: 1rem;
+			top: 50%;
+			transform: translateY(-50%);
+		}
+
 		.primary-nav a {
 			font-size: 0.9rem;
 			padding: 0.3rem 0;

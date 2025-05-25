@@ -136,6 +136,7 @@
 	.auth-container {
 		position: relative;
 		margin-left: auto;
+		z-index: 110;
 	}
 
 	.user-menu {
@@ -199,7 +200,7 @@
 		border-radius: var(--border-radius);
 		box-shadow: 0 4px 12px var(--shadow-color);
 		min-width: 200px;
-		z-index: 100;
+		z-index: 120;
 		animation: slideDown 0.2s ease;
 	}
 
@@ -256,6 +257,17 @@
 		}
 	}
 
+	@keyframes slideUp {
+		from {
+			opacity: 0;
+			transform: translateY(10px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
 	@media (max-width: 768px) {
 		.username {
 			margin-right: 0.5rem;
@@ -273,7 +285,31 @@
 		}
 	}
 
+	@media (max-width: 640px) {
+		.dropdown-menu {
+			top: auto;
+			bottom: calc(100% + 8px);
+			animation: slideUp 0.2s ease;
+		}
+	}
+
 	@media (max-width: 480px) {
+		.username {
+			margin-right: 0.5rem;
+			max-width: 100px;
+			display: none;
+		}
+
+		.user-menu {
+			padding: 0.5rem;
+		}
+
+		.dropdown-menu {
+			animation: slideUp 0.2s ease;
+			min-width: 180px;
+			right: -10px;
+		}
+
 		.login-text {
 			display: none;
 		}

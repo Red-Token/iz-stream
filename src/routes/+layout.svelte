@@ -24,7 +24,14 @@
 	// let profileSession: SynchronisedSession
 
 	$effect(() => {
-		isExpanded ??= me.pubkey !== '' ? true : false;
+		if (me.pubkey === '') {
+			isExpanded = false;
+		} else {
+			if (isExpanded === undefined) {
+				isExpanded = true;
+			}
+		}
+		// isExpanded = me.pubkey === '' ? false : true;
 		console.log('test');
 	});
 
@@ -127,7 +134,6 @@
 	});
 </script>
 
-{#if package_Mode}{/if}
 <main>
 	{#if me.pubkey !== ''}
 		<div class="left-sidebar {isExpanded ? 'expanded' : ''}">
@@ -217,6 +223,36 @@
 			bottom: 16px;
 			width: 28px;
 			height: 28px;
+		}
+	}
+
+	.main-content {
+		flex: 1;
+		padding-bottom: 0; /* Default no padding */
+		transition: padding-bottom 0.3s ease; /* Optional: for smooth transition if needed elsewhere */
+	}
+
+	@media (max-width: 640px) {
+		.main-content {
+			padding-bottom: 56px; /* Height of the bottom nav bar */
+		}
+
+		.sidebar-toggle {
+			z-index: 2001;
+			top: auto;
+			bottom: 14px;
+			left: 10px;
+			right: auto;
+			transform: none;
+			display: flex !important;
+			align-items: center;
+			justify-content: center;
+			width: 28px;
+			height: 28px;
+			background: red !important;
+			border: 2px solid lime !important;
+			opacity: 1 !important;
+			will-change: transform;
 		}
 	}
 </style>
